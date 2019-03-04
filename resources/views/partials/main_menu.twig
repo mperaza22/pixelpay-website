@@ -1,0 +1,116 @@
+<div class="logo">
+	<a class="nav-logo" href="{{ route('admin') }}">
+
+		{% if env('THEME_PREFIX') %}
+			<img src="{{ 'images/theme/logo-?.png'|asset(env('THEME_PREFIX')) }}" height="{{ env('THEME_LOGO_HEIGHT', '50') }}">
+		{% else %}
+			<img src="{{ 'images/favicon.png'|asset }}" alt="" class="small-logo" width="35" height="35" style="margin-top: -4px;">
+			<span class="color">Pixel</span><span>Pay</span>
+		{% endif %}
+
+	</a>
+
+</div>
+<ul class="nav-menu">
+	{% if user.checkAccess(['role_dashboard']) %}
+	<li class="{{ pageId == 'dashboard' ? 'active':'' }} introjs-fixParent">
+		<a href="{{ route('dashboard') }}">
+			<i class="mdi mdi-chart-bar"></i> 
+			{{ 'pixel.menu.dashboard'|trans }}
+		</a>
+	</li>
+	{% endif %}
+
+	{% if user.checkAccess(['role_unique','role_massive','role_email_template']) %}
+	<li class="{{ pageId == 'generator' ? 'active':'' }}">
+		<a href="{{ route('generator') }}">
+			<i class="mdi mdi-email-open"></i> 
+			{{ 'pixel.menu.generator'|trans }}
+		</a>
+	</li>
+	{% endif %}
+
+	{% if user.checkAccess(['role_payments']) %}
+	<li class="{{ pageId == 'payments' ? 'active':'' }}">
+		<a href="{{ route('payments') }}">
+			<i class="mdi mdi-credit-card-multiple"></i> 
+			{{ 'pixel.menu.payments'|trans }}
+		</a>
+	</li>
+	{% endif %}
+
+	{% if user.checkAccess(['role_balance']) and user.company.isActiveGateway('pixel') %}
+	<li class="{{ pageId == 'balance' ? 'active':'' }}">
+		<a href="{{ route('balance') }}">
+			<i class="mdi mdi-wallet"></i> 
+			{{ 'pixel.menu.balance'|trans }}
+		</a>
+	</li>
+	{% endif %}
+
+	{% if user.checkAccess(['module_buttons','role_buttons']) %}
+	<li class="{{ pageId == 'buttons' ? 'active':'' }}">
+		<a href="{{ route('buttons') }}">
+			<i class="mdi mdi-cursor-default"></i> 
+			{{ 'pixel.menu.buttons'|trans }}
+		</a>
+	</li>
+	{% endif %}
+
+	{% if user.checkAccess(['role_users']) %}
+	<li class="{{ pageId == 'users' ? 'active':'' }}">
+		<a href="{{ route('users') }}">
+			<i class="mdi mdi-account-multiple"></i> 
+			{{ 'pixel.menu.users'|trans }}
+		</a>
+	</li>
+	{% endif %}
+
+	{% if user.checkAccess(['module_invoice','role_invoice']) %}
+	<li class="{{ pageId == 'invoices' ? 'active':'' }}">
+		<a href="{{ route('invoices') }}">
+			<i class="mdi mdi-file-document"></i> 
+			{{ 'pixel.menu.invoices'|trans }}
+		</a>
+	</li>
+	{% endif %}
+
+	<li class="spacer"></li>
+
+	<li class="{{ pageId == 'settings' ? 'active':'' }}">
+		<a href="{{ route('settings') }}">
+			<i class="mdi mdi-tune"></i> 
+			{{ 'pixel.menu.settings'|trans }}
+		</a>
+	</li>
+
+	<li class="{{ pageId == 'support' ? 'active':'' }}">
+		<a href="{{ route('support') }}">
+			<i class="mdi mdi-help-circle-outline"></i> 
+			{{ 'pixel.menu.support'|trans }}
+		</a>
+	</li>
+
+	<li>
+		<a href="{{ route('logout') }}">
+			<i class="mdi mdi-power"></i> 
+			{{ 'pixel.menu.logout'|trans }}
+		</a>
+	</li>
+</ul>
+<div class="nav-user">
+	{% if user.is_superuser %}
+	<a href="{{ route('managment') }}" style="float: right">
+		<i class="mdi mdi-key"
+			style="
+				font-size: 24px;
+				line-height: 1em;
+				color: #585858;
+				margin-top: 4px;
+				display: block;"></i> 
+	</a>
+	{% endif %}
+	<span>&bull;</span>
+	{{ user.name }}<br>
+	<small>{{ user.company.name }}</small>
+</div>

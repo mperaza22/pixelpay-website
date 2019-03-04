@@ -1,0 +1,18 @@
+@import '../_theme';
+
+$color-primary: #003E7A;
+$color-secondary: lighten($color-primary, 5%);
+$color-accent: #003E7A;
+
+$color-text: #585858;
+$login-bg: #FFEC53;
+
+$multicolor-tints: false;
+
+@import '../admin/_animations';
+@import '../admin/_general';
+@import '../admin/_components';
+@import '../admin/_navbar';
+@import '../admin/_forms';
+
+@import '../admin/_login';

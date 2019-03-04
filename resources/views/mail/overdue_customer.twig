@@ -1,0 +1,21 @@
+{% extends "layouts.mail" %}
+
+{% block content %}
+	<img src="{{ '/images/overdue.jpg'|asset }}" alt="">
+	<h1 class="title">TIME'S UP!</h1>
+	<p>
+		Se aplico un recargo a tu cobro 
+		{% if payment.company.options.payments.due_type == 'percent' %}
+		del <b>{{ payment.company.options.payments.due_amount }}%</b> del total del monto ({{ payment.total }}) 
+		{% else %}
+		de <b>{{ payment.company.options.payments.due_amount|currency(payment.currency) }}</b> sumado al total del monto ({{ payment.total }}) 
+		{% endif %}
+		{% if payment.company.options.payments.due_loop == 0 %}
+		el cual sera un cargo único.
+		{% else %}
+		el cual sera aplicado cada <b>{{ payment.company.options.payments.due_loop }} día(s)</b>.
+		{% endif %}
+	</p>
+	<br>
+	<a href="{{ payment.generateLink() }}" class="btn" target="_blank">PAGAR AQUI</a>
+{% endblock %}

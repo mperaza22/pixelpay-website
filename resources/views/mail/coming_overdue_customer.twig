@@ -1,0 +1,9 @@
+{% extends "layouts.mail" %}
+
+{% block content %}
+	<img src="{{ '/images/overdue_?_days.jpg'|asset(days|default(1)) }}" alt="">
+	<h1 class="title">TIME'S UP!</h1>
+	<p>Tu cobro esta por vencerse,<br>paga ahora y evita recargos.</p>
+	<br>
+	<a href="{{ payment.generateLink() }}" class="btn" target="_blank">PAGAR AQUI</a>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "layouts.mail" %}
+
+{% block content %}
+	<h1 class="title">¡El pago fue realizado!</h1>
+	<h3>El cobro <strong>#{{ payment.ref }}</strong> ha sido <span class="success">{{ payment.paid_at.format('d M, Y h:ma') }}</strong> a <strong>{{ payment.company.name }}</strong></h3>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateColumns">
+		<tr>
+			<td align="center" valign="middle" width="60%" class="templateColumnContainer">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="middle" class="leftColumnContent">
+							<div class="block">
+								<label>{{ 'fields.total_amount'|trans|upper }}</label>
+								<p class="field-total">{{ payment.total }}</p>
+								{% if payment.tax_amount > 0 %}
+								<p class="field-alt">{{ 'fields.tax'|trans|upper }}: {{ payment.tax_amount|currency(payment.currency) }}</p>
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td align="center" valign="middle" width="40%" class="templateColumnContainer">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="middle" class="rightColumnContent text-right">
+							<img src="{{ '/images/gateways/?.jpg'|asset(payment.gateway|default('bac')) }}" width="110" height="50" class="payment-gateway" alt="">
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateColumns">
+		<tr>
+			<td align="center" valign="top" width="50%" class="templateColumnContainer">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="top" class="leftColumnContent">
+							<div class="block">
+								<label>{{ 'fields.customer'|trans }}</label>
+								<p class="field">{{ payment.customerName() }}</p>
+
+								{% if payment.customerEmail() %}
+								<p class="field-alt">{{ payment.customerEmail() }}</p>
+								{% endif %}
+
+								{% if payment.customerPhone() %}
+								<p class="field-alt">{{ payment.customerPhone() }}</p>
+								{% endif %}
+							</div>
+
+							{% if payment.customer.rtn %}
+							<div class="block">
+								<label>{{ 'fields.rtn'|trans }}</label>
+								<p class="field-alt">{{ payment.customerRTN() }}</p>
+							</div>
+							{% endif %}
+
+							{% if payment.user %}
+							<div class="block">
+								<label>{{ 'fields.created_by'|trans }}</label>
+								<p class="field">{{ payment.user.name|upper }}</p>
+								<p class="field-alt">{{ payment.user.email }}</p>
+							</div>
+							{% endif %}
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td align="center" valign="top" width="50%" class="templateColumnContainer">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="top" class="rightColumnContent">
+							{% if payment.paid_attempt.cc_brand %}
+							<div class="block">
+								<label>{{ 'fields.card_info'|trans }}</label>
+								<img src="{{ '/images/cc/?.png'|asset(payment.paid_attempt.cc_brand) }}" height="48" style="height: 48px;position: absolute;right: 6px;margin-top: 16px;margin: 0;box-sizing: border-box;font-size: 14px;color: #484848;max-width: 100%;font-family: 'Gotham Rounded', 'Tahoma', sans-serif;">
+								<p class="field">{{ payment.paid_attempt.getMaskedPan() }}</p>
+								<p class="field-alt">{{ payment.paid_attempt.cc_name|default('Sin Nombre')|upper }}</p>
+							</div>
+							{% endif %}	
+
+							{% if payment.paid_attempt.transaction_id %}
+							<div class="block">
+								<label>{{ 'fields.transactionid'|trans }}</label>
+								<p class="field">{{ payment.paid_attempt.transaction_id }}</p>
+							</div>
+							{% endif %}
+
+							{% if payment.getDeviceName() %}
+							<div class="block">
+								<label>{{ 'fields.device'|trans }}</label>
+								<img src="{{ '/images/os/?.png'|asset(payment.properties.client.device) }}" height="48" style="height: 48px;position: absolute;right: 6px;margin-top: 4px;margin: 0;box-sizing: border-box;font-size: 14px;color: #484848;max-width: 100%;font-family: 'Gotham Rounded', 'Tahoma', sans-serif;">
+								<p class="field">{{ payment.getDeviceName() }}</p>
+								{% if payment.properties.client.ip %}<p class="field-alt">IP: {{ payment.properties.client.ip }}</p>{% endif %}
+							</div>
+							{% endif %}
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+	<table class="action" align="center" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td align="center">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td align="center">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td align="center">
+										<a href="{{ route('payments') }}" class="button button-blue" target="_blank">{{ 'frontend.view_payments'|trans }}</a>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+{% endblock %}

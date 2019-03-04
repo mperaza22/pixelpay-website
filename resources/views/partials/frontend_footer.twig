@@ -1,0 +1,32 @@
+<footer class="footer-7 text-center-xs unpad">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 text-left text-center-xs">
+				<ul class="social-list list-inline">
+					<li><a target="_blank" href="http://www.hondurasmarcapais.com/"><img src="{{ 'images/logo_marca_pais.png'|asset }}" border="0" height="59"></a></li>
+					<li>
+						{% if not App.environment('local') %}
+						<div id="comodoLogo">
+							<script language="JavaScript" type="text/javascript">
+							var _SSLTYPE = (location.hostname.match('pixelpay.app')) ? "SC7" : "CL1";
+							TrustLogo("{{ url('/public/images/comodo_secure_seal_113x59_transp.png') }}", _SSLTYPE, "none");
+							</script>
+						</div>
+						{% else %}
+						<div id="comodoLogo">
+							<a href="#">
+								<img src="{{ 'images/comodo_secure_seal_113x59_transp.png'|asset }}" border="0">
+							</a>
+						</div>
+						{% endif %}	
+					</li>
+					<li><a target="_blank" href="https://www.facebook.com/pixelpay"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+					<li><a target="_blank" href="https://twitter.com/pixelpayhn"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
+					<li><a target="_blank" href="https://pixelpay.tumblr.com"><i class="socicon socicon-tumblr icon icon--xs"></i></a></li>
+					<li><a target="_blank" href="https://www.instagram.com/pixelpayhn"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+					<li><span class="type--fine-print">&copy; <span class="update-year"></span> </span><a href="https://www.pixel.hn" class="color">Pixel S.A.</a><span class="type--fine-print"> — Todos los derechos reservados. <a href="http://blog.pixel.hn"> &bull; Blog y Noticias</a></span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>

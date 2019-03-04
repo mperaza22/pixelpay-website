@@ -1,0 +1,107 @@
+{% extends "layouts/frontend" %}
+
+{% block styles %}
+	<link rel="stylesheet" href="{{ 'css/documentation.css'|asset }}">
+{% endblock %}
+
+{% block content %}
+<section class="text-center height-50 imagebg" data-overlay="7">
+	<div class="background-image-holder">
+		<img alt="background" src="{{ 'images/backgrounds/image-docs.jpg'|asset }}">
+	</div>
+	<div class="container pos-vertical-center">
+		<div class="row">
+			<div class="col-sm-12">
+				<h1>Documentación</h1>
+				<div class="typed-headline lead">
+					<span class="inline-block">Para Desarrolladores — Integración para</span>
+					<span class="inline-block typed-text typed-text--cursor color--primary" data-typed-strings="sitios webs,aplicaciones móviles,cobros por plataforma,e-Commerce,CRM o ERP,Ventas en linea,SaaS,cobros rápidos">...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- QUICK START -->
+<section class="cards-section text-center">
+	<div class="container" id="start">
+		<div class="cards-wrapper row">
+			<div class="item item-green col-lg-4 col-md-6 col-12">
+				<div class="item-inner">
+					<div class="icon-holder">
+						<img src="{{ 'images/docs/hpg-icon.svg'|asset }}" alt="" width="64" height="64">
+					</div>
+					<h3 class="title">Hosted Payment Gateway</h3>
+					<p class="intro">Integra nuestro método de pago a un sitio <b>Web</b> o <b>App</b></p>
+					<a class="link" href="{{ route('docs.hpg') }}"><span></span></a>
+				</div>
+			</div>
+
+			<!-- <div class="item item-pink item-2 col-lg-4 col-md-6 col-12">
+				<div class="item-inner">
+					<div class="icon-holder">
+						<img src="{{ 'images/docs/webhook-icon.svg'|asset }}" alt="" width="64" height="64">
+					</div>
+					<h3 class="title">Webhooks</h3>
+					<p class="intro">Monitorea la actividad de cada cobro en tu plataforma</p>
+					<a class="link" href="{{ route('docs.webhooks') }}"><span></span></a>
+				</div>
+			</div> -->
+
+			<div class="item item-blue col-lg-4 col-md-6 col-12">
+				<div class="item-inner">
+					<div class="icon-holder">
+						<img src="{{ 'images/docs/generator-icon.svg'|asset }}" alt="" width="64" height="64">
+					</div>
+					<h3 class="title">Envío de Cobros (API)</h3>
+					<p class="intro">Envía cobros por correo electrónico desde tu plataforma</p>
+					<a class="link" href="{{ route('docs.generator') }}"><span></span></a>
+				</div>
+			</div>
+		
+			<!-- <div class="item item-orange col-lg-4 col-md-6 col-12">
+				<div class="item-inner">
+					<div class="icon-holder">
+						<img src="{{ 'images/docs/modules-icon.svg'|asset }}" alt="" width="64" height="64">
+					</div>
+					<h3 class="title">Módulos e Integraciones</h3>
+					<p class="intro">Manuales de integración para plataformas</p>
+					<a class="link" href="{{ route('docs') }}"><span></span></a>
+				</div>
+			</div> -->
+
+			<!-- <div class="item item-primary col-lg-4 col-md-6 col-12">
+				<div class="item-inner">
+					<div class="icon-holder">
+						<img src="{{ 'images/docs/manual-icon.svg'|asset }}" alt="" width="64" height="64">
+					</div>
+					<h3 class="title">Manual de Usuario</h3>
+					<p class="intro">Aprende a utilizar nuestra plataforma web paso a paso</p>
+					<a class="link" href="{{ route('docs.manual') }}"><span></span></a>
+				</div>
+			</div> -->
+			
+			<div class="item item-purple col-lg-4 col-md-6 col-12">
+				<div class="item-inner">
+					<div class="icon-holder">
+						<img src="{{ 'images/docs/faq-icon.svg'|asset }}" alt="" width="64" height="64">
+					</div>
+					<h3 class="title">Preguntas Frecuentes (FAQ)</h3>
+					<p class="intro">Necesitas ayuda, mas información o soporte?</p>
+					<a class="link" href="{{ route('faq') }}"><span></span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% include 'partials.frontend_footer' %}
+
+<a class="back-to-top inner-link active" href="#start" data-scroll-class="100vh:active">
+	<i class="stack-interface stack-up-open-big"></i>
+</a>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ 'js/typed.min.js'|asset }}"></script>
+{% endblock %}

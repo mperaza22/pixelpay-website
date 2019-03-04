@@ -1,0 +1,237 @@
+{## STYLES ##}
+<style type="text/css">
+	*{ margin: 0; padding: 0; }
+
+	article, aside, details, figcaption, figure, 
+	footer, header, hgroup, menu, nav, section { display: block }
+	page { color: #333; background-color: #fff; }
+	p{ line-height: 18px; margin-bottom: 16px }
+	ol, ul { list-style: none }
+	blockquote, q { quotes: none }
+	blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none }
+	h1{ font-size: 38px }
+
+	table { border-collapse: collapse; border-spacing: 0; text-align: left }
+	th,tr,td{ text-align: left; vertical-align: top; padding: 5px }
+	hr{ border: none; border-top: 1px solid #bbb; }
+
+	th.first-child{ border-radius: 4px 0px 0px 4px; }
+	th.last-child{ border-radius: 0px 4px 4px 0px; }
+	th{ border-radius: -1px; }
+
+	.logo{ margin-bottom: 16px }
+	.block{ margin-bottom: 16px }
+	.label{ font-size: 11px; font-weight: bold; margin-bottom: 2px; display:block; text-transform: uppercase; }
+	.featured{ font-size: 16px; display:block; text-transform: capitalize; }
+	.block p.label{ font-size: 11px; font-weight: bold; margin-bottom: 2px; display:block; text-transform: uppercase; }
+	.block p.detail{ font-size: 14px; display:block; }
+	.block p.featured{ font-size: 22px; display:block; }
+	.number{ font-size: 26px; color: #C43730; font-weight: lighter }
+	.color{ color: #A94442; font-weight: bolder; text-transform: uppercase; font-size: 10px }
+	.item-image{ margin-right: 5px; }
+	.item-code{ margin-bottom: 4px; margin-top: 4px; }
+	.item-description{ font-size: 11px; line-height: 14px; padding-left: 4px; word-wrap: break-word;}
+	.footer tr td{ padding: 10px }
+
+	.table{ width: 100%; table-layout:auto; display: block}
+
+	.table .col-1 { width: 10% }
+	.table .col-2 { width: 20% }
+	.table .col-3 { width: 30% }
+	.table .col-4 { width: 40% }
+	.table .col-5 { width: 50% }
+	.table .col-6 { width: 60% }
+	.table .col-7 { width: 70% }
+	.table .col-8 { width: 80% }
+	.table .col-9 { width: 90% }
+	.table .col-10{ width: 100% }
+	.table [class^="col-"]{ padding: 10px }
+
+	.table-header th{ 
+		background-color: #333; 
+		color: #fff; 
+		padding: 8px; 
+		vertical-align: middle; 
+		text-align: left; 
+		word-wrap:break-word;
+	}
+
+	.text-left  { text-align: left }
+	.text-center{ text-align: center }
+	.text-right { text-align: right }
+
+	.text-muted{ color: #888 }
+	
+	.mt-10{ margin-top: 10px; }
+	.mb-10{ margin-bottom: 10px; }
+	.ml-10{ margin-left: 10px; }
+	.mr-10{ margin-right: 10px; }
+
+	.mt-20{ margin-top: 20px; }
+	.mb-20{ margin-bottom: 20px; }
+	.ml-20{ margin-left: 20px; }
+	.mr-20{ margin-right: 20px; }
+</style>
+
+<page backtop="0.5in" backbottom="0.5in">
+	{## FOOTER ##}
+	<page_footer>
+		<hr>
+		<table class="footer table">
+			<tr>
+				<td class="col-5 text-left text-muted">
+					<strong>{{ 'frontend.page'|trans }} [[page_cu]] / [[page_nb]]</strong>
+				</td>
+				<td class="col-5 text-right text-muted">
+					<strong>{{ 'frontend.invoice'|trans }} #{{ invoice.doc_number }}</strong>
+				</td>
+			</tr>
+		</table>
+	</page_footer>
+
+	{## HEADER ##}
+	<table class="table">
+		<tr>
+			<td class="col-5">
+				{% if company.hasMedia('logo') %}
+				<img src="{{ company.getFirstMedia('logo').getFullUrl() }}" alt="" height="70" class="logo">
+				{% else %}
+				<h1>{{ company.name }}</h1>
+				{% endif %}
+				<p>
+					{{ company.address }}
+				</p>
+				<p>
+					{% if company.nid %}
+						<b>RTN:</b> {{ company.nid }} <br>
+					{% endif %}
+					{% if company.email %}
+						<b>{{ 'fields.email'|trans }}:</b> {{ company.email }} <br>
+					{% endif %}
+					{% if company.phone %}
+						<b>{{ 'fields.phone'|trans }}:</b> {{ company.phone }} <br>
+					{% endif %}
+				</p>
+			</td>
+			<td class="col-5">
+				<div class="block">
+					<h1 class="text-right">{{ 'frontend.invoice'|trans }}</h1>
+					<h2 class="text-right number">{{ invoice.doc_number }}</h2>
+					<br>
+					{% if invoice.fiscal_number %}
+						<p class="text-right"><b>CAI:</b> {{ invoice.fiscal_number }}</p> <br>
+					{% endif %}
+					
+					<p class="text-right">
+						{% if invoice.range_number %}
+							<b>{{ 'fields.number_range'|trans }}</b> <br>
+							{{ invoice.range_number }} <br>
+						{% endif %}
+
+						{% if invoice.range_date %}
+							<b>{{ 'fields.date_range'|trans }}</b> <br>
+							{{ invoice.range_date }} <br>
+						{% endif %}
+					</p>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	{## CUSTOMER DETAILS ##}
+	<table class="table mt-20">
+		<tr>
+			<td class="col-7">
+				<div class="block">
+					<p class="label">{{ 'fields.customer_name'|trans }}:</p>
+					<p class="featured" style="text-transform: initial;">{{ invoice.customer.name }}</p>
+					{% if invoice.customer.rtn %}
+					<p class="detail"><b>RTN:</b> {{ invoice.customer.rtn }}</p>
+					{% endif %}
+				</div>
+			</td>
+			<td class="col-3">
+				<div class="block">
+					<p class="text-right label">{{ 'fields.emited_at'|trans }}:</p>
+					<p class="text-right featured">{{ invoice.created_at.toFormattedDateString }}</p>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	{## ITEMS ##}
+	<table class="table mt-10">
+		<tr class="table-header">
+			<th style="width: 65%" class="first-child">{{ 'fields.description'|trans }}</th>
+			<th class="col-1">{{ 'fields.price'|trans }}</th>
+			<th class="col-1">{{ 'fields.qty'|trans }}</th>
+			<th class="text-right last-child" style="width: 15%">{{ 'fields.total'|trans }}</th>
+		</tr>
+		{% for item in invoice.content %}
+		<tr>
+			<td>
+				<div style="width: 380px">
+					<h4 class="item-name">{{ item.title }}</h4>
+					{% if item.code %}
+					<p class="item-code"><b>{{ 'fields.id'|trans }}:</b> {{ item.code }}</p>
+					{% endif %}
+					<p class="item-description">{{ item.description|raw|nl2br }}</p>
+				</div>
+			</td>
+			<td>{{ item.price|currency(invoice.currency) }}</td>
+			<td class="text-center">{{ item.qty }}</td>
+			<td class="text-right">
+				{{ item.total|currency(invoice.currency) }}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<hr>
+	{## TOTALS ##}
+	<table class="table">
+		<tr>
+			<td class="col-7">
+				<div class="block">
+					<p class="label">{{ 'fields.literal'|trans }}</p>
+					<p class="color">{{ invoice.spellTotal }}</p>
+				</div>
+				{% if invoice.note %}
+				<div class="block">
+					<p class="label">{{ 'fields.note'|trans }}</p>
+					<p>{{ invoice.note|nl2br }}</p>
+				</div>
+				{% endif %}
+			</td>
+			<td class="col-3">
+				<table>
+					<tr>
+						<td class="col-3 label">{{ 'fields.subtotal'|trans }}</td>
+						<td class="col-7 text-right">{{ invoice.pretax|currency(invoice.currency) }}</td>
+					</tr>
+
+					<tr>
+						<td class="col-3 label">{{ 'fields.tax'|trans }}</td>
+						<td class="col-7 text-right">{{ invoice.tax_amount|currency(invoice.currency) }}</td>
+					</tr>
+					
+					<tr>
+						<td class="col-3 label">{{ 'fields.total'|trans }}</td>
+						<td class="col-7 text-right featured">{{ invoice.amount|currency(invoice.currency) }}</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div class="block">
+					<br>
+					<p>
+						a) Orden de Compra Exenta ___ <br>
+						b) Constancia del Registro de Exonerados ___ <br>
+						c) Registro de la Secretaría de Estado en el Despacho de agricultura y ganadería ___ <br>
+					</p>
+				</div>
+			</td>
+		</tr>
+	</table>
+</page>

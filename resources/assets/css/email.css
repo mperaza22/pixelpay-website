@@ -1,0 +1,168 @@
+.email-template {
+  margin: 0;
+  font-family: 'Tahoma', sans-serif;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #484848;
+  text-align: center;
+}
+.email-template table td {
+  vertical-align: top;
+}
+.email-template hr {
+  border: none !important;
+  display: block !important;
+  max-width: 130px !important;
+  height: 4px !important;
+  margin: 40px auto !important;
+  clear: both !important;
+  border-radius: 4px !important;
+  background-color: #541D66;
+}
+.email-template .body-wrap {
+  background-color: #f6f6f6;
+  width: 100%;
+}
+.email-template .content-wrap {
+  padding: 20px;
+}
+.email-template .header {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.email-template .footer {
+  width: 100%;
+  clear: both;
+  color: #999;
+  padding: 20px;
+}
+.email-template .footer p,
+.email-template .footer a,
+.email-template .footer td {
+  color: #999;
+  font-size: 12px;
+}
+.email-template h1,
+.email-template h2,
+.email-template h3 {
+  font-family: 'Tahoma', sans-serif;
+  color: #484848;
+  margin: 10px 0 20px;
+  line-height: 1.2em;
+  font-weight: 400;
+  text-align: center;
+}
+.email-template h1 {
+  font-size: 32px;
+  font-weight: 500;
+}
+.email-template h2 {
+  font-size: 24px;
+}
+.email-template h3 {
+  font-size: 18px;
+}
+.email-template h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.email-template p,
+.email-template ul,
+.email-template ol {
+  margin-bottom: 18px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+.email-template p li,
+.email-template ul li,
+.email-template ol li {
+  margin-left: 5px;
+  list-style-position: inside;
+}
+.email-template b {
+  color: #212121;
+  font-weight: bold;
+}
+.email-template a {
+  color: #348eda;
+  text-decoration: underline;
+}
+.email-template .btn {
+  text-decoration: none;
+  color: #FFF;
+  background-color: #541d66;
+  border: solid #541d66;
+  border-width: 4px 40px;
+  line-height: 2em;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+.email-template .btn:hover {
+  color: #FFF;
+  opacity: 0.9;
+}
+.email-template .last {
+  margin-bottom: 0;
+}
+.email-template .first {
+  margin-top: 0;
+}
+.email-template .aligncenter {
+  text-align: center;
+}
+.email-template .alignright {
+  text-align: right;
+}
+.email-template .alignleft {
+  text-align: left;
+}
+.email-template .clear {
+  clear: both;
+}
+.email-template .alert {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
+  padding: 20px;
+  text-align: center;
+  border-radius: 3px 3px 0 0;
+}
+.email-template .alert a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+.email-template .alert.alert-warning {
+  background-color: #FF9F00;
+}
+.email-template .alert.alert-bad {
+  background-color: #D0021B;
+}
+.email-template .alert.alert-good {
+  background-color: #68B90F;
+}
+.email-template .invoice {
+  margin: 40px auto;
+  text-align: left;
+  width: 80%;
+}
+.email-template .invoice td {
+  padding: 5px 0;
+}
+.email-template .invoice .invoice-items {
+  width: 100%;
+}
+.email-template .invoice .invoice-items td {
+  border-top: #eee 1px solid;
+}
+.email-template .invoice .invoice-items .total td {
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  font-weight: 700;
+}

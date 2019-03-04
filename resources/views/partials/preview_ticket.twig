@@ -1,0 +1,11 @@
+<div id="create-modal" class="payment-modal">
+	<div class="ticket-body">
+		<iframe src="{{ config('services.handesk.url') }}/requester/tickets/{{ model.public_token }}?no-header=true" frameborder="0" width="100%" height="480"></iframe>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-preview'), 'large');
+	});
+</script>

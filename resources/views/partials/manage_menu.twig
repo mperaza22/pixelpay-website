@@ -1,0 +1,68 @@
+<div class="logo">
+	<a class="nav-logo" href="{{ route('admin') }}">
+		{% if env('THEME_PREFIX') %}
+			<img src="{{ 'images/theme/logo-?.png'|asset(env('THEME_PREFIX')) }}" height="{{ env('THEME_LOGO_HEIGHT', '50') }}">
+		{% else %}
+			<img src="{{ 'images/favicon.png'|asset }}" alt="" class="small-logo" width="35" height="35" style="margin-top: -4px;">
+			<span class="color">Pixel</span><span>Pay</span>
+		{% endif %}
+	</a>
+
+</div>
+<ul class="nav-menu">
+	<li class="{% if tab == 'stats' %}active{% endif %}">
+		<a href="{{ route('managment') }}/stats">
+			<i class="mdi mdi-apps"></i>
+			Resumen
+		</a>
+	</li>
+	<li class="{% if tab == 'companies' %}active{% endif %}">
+		<a href="{{ route('managment') }}/companies">
+			<i class="mdi mdi-briefcase"></i>
+			Compañias
+		</a>
+	</li>
+	<li class="{% if tab == 'payments' %}active{% endif %}">
+		<a href="{{ route('managment') }}/payments">
+			<i class="mdi mdi-credit-card"></i>
+			Cobros
+		</a>
+	</li>
+	<li class="{% if tab == 'withdraw' %}active{% endif %}">
+		<a href="{{ route('managment') }}/withdraw">
+			<i class="mdi mdi-bank"></i>
+			Retiros
+		</a>
+	</li>
+	<li class="{% if tab == 'register' %}active{% endif %}">
+		<a href="{{ route('managment') }}/register">
+			<i class="mdi mdi-attachment"></i>
+			Registros
+		</a>
+	</li>
+	<li class="spacer"></li>
+	<li>
+		<a href="{{ route('manage.logs') }}" target="_blank">
+			<i class="mdi mdi-xaml"></i>
+			System Log
+		</a>
+	</li>
+	<li>
+		<a href="{{ url('/api-payments/console') }}?key={{ user.company.app_key }}" target="_blank">
+			<i class="mdi mdi-download"></i>
+			System Update
+		</a>
+	</li>
+	<li class="spacer"></li>
+	<li>
+		<a href="{{ route('admin') }}">
+			<i class="mdi mdi-arrow-left-thick"></i>
+			Regresar
+		</a>
+	</li>
+</ul>
+<div class="nav-user">
+	<span>&bull;</span>
+	{{ user.name }}<br>
+	<small>{{ user.company.name }}</small>
+</div>

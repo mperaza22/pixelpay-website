@@ -1,0 +1,35 @@
+<div class="col col-auto">
+	<img src="{{ button.image|app }}" width="160" height="160" alt="" class="">
+</div>
+<div class="col">
+	<h2>{{ button.title }}</h2>
+	{% if button.description %}
+	<p>{{ button.description|nl2br }}</p>
+	{% endif %}
+	<h3 class="color-rose">{{ button.amount|currency(button.currency) }}</h3>
+	{% if button.options %}
+	<div class="product-details-options">
+		{% for option in button.options if option.name %}
+		<div class="product-details-option">
+			<span class="badge badge-default">{{ option.name }}</span>
+			{% for item in option.values %}
+			<span class="badge bg-cyan">{{ item }}</span>
+			{% endfor %}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+	<div copy-url data-clipboard-target="#payment-url" class="click-and-copy color-cyan">
+		<i class="mdi mdi-link-variant" style="font-size:16px"></i> <span id="payment-url">{{ button.generateLink() }}</span>
+	</div>
+	<hr>
+	<div class="product-details-badges">
+		<span class="badge bg-cyan badge-pill"><i class="mdi mdi-shopping"></i> {{ button.payments_count }}</span>
+		<span class="badge bg-jade badge-pill"><i class="mdi mdi-coins"></i> {{ button.sales }}</span>
+		{% if button.type == 'pickup' %}
+		<span class="badge badge-default badge-pill"><i class="mdi mdi-walk"></i></span>
+		{% elseif button.type == 'address' %}
+		<span class="badge badge-default badge-pill"><i class="mdi mdi-truck-fast"></i></span>
+		{% endif %}
+	</div>
+</div>

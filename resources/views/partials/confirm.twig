@@ -1,0 +1,26 @@
+<div id="confirm-modal" class="modal__wrap">
+	<div class="container">
+		<div class="text-center small-block">
+			<img src="{{ 'images/icons/confirm-icon.png'|asset }}" alt="" style="margin-bottom: 10px">
+			<h4>{{ message|default('pixel.messages.confirm')|trans }}</h4>
+			<hr>
+			<a href="#" class="btn btn-link btn-yes">{{ 'pixel.form.yes'|trans|upper }}</a>
+			<a href="#" class="btn btn-link btn-no text-danger">{{ 'pixel.form.no'|trans|upper }}</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-confirm'), 'small');
+
+		$('.pixel__modal-confirm .btn-yes').click(function(event) {
+			event.preventDefault();
+			$(document).trigger('confirmYes');
+		});
+
+		$('.pixel__modal-confirm .btn-no').click(function(event) {
+			$(document).trigger('closeAllModals');
+		});
+	});
+</script>

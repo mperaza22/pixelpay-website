@@ -1,0 +1,164 @@
+.doc-section .section-block .screenshoot{
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 18px;
+	border-radius: 7px;
+	overflow-y: hidden;
+
+	-webkit-box-shadow: 0 0 12px rgba(50,50,50,0.1);
+	box-shadow: 0 0 12px rgba(50,50,50,0.1);
+}
+
+/*.markdown-style{
+	max-width: 800px;
+	display: block;
+	margin: 0 auto;
+}
+
+.markdown-style,
+.markdown-style p{
+	font-size: 14px;
+}
+
+.markdown-style img{
+	max-width: 100%;
+	height: auto;
+}
+
+.markdown-style blockquote{
+	border-radius: 3px;
+    background: #F2F2F2!important;
+    border-left: 7px solid #64AE5B;
+    padding: 16px 22px;
+    margin: 0 0 22px;
+    font-size: 14px;
+    font-family: 'Gotham Rounded', 'Helvetica', 'Arial', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.markdown-style blockquote p:last-child{
+	margin-bottom: 0;
+}
+
+.markdown-style h1, 
+.markdown-style h2, 
+.markdown-style h3,
+.markdown-style h4 {
+    margin-bottom: 20px;
+}
+
+.markdown-style h2 {
+	margin-top: 80px;
+    border-bottom: 1px solid #ECF0F1;
+}
+
+.markdown-style h3, .markdown-style h4, .markdown-style h5 {
+	margin-top: 30px;
+	font-size: 24px;
+	font-weight: 500;
+}
+
+.markdown-style hr {
+	border: none;
+}
+
+.markdown-style table{
+	margin-bottom: 50px;
+}
+
+.markdown-style ul{
+	padding-left: 22px;
+	list-style: circle
+}
+
+.prettyprint {
+  background: #2f3640;
+  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  border: 0 !important;
+}
+
+.pln {
+  color: #e6e9ed;
+}
+
+
+ol.linenums {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #656d78;
+}
+
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L4,
+li.L5,
+li.L6,
+li.L7,
+li.L8,
+li.L9 {
+  padding-left: 1em;
+  background-color: #2f3640;
+  list-style-type: decimal;
+}
+
+@media screen {
+
+  .str {
+    color: #ffce54;
+  }
+
+  .kwd {
+    color: #4fc1e9;
+  }
+
+  .com {
+    color: #656d78;
+  }
+
+  .typ {
+    color: #4fc1e9;
+  }
+
+  .lit {
+    color: #ac92ec;
+  }
+
+  .pun {
+    color: #e6e9ed;
+  }
+
+  .opn {
+    color: #e6e9ed;
+  }
+
+  .clo {
+    color: #e6e9ed;
+  }
+
+  .tag {
+    color: #ed5565;
+  }
+
+  .atn {
+    color: #a0d468;
+  }
+
+  .atv {
+    color: #ffce54;
+  }
+
+  .dec {
+    color: #ac92ec;
+  }
+
+  .var {
+    color: #e6e9ed;
+  }
+
+  .fun {
+    color: #e6e9ed;
+  }
+}*/

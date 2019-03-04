@@ -1,0 +1,15 @@
+{% extends "layouts.mail" %}
+
+{% block content %}
+
+	<br>
+
+	{{ content|raw }}
+
+	{% if note %}
+	<p class="note">
+		{{ 'fields.note'|trans }}: {{ note|nl2br }}
+	</p>
+	{% endif %}
+
+{% endblock %}

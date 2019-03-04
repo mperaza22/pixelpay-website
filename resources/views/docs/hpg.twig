@@ -1,0 +1,532 @@
+{% extends "layouts.docs" %}
+
+{% set pageTitle = 'Hosted Payment Gateway' %}
+{% set lastUpdated = '15-10-2018 07:00' %}
+
+{% block content %}
+
+<div class="doc-wrapper">
+	<div class="container">
+		<div class="doc-body row">
+			<div class="doc-content col-md-9 col-12 order-1">
+				<div class="content-inner">
+					<div class="doc-header text-left">
+						<h1 class="doc-title"><img src="{{ 'images/docs/hpg-icon.svg'|asset }}" alt="" width="42" height="42"> {{ pageTitle }}</h1>
+						<p>El <b>Hosted Payment SDK</b> de <b>PixelPay</b> es una forma mas sencilla para integrar pagos en Aplicaciones Móviles y Web, el método utilizado es por re-direccionamiento.</p>
+						<div class="meta"><i class="far mdi mdi-clock"></i> Ultima Actualización: {{ lastUpdated|date('F d, Y') }}</div>
+					</div>
+
+					<section class="doc-section" id="prepare">
+						<div class="jumbotron">
+							<h1><i class="fas mdi mdi-wrench"></i> Requisitos y Preparación</h1>
+							<p>Para poder comenzar es necesario tener acceso a una cuenta con permisos de <code>Opciones de Desarrollo</code> o ser el administrador de la cuenta.</p>
+							<p>Ten en cuenta que puedes utilizar esta integración en cualquier lenguaje de código que soporte consultas <code>http/s</code> o implementar una librería capaz de utilizar una instancia de tipo <code>Request</code> y <code>Response</code>.</p>
+						</div>
+					</section>
+
+					<section class="doc-section" id="prepare-keys">
+						<h2 class="section-title">Extracción de llaves</h2>
+						<div class="section-block">
+							<p>Para poder hacer esta integración necesitaremos obtener el <code>Key ID</code> desde nuestra plataforma <b>PixelPay</b> el cual sera utilizado mas adelante en el campo <code>_key</code>.</p>
+
+							<h4>Campo <b class="text-highlight">Key ID</b></h4>
+							<p>El campo <code>Key ID</code> es un numero que identifica de forma única al mercante y es un valor constante, no se puede cambiar.</p>
+							<p>Para poder extraer el valor de <code>Key ID</code> <a href="{{ route('login') }}" target="_blank">iniciaremos sesión</a> en la plataforma web y navegaremos en el menú lateral izquierdo hacia <a href="{{ route('settings', {tab: 'app'}) }}" target="_blank">Preferencias &#12297; Opciones del API</a> y encontraremos el campo llamado <code>Key ID</code>.</p>
+
+							{% if user %}
+							<div class="callout-block callout-success">
+								<div class="icon-holder">
+									<i class="mdi mdi-account-check"></i>
+								</div>
+								<div class="content">
+									<h4 class="callout-title">Acceso detectado</h4>
+									<p>Para agilizar el proceso, te mostramos rápidamente el Key ID: <code>{{ user.company.app_key }}</code></p>
+								</div>
+							</div>
+							{% endif %}
+
+							<div class="row">
+								<div class="col-md-6 col-sm-12 col-sm-12">
+									<h6>Opciones del API &bull; <span class="text-muted">Captura de pantalla</span></h6>
+									<div class="screenshot-holder">
+										<a href="{{ 'images/docs/screenshoots/a_1.png'|asset }}" data-toggle="lightbox">
+											<img class="img-fluid" src="{{ 'images/docs/screenshoots/a_1_thumb.png'|asset }}" alt="screenshot" />
+										</a>
+										<a class="mask" href="{{ 'images/docs/screenshoots/a_1.png'|asset }}" data-toggle="lightbox">
+											<i class="icon mdi mdi-eye"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="doc-section" id="prepare-fields">
+						<h2 class="section-title">Indice de Campos</h2>
+
+						<div class="section-block">
+							<p>Todos los campos deberán ser enviados como parámetros en la consulta <code>https</code> en formato <code>Query String</code> o incluir en el <code>header</code> el tipo de formato <code>content-type: x-www-form-urlencoded</code>.</p>
+							<p>Los campos a utilizarse son:</p>
+
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th width="160"><strong>Campo</strong></th>
+											<th style="text-align: center;"><strong>Valor</strong></th>
+											<th style="text-align: center;"><strong>Validación</strong></th>
+											<th><strong>Descripción</strong></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><code>_key *</code></td>
+											<td style="text-align: center;">00000000</td>
+											<td style="text-align: center;">requerido, numérico</td>
+											<td>llave del comercio (Opciones del API)</td>
+										</tr>
+										<tr>
+											<td><code>_callback</code></td>
+											<td style="text-align: center;">https://...</td>
+											<td style="text-align: center;">opcional, url</td>
+											<td>URL asincrónica (equivalente al WebHook) de éxito <a class="scrollto" href="#ref-callback">(ver detalles) <i class="mdi mdi-open-in-new"></i></a></td>
+										</tr>
+										<tr>
+											<td><code>_cancel *</code></td>
+											<td style="text-align: center;">http(s)://...</td>
+											<td style="text-align: center;">requerido, url</td>
+											<td>URL de re-direccionamiento al regresar o cancelar <a class="scrollto" href="#ref-cancel">(ver detalles) <i class="mdi mdi-open-in-new"></i></a></td>
+										</tr>
+										<tr>
+											<td><code>_complete *</code></td>
+											<td style="text-align: center;">https://...</td>
+											<td style="text-align: center;">requerido, url</td>
+											<td>URL de re-direccionamiento al pagar con éxito <a class="scrollto" href="#ref-complete">(ver detalles) <i class="mdi mdi-open-in-new"></i></a></td>
+										</tr>
+										<tr>
+											<td><code>_order_id *</code></td>
+											<td style="text-align: center;">Alfanumérico</td>
+											<td style="text-align: center;">requerido</td>
+											<td>numero o identificador único de la orden o pago</td>
+										</tr>
+										<tr>
+											<td><code>_order_date</code></td>
+											<td style="text-align: center;">dd-mm-aa hh:mm</td>
+											<td style="text-align: center;">opcional, timestamp</td>
+											<td>fecha y hora de la orden generada</td>
+										</tr>
+										<tr>
+											<td><code>_order_content</code></td>
+											<td style="text-align: center;"><a class="scrollto" href="#ref-base64">base64-json <i class="mdi mdi-open-in-new"></i></a></td>
+											<td style="text-align: center;">opcional</td>
+											<td>codificación de un JSON String a base64 <a class="scrollto" href="#ref-content">(ver estructura content)<i class="mdi mdi-open-in-new"></i></a></td>
+										</tr>
+										<tr>
+											<td><code>_order_extras</code></td>
+											<td style="text-align: center;"><a class="scrollto" href="#ref-base64">base64-json <i class="mdi mdi-open-in-new"></i></a></td>
+											<td style="text-align: center;">opcional</td>
+											<td>codificación de un JSON String a base64</td>
+										</tr>
+										<tr>
+											<td><code>_currency</code></td>
+											<td style="text-align: center;">USD/HNL</td>
+											<td style="text-align: center;">opcional,size:3,uppercase</td>
+											<td>moneda en la cual se realizara el cobro</td>
+										</tr>
+										<tr>
+											<td><code>_tax_amount</code></td>
+											<td style="text-align: center;">0.00</td>
+											<td style="text-align: center;">opcional,double</td>
+											<td>cantidad total del impuesto en moneda</td>
+										</tr>
+										<tr>
+											<td><code>_shipping_amount</code></td>
+											<td style="text-align: center;">0.00</td>
+											<td style="text-align: center;">opcional,double</td>
+											<td>cantidad total del valor de envío en moneda</td>
+										</tr>
+										<tr>
+											<td><code>_amount *</code></td>
+											<td style="text-align: center;">0.00</td>
+											<td style="text-align: center;">requerido,double</td>
+											<td>cantidad total del cobro en moneda</td>
+										</tr>
+										<tr>
+											<td><code>_first_name *</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">requerido,min:3,max:120</td>
+											<td>nombre del cliente</td>
+										</tr>
+										<tr>
+											<td><code>_last_name *</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">requerido,min:3,max:120</td>
+											<td>apellido del cliente</td>
+										</tr>
+										<tr>
+											<td><code>_email *</code></td>
+											<td style="text-align: center;">usuario@dominio.com</td>
+											<td style="text-align: center;">requerido,email</td>
+											<td>correo electrónico del cliente</td>
+										</tr>
+										<tr>
+											<td><code>_address *</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">requerido</td>
+											<td>dirección principal del cliente (primer linea)</td>
+										</tr>
+										<tr>
+											<td><code>_address_alt</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">opcional</td>
+											<td>dirección alternativa del cliente (segunda linea)</td>
+										</tr>
+										<tr>
+											<td><code>_zip</code></td>
+											<td style="text-align: center;">00000</td>
+											<td style="text-align: center;">opcional</td>
+											<td>ZIP address code</td>
+										</tr>
+										<tr>
+											<td><code>_city *</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">requerido,min:3,max:120</td>
+											<td>nombre de la ciudad del cliente</td>
+										</tr>
+										<tr>
+											<td><code>_state *</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">requerido,min:3,max:120</td>
+											<td>nombre o código del estado/departamento del cliente</td>
+										</tr>
+										<tr>
+											<td><code>_country *</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">requerido,min:3,max:120</td>
+											<td>nombre o código del país del cliente</td>
+										</tr>
+										<tr>
+											<td><code>json</code></td>
+											<td style="text-align: center;">true/false</td>
+											<td style="text-align: center;">opcional, booleano</td>
+											<td>incluir en caso de cambiar a modo JSON en respuestas</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</section>
+
+					<section class="doc-section" id="prepare-route">
+						<h2 class="section-title">Detalles de la ruta</h2>
+						<div class="section-block">
+							<p>
+								Ruta para envió de parámetros:
+								<br>
+								<a href="{{ url('/hosted/payment/other') }}">{{ url('/hosted/payment/other') }}</a> <code>GET/POST</code>
+							</p>
+
+							<p>Es muy recomendable usar el método POST para realizar el envío de parámetros a esta ruta. Existen dos tipos de respuestas del request; <code>JSON</code> y <code>HTML</code>.</p>
+							<p><b>Las respuestas HTML</b> (Valor por defecto) responde visualmente todo el contenido, en caso de un error de validación, caso contrario se realizara un re-direccionamiento al cobro generado listo para ser pagado.</p>
+							<p><b>Las respuestas JSON</b> retornara el status en la llave <code>success</code> y los errores en la llave <code>errors:{}</code>, en caso de no existir un error se retornara la URL del Cobro en la llave <code>url</code>.</p>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-12 col-sm-12">
+									<h6>Ejemplo &bull; <span class="text-muted">Success response</span></h6>
+<!-- CODE -->
+<pre><code class="pre language-js">{
+  "success": true,
+  "url": "{{ url('/.../checkout') }}"
+}</code></pre><br>
+<!-- CODE -->
+								</div>
+
+								<div class="col-md-6 col-sm-12 col-sm-12">
+									<h6>Ejemplo &bull; <span class="text-muted">Error response</span></h6>
+<!-- CODE -->
+<pre><code class="pre language-js">{
+  "success": false,
+  "errors" : {
+    "_first_name": [
+      "El campo first name es obligatorio."
+    ],
+    ...
+  }
+}</code></pre><br>
+<!-- CODE -->
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="doc-section" id="ref">
+						<div class="jumbotron no-content">
+							<h1><i class="fas mdi mdi-book"></i> Referencias</h1>
+						</div>
+					</section>
+
+					<section class="doc-section" id="ref-base64">
+						<h2 class="section-title">Elemento Base64-JSON</h2>
+						<div class="section-block">
+							<p>Para poder codificar un valor <code>JSON</code> (no se permiten comillas simples o llaves sin comillas), es necesario convertirlo en <code>string</code>, como ejemplo tomaremos esta estructura:</p>
+
+<!-- CODE -->
+<pre><code class="pre language-js">{
+  "nombre":"Pedro Perez",
+  "nro_cliente" : "719827834",
+  "nro_id" : "0501-1988-00237",
+  "ciudad" : "San Pedro Sula"
+}</code></pre><br>
+<!-- CODE -->
+							
+							<p>Luego de convertir estos valores a <code>string</code>, deberán de ser codificados a <code>Base64</code> para obtener un resultado como este: </p>
+
+<!-- CODE -->
+<pre><code class="break pre language-js">ew0KCSJub21icmUiOiJQZWRybyBQZXJleiIsDQoJIm5yb19jbGllbnRlIiA6ICI3MTk4Mjc4MzQiLA0KCSJucm9faWQiIDogIjA1MDEtMTk4OC0wMDIzNyIsDQoJImNpdWRhZCIgOiAiU2FuIFBlZHJvIFN1bGEiDQp9</code></pre><br>
+<!-- CODE -->
+						
+							<p>Muchas veces esta cadena de caracteres contiene valores que no encajan con una codificación correcta en un URL, por lo cual es recomendable codificarlo para URL.</p>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-12 col-sm-12">
+									<h6>Ejemplo &bull; <span class="text-muted">PHP</span></h6>
+<!-- CODE -->
+<pre><code class="pre language-php">$obj_array = array(
+  "nombre" => "Pedro Perez",
+  "nro_cliente" => "719827834",
+  "nro_id" => "0501-1988-00237",
+  "ciudad" => "San Pedro Sula"
+);
+$json = json_encode($obj_array);
+$base64 = base64_encode($json);
+$order_extras = urlencode($base64);</code></pre>
+<!-- CODE -->
+								</div>
+
+								<div class="col-md-6 col-sm-12 col-sm-12">
+									<h6>Ejemplo &bull; <span class="text-muted">Javascript</span></h6>
+<!-- CODE -->
+<pre><code class="pre language-js">var obj_array = {
+  "nombre":"Pedro Perez",
+  "nro_cliente" : "719827834",
+  "nro_id" : "0501-1988-00237",
+  "ciudad" : "San Pedro Sula"
+};
+var json = JSON.stringify(obj_array);
+var base64 = window.btoa(json);
+var order_extras = encodeURI(base64);</code></pre>
+<!-- CODE -->
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="doc-section" id="ref-content">
+						<h2 class="section-title">Estructura del campo <code>_content</code></h2>
+						<div class="section-block">
+							<p>El campo <code>_content</code> contiene un arreglo a detalle de cada elemento de la orden, a continuación mostraremos los campos de cada elemento:</p>
+
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th><strong>Campo</strong></th>
+											<th style="text-align: center;"><strong>Valor</strong></th>
+											<th style="text-align: center;"><strong>Validación</strong></th>
+											<th><strong>Descripción</strong></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><code>title *</code></td>
+											<td style="text-align: center;">Texto corto</td>
+											<td style="text-align: center;">requerido,min:3,max:60</td>
+											<td>Titulo del producto/factura</td>
+										</tr>
+										<tr>
+											<td><code>code</code></td>
+											<td style="text-align: center;">[A-z][0-9]</td>
+											<td style="text-align: center;">opcional</td>
+											<td>código o numero de producto/factura</td>
+										</tr>
+										<tr>
+											<td><code>price *</code></td>
+											<td style="text-align: center;">0.00</td>
+											<td style="text-align: center;">requerido,double</td>
+											<td>precio unitario</td>
+										</tr>
+										<tr>
+											<td><code>qty *</code></td>
+											<td style="text-align: center;">1 ... n</td>
+											<td style="text-align: center;">requerido,int,unsigned</td>
+											<td>cantidad de elementos</td>
+										</tr>
+										<tr>
+											<td><code>tax</code></td>
+											<td style="text-align: center;">0.00</td>
+											<td style="text-align: center;">opcional,double</td>
+											<td>impuesto total del producto en moneda</td>
+										</tr>
+										<tr>
+											<td><code>total *</code></td>
+											<td style="text-align: center;">0.00</td>
+											<td style="text-align: center;">requerido,double</td>
+											<td>total sin impuesto del producto x cantidad en moneda</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12 col-sm-12 col-sm-12">
+									<h6>Ejemplo &bull; <span class="text-muted">Elementos de una orden</span></h6>
+<!-- CODE -->
+<pre><code class="pre language-js">[
+  {
+    "code" : "0000123",
+    "title" : "Camiseta Roja",
+    "description" : "Talla: XS",
+    "tax" : 9.99,
+    "price" : 99.99,
+    "qty" : 1,
+    "total" : 9.99
+  },
+  {
+    "code" : "0000123",
+    "title" : "Jeans Pepe",
+    "description" : "Talla: 32",
+    "tax" : 0.00,
+    "price" : 123.99,
+    "qty" : 1,
+    "total" : 123.99
+  },
+  ...
+]</code></pre>
+<!-- CODE -->
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="doc-section" id="ref-complete">
+						<h2 class="section-title">Detalles de la URL <code>_complete</code></h2>
+						<div class="section-block">
+							<p>La <strong>URL</strong> del campo <code>_complete</code> se ejecutara (re-direccionamiento) cuando el cliente final haya realizado con éxito el pago, el <code>request</code> es de tipo <code>GET</code>.</p>
+							<p>La URL al ejecutarse contendrá un parámetro mas llamado <code>paymentHash</code>, el cual permitirá comparar el origen de la transacción y poder validarla. El contenido de este parámetro es un hash <code>md5</code></p>
+
+							<p>
+								Ejemplo de una URL <code>_complete</code>: <br>
+								<a href="javascript:;">https://myshop.com/orden/finalizar</a>
+								<br>
+								Ejemplo de la misma URL <code>_complete</code> en ejecución: <br>
+								<a href="javascript:;">https://myshop.com/orden/finalizar?paymentHash=d2e16e6ef52a45b7468f1da56bba1953</a>
+							</p>
+
+							<p>El parámetro <code>paymentHash</code> se concatenara con la actual URL, si la URL ya contiene parámetros se procesara antes de ser ejecutada y no existirá ningún conflicto.</p>
+
+							<h4>Comparación de <code>paymentHash</code> de forma local y remota</h4>
+							<p>Para poder comparar el <code>paymentHash</code> y verificar que la transacción es real necesitaremos 3 elementos: <code>_order_id</code>, <code>Key ID</code> y <code>Secret Key</code> <a class="scrollto" href="#prepare-keys">(extraer llaves) <i class="mdi mdi-open-in-new"></i></a>.</p>
+							<p>Concatenaremos los 3 elemento con el símbolo <code>|</code> entre cada uno en el siguiente orden <b>_order_id|Key ID|Secret Key</b>, a continuación veremos un ejemplo del resultado:</p>
+
+<!-- CODE -->
+<pre><code class="pre language-php">"00000123|7812290000|6020ae5a-e263-40e4-acc4-88be8"</code></pre><br>
+<!-- CODE -->
+
+							<p>Para finalizar la validación, convertiremos el valor concatenado en un hash <code>md5</code> y procederemos a compararlo con el parámetro <code>paymentHash</code>. Si ambos hash son iguales <code>(hash remoto == hash local)</code> las URL <code>_complete</code> es valida.</p>
+						</div>
+					</section>
+
+					<section class="doc-section" id="ref-callback">
+						<h2 class="section-title">Detalles de la URL <code>_callback</code></h2>
+						<div class="section-block">
+							<p>La <strong>URL</strong> del campo <code>_callback</code> se ejecutara de forma asincrónica cada vez que un cobro se haya pagado con éxito, el <code>request</code> es de tipo <code>POST</code> y su contenido es <code>content-type: application/json</code>.</p>
+							<p>La URL remota deberá de retornar una respuesta de código <code>200</code> para indicar que se capturo el contenido.</p>
+							<p>En caso de un código de respuesta distinto ó no obtener respuesta de la URL remota se re-programara el envió de datos con un retraso de 5 min. y un máximo de 3 intentos por envío.</p>
+
+							<div class="row">
+								<div class="col-md-12 col-sm-12 col-sm-12">
+									<h6>Ejemplo &bull; <span class="text-muted">Respuesta JSON de <code>_callback</code></span></h6>
+<!-- CODE -->
+<pre><code class="pre language-js">{
+  "ref": "REF-0001-0006350867",
+  "uuid": "1dab5ed0",
+  "status": "paid",
+  "description": null,
+  "note": null,
+  "currency": "USD",
+  "tax_amount": 9.99,
+  "amount": 99.99,
+  "items": [{
+    "code" : "0000123",
+    "title" : "Camiseta Roja",
+    "description" : "Talla: XS",
+    "tax" : 9.99,
+    "price" : 99.99,
+    "qty" : 1,
+    "total" : 9.99
+  }],
+  "customer_name": "PEDRO PEREZ",
+  "customer_email": "pedro.perez@gmail.com",
+  "customer_phone": null,
+  "client_ip": "180.125.81.220",
+  "client_device": "android",
+  "order": "XY0001234",
+  "created_at": "2017-09-25 03:09:47",
+  "paid_at": "2017-10-30 04:10:13",
+  "transaction_id": "7398009601",
+  "card_account": "4234 •••• •••• 1234",
+  "card_brand": "visa",
+  "card_type": "debit",
+  "company_name": "My Company",
+  "company_slug": "my_company",
+  "company_key": "7812290000",
+  "is_overdue": false,
+  "payment_url": "{{ url('/my_company/1dab5ed0/checkout') }}",
+  "attach_url": null,
+  "extra": {
+    "codigoCliente" : "4782164",
+    "codigoNegocio" : "ATGSH-6712",
+  }
+}</code></pre>
+<!-- CODE -->
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="doc-section" id="ref-cancel">
+						<h2 class="section-title">Detalles de la URL <code>_cancel</code></h2>
+						<div class="section-block">
+							<p>La <strong>URL</strong> del campo <code>_cancel</code> se ejecutara (re-direccionamiento) cada vez que el cliente final presione sobre el enlace "cancelar orden y regresar", el <code>request</code> es de tipo <code>GET</code>.</p>
+						</div>
+					</section>
+				</div>
+			</div>
+
+			<div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+				<div id="doc-nav" class="doc-nav">
+					<nav id="doc-menu" class="nav doc-menu flex-column sticky">
+						<a class="nav-link scrollto" href="#prepare">Requisitos</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#prepare-keys">Extracción de llaves</a>
+							<a class="nav-link scrollto" href="#prepare-fields">Indice de Campos</a>
+							<a class="nav-link scrollto" href="#prepare-route">Detalles de la ruta</a>
+						</nav>
+
+						<a class="nav-link scrollto" href="#ref">Referencias</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#ref-base64">Elemento Base64-JSON</a>
+							<a class="nav-link scrollto" href="#ref-content">Estructura de <code>_content</code></a>
+							<a class="nav-link scrollto" href="#ref-complete">Detalles de URL <code>_complete</code></a>
+							<a class="nav-link scrollto" href="#ref-callback">Detalles de URL <code>_callback</code></a>
+							<a class="nav-link scrollto" href="#ref-cancel">Detalles de URL <code>_cancel</code></a>
+						</nav>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

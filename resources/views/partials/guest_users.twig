@@ -1,0 +1,96 @@
+{% for item in users if item.is_not_admin %}
+	<div class="guest-user">
+		<div class="enable float-right">
+			<label class="switch">
+				<input 
+					type="checkbox" 
+					name="users[{{ item.id }}][active]"
+					{% if item.is_activated %}
+						checked="checked"
+					{% endif %}>
+				<div class="slider round"></div>
+			</label>
+		</div>
+
+		<h3>{{ item.name }}</h3>
+		<p class="text-muted">{{ item.email }} &bull; <a href="#" class="text-danger"><i class="mdi mdi-delete"></i> eliminar</a></p>
+		<div class="guest-premisions">
+			<div class="row">
+				<div class="checkbox col-md-6">
+					<label class="switch-small">
+						<input type="checkbox" name="users[{{ item.id }}][rol][role_dashboard]" 
+						{% if item.checkAccess(['role_dashboard']) %}checked="checked"{% endif %}>
+						<div class="slider round"></div>
+					</label>
+					Ver el panel principal
+				</div>
+				
+				<div class="checkbox col-md-6">
+					<label class="switch-small">
+						<input type="checkbox" name="users[{{ item.id }}][rol][role_payments]" 
+						{% if item.checkAccess(['role_payments']) %}checked="checked"{% endif %}>
+						<div class="slider round"></div>
+					</label>
+					Ver historial de cobros
+				</div>
+
+				<div class="checkbox col-md-6">
+					<label class="switch-small">
+						<input type="checkbox" name="users[{{ item.id }}][rol][role_all_payments]" 
+						{% if item.checkAccess(['role_all_payments']) %}checked="checked"{% endif %}>
+						<div class="slider round"></div>
+					</label>
+					Ver todos los cobros y pagos
+				</div>
+
+				<div class="checkbox col-md-6">
+					<label class="switch-small">
+						<input type="checkbox" name="users[{{ item.id }}][rol][role_email_template]" 
+						{% if item.checkAccess(['role_email_template']) %}checked="checked"{% endif %}>
+						<div class="slider round"></div>
+					</label>
+					Editar plantilla de correo
+				</div>
+
+				<div class="checkbox col-md-6">
+					<label class="switch-small">
+						<input type="checkbox" name="users[{{ item.id }}][rol][role_unique]" 
+						{% if item.checkAccess(['role_unique']) %}checked="checked"{% endif %}>
+						<div class="slider round"></div>
+					</label>
+					Envio de correos por unidad
+				</div>
+
+				<div class="checkbox col-md-6">
+					<label class="switch-small">
+						<input type="checkbox" name="users[{{ item.id }}][rol][role_massive]" 
+						{% if item.checkAccess(['role_massive']) %}checked="checked"{% endif %}>
+						<div class="slider round"></div>
+					</label>
+					Envio de correo masivo
+				</div>
+
+				<div class="checkbox col-md-6">
+					<label class="switch-small">
+						<input type="checkbox" name="users[{{ item.id }}][rol][role_pref_invoices]" 
+						{% if item.checkAccess(['role_pref_invoices']) %}checked="checked"{% endif %}>
+						<div class="slider round"></div>
+					</label>
+					Editar opciones de facturación
+				</div>
+			</div>
+		</div>
+	</div>
+{% else %}
+<div class="no-content">
+	<div class="no-content-block">
+		<img src="{{ 'images/icons/users-icon.png'|asset }}" alt="" style="margin-bottom: 25px">
+		<h5>{{ 'frontend.no_guest_users'|trans }}</h5>
+		<br>
+		<button type="button" class="btn btn-hero" data-open-create="guest_user">
+			<i class="mdi mdi-account-plus"></i>
+			&nbsp;{{ 'fields.new_role'|trans }}
+		</button>
+	</div>
+</div>
+{% endfor %}

@@ -1,0 +1,152 @@
+{% extends "layouts.docs" %}
+
+{% set pageTitle = 'Manual de Usuario' %}
+{% set lastUpdated = '15-10-2018 07:00' %}
+
+{% block content %}
+
+<div class="doc-wrapper">
+	<div class="container">
+		<div class="doc-body row">
+			<div class="doc-content col-md-9 col-12 order-1">
+				<div class="content-inner">
+					<div class="doc-header text-left">
+						<h1 class="doc-title"><img src="{{ 'images/docs/manual-icon.svg'|asset }}" alt="" width="42" height="42"> {{ pageTitle }}</h1>
+						<div class="meta"><i class="far mdi mdi-clock"></i> Ultima Actualización: {{ lastUpdated|date('F d, Y') }}</div>
+					</div>
+
+					<section class="doc-section" id="start">
+						<div class="jumbotron">
+							<h1><i class="fas mdi mdi-flag"></i> Introducción</h1>
+							<p><b>PixelPay</b> es un sistema que le permite realizar cobros en línea con cualquier tarjeta de débito o crédito. El propósito es:</p>
+							<ul>
+								<li>Brindar a los clientes una manera más fácil de realizar sus pagos.</li>
+								<li>Poder cobrarle a los clientes sin tener que estar físicamente donde ellos.</li>
+								<li>Tener mejor control interno sobre el proceso de pago.</li>
+								<li>Incrementar la seguridad de esta transacción para el cliente y para el comercio.</li>
+							</ul>
+
+							<!-- <a href="#" class="btn btn-green" target="_blank"><i class="fas mdi mdi-open-in-new"></i> Ver guiá de usuario final</a> -->
+						</div>
+					</section>
+
+					<section class="doc-section" id="login">
+						<h2 class="section-title">Inicio de sesión</h2>
+						<div class="section-block">
+							<p>Para empezar a utilizar la plataforma de <b>PixelPay</b> deberá realizar los siguientes pasos:</p>
+
+							<p>
+								<strong>1er. Paso</strong>
+								<br>
+								Buscar en Internet la aplicación con la siguiente dirección URL: 
+								<br>
+								<a href="{{ route('home') }}" target="_blank">{{ route('home') }}</a>
+							</p>
+
+							<p>
+								<strong>2do. Paso</strong>
+								<br>
+								Dar clic en el botón <dfn>iniciar sesión </dfn>.
+							</p>
+
+							<img src="{{ 'images/docs/screenshoots/ma_1.png'|asset }}" width="800" alt="" class="screenshoot">
+
+							<p>
+								<strong>3er. Paso</strong>
+								<br>
+								Se abrirá una ventana donde deberá introducir los datos de su correo electrónico y contraseña para iniciar sesión. Haz clic en el botón <dfn>continuar</dfn>.
+							</p>
+
+							<img src="{{ 'images/docs/screenshoots/ma_2.png'|asset }}" width="445" alt="" class="screenshoot">
+
+							<div class="callout-block callout-info">
+								<div class="icon-holder">
+									<i class="mdi mdi-account-key"></i>
+								</div>
+								<div class="content">
+									<h4 class="callout-title">¿Olvido su clave?</h4>
+									<p>En caso de olvidar la clave puede solicitar un cambo de contraseña presionando el botón <br><code>¿Olvido su clave?</code>, seguido se le solicitara su correo electrónico y se enviara a su correo un enlace para reiniciar su contraseña.</p>
+								</div>
+							</div>
+
+							{% if not user %}
+							<div class="callout-block callout-warning">
+								<div class="icon-holder">
+									<i class="mdi mdi-account-alert"></i>
+								</div>
+								<div class="content">
+									<h4 class="callout-title">Acceso no detectado</h4>
+									<p>Para poder continuar y ver el resto del contenido de este manual es necesario iniciar sesión.</p>
+								</div>
+							</div>
+							{% endif %}
+
+							<img src="{{ 'images/docs/screenshoots/ma_3.png'|asset }}" width="800" alt="" class="screenshoot">
+						</div>
+					</section>
+
+					{% if user %}
+
+					{% if user.checkAccess(['role_dashboard']) %}
+						{% include 'docs.manual-dashboard' %}
+					{% endif %}
+
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+				<div id="doc-nav" class="doc-nav">
+					<nav id="doc-menu" class="nav doc-menu flex-column sticky">
+						<a class="nav-link scrollto" href="#start">Introducción</a>
+						<a class="nav-link scrollto" href="#login">Inicio de sesión</a>
+
+						{% if user %}
+
+						{% if user.checkAccess(['role_dashboard']) %}
+						<a class="nav-link scrollto" href="#dashboard">Panel Principal</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#">Filtros por intervalos</a>
+							{% if user.checkAccess(['role_all_payments']) %}
+							<a class="nav-link scrollto" href="#">Filtros por usuarios</a>
+							{% endif %}
+						</nav>
+						{% endif %}
+
+						<a class="nav-link scrollto" href="#generator">Generador</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#">Editar plantilla</a>
+							<a class="nav-link scrollto" href="#">Crear cobros rápidos</a>
+							<a class="nav-link scrollto" href="#">Crear cobro con detalles</a>
+							<a class="nav-link scrollto" href="#">Envío de cobros masivo</a>
+						</nav>
+
+						<a class="nav-link scrollto" href="#payments">Cobros</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#">Filtrar y exportar</a>
+							<a class="nav-link scrollto" href="#">Visualizar cobro</a>
+							<a class="nav-link scrollto" href="#">Registro de intentos</a>
+						</nav>
+
+						<a class="nav-link scrollto" href="#instashop">InstaShop</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#">Crear y editar botones</a>
+							<a class="nav-link scrollto" href="#">Gestión de ordenes</a>
+						</nav>
+
+						<a class="nav-link scrollto" href="#users">Usuarios</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#">Crear y editar usuarios</a>
+							<a class="nav-link scrollto" href="#">Administrar permisos</a>
+						</nav>
+						<a class="nav-link scrollto" href="#settings">Preferencias</a>
+						{% endif %}
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,59 @@
+<div id="create-modal">
+	<div class="container">
+		<form role="form" id="create-invoice" data-request="createInvoice" data-ctrl="invoicing" data-on-success="$(document).trigger('goToInvoice', result)" style="padding: 10px" novalidate>
+			{{ csrf_field() }}
+
+			<div class="form-group text-center">
+				<img src="{{ 'images/icons/invoices-icon.png'|asset }}" alt="" class="color-icon">
+				<h3>{{ 'frontend.new_invoice_title'|trans }}</h3>
+			</div>
+			<div class="form-group">
+				<label>{{ 'fields.customer_name'|trans|upper }}</label>
+				<input 
+				type="text" 
+				name="name" 
+				class="form-control" 
+				required
+				placeholder="{{ 'pixel.placeholder.customer_name'|trans }}">
+			</div>
+
+			<div class="form-group">
+				<label>{{ 'fields.customer_email'|trans|upper }}</label>
+				<input 
+				type="email" 
+				name="email" 
+				class="form-control" 
+				required
+				placeholder="{{ 'pixel.placeholder.email'|trans }}">
+			</div>
+
+			<div class="form-group">
+				<label>{{ 'fields.rtn'|trans|upper }}</label>
+				<input 
+				type="text" 
+				name="rtn" 
+				class="form-control" 
+				placeholder="{{ 'pixel.placeholder.business_nid'|trans }}">
+			</div>
+
+			<input type="hidden" name="password" value="{{ str_random(8) }}">
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-default btn-block btn-hero">{{ 'frontend.create'|trans|upper }}</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-create'), 'small');
+		Pixel.registerForm($('#create-invoice'));
+
+		$(document).on('goToInvoice', function(event, result) {
+			event.preventDefault();
+			if(result.data.id)
+				window.location = '{{ route("invoices") }}/' + result.data.id;
+		});
+	});
+</script>

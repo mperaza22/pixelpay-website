@@ -1,0 +1,157 @@
+{% extends "layouts.mail" %}
+
+{% block content %}
+	{% if payment.company.hasMedia('logo') %}
+		<img src="{{ payment.company.getMedia('logo').first.getFullUrl() }}" alt="" height="70" class="logo">
+	{% endif %}
+
+	<h3>Buenas noticias <b>{{ payment.customerName() }}</b>,</h3>
+	<h3>El cobro <strong>"{{ payment.description }}"</strong> ha sido <span class="success">pagado</span> con éxito el <strong>{{ payment.paid_at.format('d M, Y h:ma') }}</strong> a <strong>{{ payment.company.name }}</strong></h3>
+
+	<br>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateColumns">
+		<tr class="responsive">
+			<td align="left" valign="top" class="templateColumnContainer">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="middle" class="leftColumnContent">
+							<label>{{ 'fields.total_amount'|trans|upper }}</label>
+							<p class="field-total">{{ payment.total }}</p>
+							{% if payment.tax_amount > 0 %}
+							<p class="field-alt">{{ 'fields.tax'|trans|upper }}: {{ payment.tax_amount|currency(payment.currency) }}</p>
+							{% endif %}
+						</td>
+					</tr>
+				</table>
+			</td>
+
+			<td align="right" valign="middle" class="templateColumnContainer">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="middle" class="rightColumnContent">
+							<table border="0" cellpadding="10" cellspacing="0" width="100%" class="card-info">
+								<tr>
+									<td class="text-right" valign="middle" style="line-height: 14px; padding-left: 0px">
+										<b>{{ payment.paid_attempt.getMaskedPan() }}</b><br>
+										<small class="text-muted"><b>{{ payment.paid_attempt.cc_brand|upper }} {{ payment.paid_attempt.cc_type|upper }}</b></small>
+									</td>
+									<td class="text-right" valign="middle" style="width: 34px; padding: 10px 0px"><img src="{{ '/images/cc/?.png'|asset(payment.paid_attempt.cc_brand) }}" height="32" class="cc-img"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateColumns">
+		<tr class="responsive">
+			<td align="left" valign="top" class="templateColumnContainer text-left">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="top" class="leftColumnContent">
+							<div class="block">
+								<label>{{ 'fields.customer'|trans }}</label>
+								<p class="field">{{ payment.customerName() }}</p>
+
+								{% if payment.customerEmail() %}
+								<p class="field-alt">{{ payment.customerEmail() }}</p>
+								{% endif %}
+
+								{% if payment.customerPhone() %}
+								<p class="field-alt">{{ payment.customerPhone() }}</p>
+								{% endif %}
+							</div>
+
+							{% if payment.customerRTN() %}
+							<div class="block">
+								<label>{{ 'fields.rtn'|trans }}</label>
+								<p class="field-alt">{{ payment.customerRTN() }}</p>
+							</div>
+							{% endif %}
+						</td>
+					</tr>
+				</table>
+			</td>
+
+			<td align="right" valign="top" class="templateColumnContainer">
+				<table border="0" cellpadding="10" cellspacing="0" width="100%">
+					<tr>
+						<td valign="top" class="rightColumnContent text-right">
+							{% if payment.paid_attempt.transaction_id %}
+							<div class="block text-right">
+								<label>{{ 'fields.transactionid'|trans }}</label>
+								<p class="field">{{ payment.ref }}</p>
+							</div>
+							{% endif %}
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+	<table class="invoice">
+		<tbody>
+			<tr>
+				<td>
+					<table class="invoice-items" cellpadding="0" cellspacing="0">
+						<thead>
+							<tr>
+								<th>{{ 'fields.description'|trans }}</th>
+								<th width="30" class="text-right">{{ 'fields.qty'|trans }}</th>
+								<th width="100" class="text-right">{{ 'fields.total'|trans }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in payment.content %}
+							<tr>
+								<td>
+									{{ item.title }}
+									<br>
+									{% if item.description %}
+									<small>{{ item.description|striptags|nl2br }}</small>
+									{% endif %}
+								</td>
+								<td class="alignright">
+									{% if item.qty > 1 %}
+									{{ item.price|currency }}<br>x{{ item.qty }}
+									{% else %}
+									x{{ item.qty }}
+									{% endif %}
+								</td>
+								<td class="alignright"><b>{{ item.total|currency }}</b></td>
+							</tr>
+							{% endfor %}
+							
+							<tr class="total-top">
+								<td class="alignright" colspan="2">{{ 'fields.subtotal'|trans }}</td>
+								<td class="alignright">{{ payment.subtotal|currency(payment.currency) }}</td>
+							</tr>
+							<tr>
+								<td class="alignright" colspan="2">{{ 'fields.tax'|trans }}</td>
+								<td class="alignright">{{ payment.tax_amount|currency(payment.currency) }}</td>
+							</tr>
+							
+							<tr class="total">
+								<td class="alignright" colspan="2">{{ 'fields.total'|trans }}</td>
+								<td class="alignright">{{ payment.amount|currency(payment.currency) }}</td>
+							</tr>
+
+							<tr>
+								<td class="alignright">
+									<b>CÓDIGO DE VERIFICACIÓN<br> ESCANEAME</b>
+								</td>
+								<td colspan="2">
+									<img src="{{ route('print.qrcode', {uuid: payment.uuid}) }}" width="160" height="160">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+{% endblock %}

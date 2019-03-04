@@ -1,0 +1,57 @@
+<div id="create-modal">
+	<div class="container">
+		<form role="form" id="create-invoice" data-request="createWithdraw" data-ctrl="balance" data-on-success="$(document).trigger('closeAllModals');location.reload()" style="padding: 10px" novalidate>
+			{{ csrf_field() }}
+
+			<div class="form-group text-center">
+				<img src="{{ 'images/icons/withdraw-icon.svg'|asset }}" width="100" height="100" alt="" class="color-icon">
+				<h3><span class="color">RETIRAR</span> FONDOS</h3>
+				<p style="font-size: 14px">Se procederá a depositar la suma de <b class="color">L.{{ (params.withdrawFunds - params.withdrawPrice)|currency }}</b> al la cuenta numero <b class="color">{{ params.bankAccount }}</b> del banco <b class="color">{{ params.bankName }}</b>.</p>
+			</div>
+
+			<table class="table">
+				<tbody>
+					<tr>
+						<td>Fondos</td>
+						<td class="text-right">L.{{ params.withdrawFunds|currency }}</td>
+					</tr>
+					<tr>
+						<td>Comisión de retiro</td>
+						<td class="text-right">- L.{{ params.withdrawPrice|currency }}</td>
+					</tr>
+					<tr>
+						<td class="text-danger"><b style="font-size: 16px">Total a depositar</b></td>
+						<td class="text-danger text-right"><b style="font-size: 16px">L.{{ (params.withdrawFunds - params.withdrawPrice)|currency }}</b></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="alert alert-danger">
+				Estos fondos se verán reflejados en su cuenta de banco dentro de un periodo de 48 horas.
+			</div>
+		
+			<input type="hidden" name="withdraw-funds" value="{{ params.withdrawFunds }}">
+			<input type="hidden" name="withdraw-price" value="{{ params.withdrawPrice }}">
+			<input type="hidden" name="bank-name" value="{{ params.bankName }}">
+			<input type="hidden" name="bank-code" value="{{ params.bankCode }}">
+			<input type="hidden" name="bank-account" value="{{ params.bankAccount }}">
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-default btn-block btn-hero">Solicitar retiro de fondos</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-create'), 'small');
+		Pixel.registerForm($('#create-invoice'));
+
+		$(document).on('goToInvoice', function(event, result) {
+			event.preventDefault();
+			if(result.data.id)
+				window.location = '{{ route("invoices") }}/' + result.data.id;
+		});
+	});
+</script>

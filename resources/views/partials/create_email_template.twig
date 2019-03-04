@@ -1,0 +1,146 @@
+<div id="create-modal">
+	<div class="editor-header">
+		<b>EDIT EMAIL TEMPLATE</b>
+	</div>
+	<div class="editor-body">
+		<table class="email-template" width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="text-center" data-editable style="padding-top: 40px; font-family: 'Tahoma'">
+					{% if company.options.templates.generator %}
+						{{ company.options.templates.generator|raw }}
+					{% else %}
+						{% if company.hasMedia('logo') %}
+							<img src="{{ company.getMedia('logo').first.getFullUrl() }}" alt="{{ company.name }}" style="text-align:center; display:block; margin: 40px auto 0"> 
+						{% else %}
+							<h1>{{ company.name }}</h1>
+						{% endif %}
+						{{ 'pixel.messages.generator_default'|trans|raw }}
+					{% endif %}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="editor-footer">
+		<div class="row align-items-center">
+			<div class="col">
+				<span class="text-muted" style="line-height: 12px; font-size: 12px"><i class="mdi mdi-information"></i> {{ 'pixel.messages.generator_variables'|trans }}</span>
+			</div>
+			<div class="col col-auto">
+				<button href="#" class="btn btn-hero" data-save-template>{{ 'pixel.form.save'|trans }}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-create'), 'normal');
+
+		$('[data-editable]').froalaEditor({
+			theme: 'dark',
+			// toolbarInline: true,
+			toolbarVisibleWithoutSelection: true,
+			toolbarBottom: false,
+
+			fontSizeSelection: true,
+			fontFamilySelection: true,
+			paragraphFormatSelection: true,
+
+			imageUploadParam: 'image',
+			imageUploadURL: '{{ "/kernel/images/uploads"|app }}/{{ company.id }}',
+			imageUploadMethod: 'POST',
+			imageUploadParams: { _token: '{{ csrf_token() }}' },
+			imageMaxSize: 2 * 1024 * 1024,
+			imageAllowedTypes: ['jpeg', 'jpg', 'png', 'gif'],
+
+			imageEditButtons: [
+				'imageReplace',
+				'imageAlign',
+
+				'imageLink',
+				'linkOpen', 
+				'linkEdit', 
+				'linkRemove',
+
+				'imageAlt', 
+				'imageSize',
+				'imageRemove',
+			],
+
+			toolbarButtons: [
+				'fontFamily',
+				'paragraphFormat',
+				'fontSize', 
+				'color', 
+				'|',
+				'bold', 
+				'italic', 
+				'underline', 
+				'|', 
+				'align', 
+				'formatOL', 
+				'formatUL',
+				'insertHR',
+				'insertImage', 
+			]
+		});
+
+		$('[data-editable]').on('froalaEditor.contentChanged', function(event) {
+			$('.pixel__modal-create').addClass('is_dirty');
+		});
+
+		$('[data-save-template]').click(function(event) {
+			event.preventDefault();
+			$content = $('[data-editable]').froalaEditor('html.get');
+			
+			try{
+				event.preventDefault();
+				NProgress.start();
+				
+				$.ajax({
+					url: '{{ '/'|app }}/kernel/ajax/onUpdateGeneratorTemplate/settings',
+					type: 'POST',
+					context: this,
+					data: { _token: '{{ csrf_token() }}', template: $content },
+				})
+				.fail(function(){
+					NProgress.done();
+
+					Snackbar.show({ 
+						text: 'Upps, algo salio mal :/', 
+						showAction: false,
+						customClass: 'error'
+					});
+				})
+				.done(function(data) {
+					if(data.success != null && !data.success){
+						Snackbar.show({ 
+							text: data.message, 
+							showAction: false,
+							customClass: 'error'
+						});
+					}
+
+					if(data.success != null && data.success){
+						Snackbar.show({ 
+							text: data.message, 
+							showAction: false,
+							customClass: 'success'
+						});
+
+						document.querySelector('#email-template').innerHTML = '<div class="email-template">' + $content + '</div>';
+						$(document).trigger('closeAllModals');
+						Generator.reloadEmailTemplate();
+					}
+
+					NProgress.done();
+
+					$('.tingle-modal').removeClass('is_dirty');
+				});
+			}catch(ex){
+				console.log(ex)
+			}
+		});
+	});
+</script>

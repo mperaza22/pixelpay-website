@@ -1,0 +1,338 @@
+{% extends "layouts/frontend" %}
+
+{% block content %}
+<div class="main-container">
+	<section class="cover height-80 imagebg switchable switchable--switch" data-overlay="8">
+		<div class="background-image-holder"> <img alt="background" src="{{ 'images/backgrounds/image-4.jpg'|asset }}"> </div>
+		<div class="pos-vertical-center col-sm-6 col-md-5 col-md-offset-1">
+            <h2>Integrar PixelPay a tu plataforma es tan sencillo.</h2>
+            <p class="lead">
+                En este sitio puedes ver una demostración de la integración web, tener un e-Commerce nunca fue tan fácil &mdash; no require mas de 10 min.
+            </p>
+        </div>
+	</section>
+
+    <section class="space--sm">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="__masonry">
+                        <div class="row">
+                            <div class="masonry__container">
+                                <div class="masonry__item col-sm-4"></div>
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Computadoras">
+                                    <div class="product boxed boxed--border bg--secondary">
+                                        <span class="label">Oferta</span>
+                                        <a class="block" href="#" 
+	                                        data-payment="799.00"
+											data-order="101001"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+											<img alt="Image" src="{{ 'images/demo/product-small-1.png'|asset }}" />
+                                            <div>
+                                                <h5>Apple iPad</h5>
+                                                <span> 128GB Wifi + Celluar</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block type--strikethrough">L.899</span>
+                                                <span class="h4 inline-block">L.799</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Creatividad">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="849.00"
+											data-order="101002"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-8.png'|asset }}" />
+                                            <div>
+                                                <h5>Canon 550D</h5>
+                                                <span> 18MP DSLR Camera</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.849</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Accesorios">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="99.00"
+											data-order="101003"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-2.png'|asset }}" />
+                                            <div>
+                                                <h5>Apple Keyboard</h5>
+                                                <span> Wireless Bluetooth</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.99</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+
+                                <div class="col-md-12"></div>
+
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Accesorios">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="69.00"
+											data-order="101004"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-12.png'|asset }}" />
+                                            <div>
+                                                <h5>Magic Mouse</h5>
+                                                <span> Wireless Bluetooth</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.69</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Audio">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="269.00"
+											data-order="101005"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-10.png'|asset }}" />
+                                            <div>
+                                                <h5>DALI Xensor 2</h5>
+                                                <span> Desktop Speaker</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.269</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Audio">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="399"
+											data-order="101006"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-5.png'|asset }}" />
+                                            <div>
+                                                <h5>Tivoli M1</h5>
+                                                <span> Digital Radio</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block type--strikethrough">L.479</span>
+                                                <span class="h4 inline-block">L.399</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+
+                                <div class="col-md-12"></div>
+
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Computadoras">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="1399.00"
+											data-order="101007"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-4.png'|asset }}" />
+                                            <div>
+                                                <h5>Microsoft Surface</h5>
+                                                <span> 256GB Core i7</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.1399</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Computadoras">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="1099.00"
+											data-order="101008"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-3.png'|asset }}" />
+                                            <div>
+                                                <h5>Samsung Ativ</h5>
+                                                <span> 256GB Core i5</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.1099</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Computadoras">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="1399"
+											data-order="101009"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-11.png'|asset }}" />
+                                            <div>
+                                                <h5>Apple Macbook</h5>
+                                                <span> 128GB Core i5</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.1399</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+
+                                <div class="col-md-12"></div>
+                                
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Creatividad">
+                                    <div class="product boxed boxed--border bg--secondary">
+                                        <span class="label">Oferta</span>
+                                        <a class="block" href="#"
+                                        	data-payment="559"
+											data-order="101010"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-7.png'|asset }}" />
+                                            <div>
+                                                <h5>Wacom Intuos 5</h5>
+                                                <span> Drawing Tablet</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block type--strikethrough">L.699</span>
+                                                <span class="h4 inline-block">L.559</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Audio">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="279"
+											data-order="101011"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-9.png'|asset }}" />
+                                            <div>
+                                                <h5>Audison TMA-4</h5>
+                                                <span> Bluetooth Headphones</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.279</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                                <div class="masonry__item col-sm-4" data-masonry-filter="Creatividad">
+                                    <div class="product">
+                                        <a class="block" href="#"
+                                        	data-payment="89"
+											data-order="101012"
+											data-customer-name="Juan Perez" 
+											data-customer-email="juan@perez.com">
+                                            <img alt="Image" src="{{ 'images/demo/product-small-6.png'|asset }}" />
+                                            <div>
+                                                <h5>Wacom Intuos Pen</h5>
+                                                <span> Digital Stylus</span>
+                                            </div>
+                                            <div>
+                                                <span class="h4 inline-block">L.89</span>
+                                            </div>
+                                            <br>
+                                            <span class="btn">Comprar Ya!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end item-->
+                            </div>
+                            <!--end masonry container-->
+                        </div>
+                        <!--end of row-->
+                    </div>
+                    <!--end masonry-->
+                </div>
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </section>
+
+    <footer class="footer-7 text-center-xs">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6"> 
+					<span class="type--fine-print">© <span class="update-year"></span> </span><a href="https://www.pixel.hn" class="color">Pixel S.A.</a><span class="type--fine-print"> — Todos los derechos reservados.</span>
+				</div>
+				<div class="col-sm-6 text-right text-center-xs">
+					<ul class="social-list list-inline">
+						<li><a href="https://www.facebook.com/pixelpay"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+						<li><a href="https://github.com/pixelhn/pixelpay"><i class="socicon socicon-github icon icon--xs"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+</div>
+{% endblock %}
+
+{% block scripts %}
+	<script 
+		{% if App.environment('local') %}
+		key="450215437" 
+		env="local" 
+		{% else %}
+		key="2212294583" 
+		{% endif %}
+		debug="true"
+		opacity="0.7" 
+		src="{{ 'cdn/pay.js'|app }}">
+	</script>
+	{% if App.environment('local') %}
+		<script id="__bs_script__">//<![CDATA[
+			document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.6'><\/script>".replace("HOST", location.hostname));
+			//]]>
+		</script>
+	{% endif %}
+{% endblock %}

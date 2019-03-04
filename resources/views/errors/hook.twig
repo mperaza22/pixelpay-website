@@ -1,0 +1,14 @@
+{% extends "layouts.simple" %}
+
+{% set pageTitle = 'frontend.upps' %}
+
+{% block content %}
+	<div class="middle-wrap">
+		<img src="{{ 'images/icons/payment-icon.svg'|asset }}" alt="" width="200" height="200">
+		<h2>{{ 'frontend.upps'|trans }}</h2>
+		<h4>{{ 'frontend.500'|trans }}</h4>
+		{% if message %}
+		<p class="alert-error">{{ message|trans }}</p>
+		{% endif %}
+	</div>
+{% endblock %}

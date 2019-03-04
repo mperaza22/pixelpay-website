@@ -1,0 +1,12 @@
+{% extends "layouts.mail" %}
+
+{% block content %}
+	<h1 class="title">¡Alguien se quiere contactar!</h1>
+	<br>
+	<p>Nombre: <b>{{ contact.cname }}</b></p>
+	<p>Email: <b>{{ contact.cemail }}</b></p>
+	<p>Empresa: <b>{{ contact.company }}</b></p>
+	<p>RTN: <b>{{ contact.rtn }}</b></p>
+	<br>
+	<p>Mensaje: <br> {{ contact.message }}</p>
+{% endblock %}

@@ -1,0 +1,701 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>
+			{% if pageTitle %}
+				{{ pageTitle }}
+			{% else %}
+				PixelPay
+			{% endif %}
+		</title>
+		<style type="text/css" media="all">
+			@font-face {
+				font-family: 'Gotham Rounded';
+				src: url({{ '/fonts/gotham/GothamRounded-Medium.eot'|asset }});
+				src: url({{ '/fonts/gotham/GothamRounded-Medium.eot'|asset }}&#iefix) format('embedded-opentype'), url({{ '/fonts/gotham/GothamRounded-Medium.woff'|asset }}) format('woff'), url({{ '/fonts/gotham/GothamRounded-Medium.ttf'|asset }}) format('truetype'), url({{ '/fonts/gotham/GothamRounded-Medium.svg#GothamRounded-Medium'|asset }}) format('svg');
+				font-weight: 500;
+				font-style: normal;
+				font-display: fallback;
+			}
+
+
+			@font-face {
+				font-family: 'Gotham Rounded';
+				src: url({{ '/fonts/gotham/GothamRounded-Light.eot'|asset }});
+				src: url({{ '/fonts/gotham/GothamRounded-Light.eot'|asset }}&#iefix) format('embedded-opentype'), url({{ '/fonts/gotham/GothamRounded-Light.woff'|asset }}) format('woff'), url({{ '/fonts/gotham/GothamRounded-Light.ttf'|asset }}) format('truetype'), url({{ '/fonts/gotham/GothamRounded-Light.svg#GothamRounded-Light'|asset }}) format('svg');
+				font-weight: 300;
+				font-style: normal;
+				font-display: fallback;
+			}
+
+			@font-face {
+				font-family: 'Gotham Rounded';
+				src: url({{ '/fonts/gotham/GothamRounded-Bold.eot'|asset }});
+				src: url({{ '/fonts/gotham/GothamRounded-Bold.eot'|asset }}&#iefix) format('embedded-opentype'), url({{ '/fonts/gotham/GothamRounded-Bold.woff'|asset }}) format('woff'), url({{ '/fonts/gotham/GothamRounded-Bold.ttf'|asset }}) format('truetype'), url({{ '/fonts/gotham/GothamRounded-Bold.svg#GothamRounded-Bold'|asset }}) format('svg');
+				font-weight: 700;
+				font-style: normal;
+				font-display: fallback;
+			}
+
+			* {
+				margin: 0;
+				box-sizing: border-box;
+				font-size: 14px;
+				color: #484848;
+			}
+
+			@-ms-viewport{ width: device-width; }
+
+			body, body *:not(html):not(style):not(br):not(tr):not(code) {
+				font-family: "Gotham Rounded", "Tahoma", Helvetica, sans-serif;
+				box-sizing: border-box;
+			}
+
+			img {
+				max-width: 100%;
+				height: auto;
+			}
+
+			body {
+				background-color: #f6f7fb;
+				-webkit-font-smoothing: antialiased;
+				-webkit-text-size-adjust: none;
+				width: 100% !important;
+				height: 100%;
+				line-height: 1.6em;
+			}
+
+			table td {
+				vertical-align: top;
+			}
+
+			hr{
+				border: none !important;
+				display: block !important;
+				max-width: 130px !important;
+				height: 4px !important;
+				margin: 40px auto !important;
+				clear: both !important;
+				border-radius: 4px !important;
+				background-color: #541D66;
+			}
+
+			.title{
+				display:block;
+				padding:10px;
+				margin: 10px 0;
+				box-sizing: border-box;
+				font-size: 42px;
+				color: #41338A;
+				font-family: 'Gotham Rounded', 'Tahoma', sans-serif;
+				line-height: 1.2em;
+				font-weight: 700;
+				text-align: center;
+			}
+
+			.logo{
+				max-height: 70px;
+				margin-top: 20px;
+				margin-bottom: 0px;
+			}
+
+			.logo-pixel{
+				text-decoration: none;
+			}
+
+			.logo-pixel img{
+				max-height: 32px;
+			}
+
+			.logo-text{
+				font-weight: 800;
+				color: #585858;
+				text-decoration: none;
+				opacity: 0.8;
+				text-shadow: 0px 0px 3px #FFF;
+				border-bottom: 1px dashed rgba(88, 88, 88, 0.6);
+				padding: 3px 0px;
+			}
+
+			.logo-text-img{
+				display: inline-block;
+				width: 32px;
+				height: 32px;
+			}
+
+			.header {
+				width: 100%;
+				margin-bottom: 20px;
+			}
+
+			.footer {
+				width: 100%;
+				clear: both;
+				color: #999;
+				padding: 20px;
+			}
+
+			.footer p,
+			.footer a,
+			.footer td {
+				color: #999;
+				font-size: 12px;
+			}
+
+			.footer a{
+				color: #348eda;
+				text-decoration: none;
+				padding-bottom: 1px;
+				border-bottom: 1px dashed rgba(52, 142, 218, 0.7);
+			}
+
+			h1,
+			h2,
+			h3 {
+				font-family: "Gotham Rounded", "Tahoma", Verdana, Segoe, sans-serif;
+				color: #484848;
+				margin: 20px 0 0;
+				line-height: 1.2em;
+				font-weight: 400;
+				text-align: center;
+			}
+
+			h1 {
+				font-size: 32px;
+				font-weight: 500;
+			}
+
+			h2 {
+				font-size: 24px;
+			}
+
+			h3 {
+				font-size: 18px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+
+			h4 {
+				font-size: 14px;
+				font-weight: 600;
+			}
+
+			p,
+			ul,
+			ol {
+				margin-bottom: 18px;
+				font-weight: normal;
+				font-size: 16px;
+				line-height: 24px;
+			}
+
+			p li,
+			ul li,
+			ol li {
+				margin-left: 5px;
+				list-style-position: inside;
+			}
+
+			b, strong{
+				color: #515151;
+				font-weight: bold;
+				font-size: inherit;
+			}
+
+			span{
+				font-size: inherit;
+			}
+
+			a {
+				color: #348eda;
+				text-decoration: underline;
+			}
+
+			label{
+				font-weight: bold;
+				font-size: 11px;
+				text-transform: uppercase;
+			}
+
+			small{
+				font-size: 11px !important;
+				line-height: 11px;
+			}
+
+			b, strong{
+				font-weight: bolder;
+				font-weight: 800;
+			}
+
+			[valign="top"]{
+				vertical-align: top;
+			}
+
+			[valign="middle"]{
+				vertical-align: middle;
+			}
+
+			[valign="bottom"]{
+				vertical-align: bottom;
+			}
+
+			span.success{
+				color: #00AE69;
+				font-weight: bold;
+			}
+
+			.block{
+				text-align: left;
+				margin-bottom: 18px;
+				position: relative;
+			}
+
+			.btn {
+				text-decoration: none;
+				color: #FFF;
+				background-color: #541d66;
+				border: solid #541d66;
+				border-width: 4px 40px;
+				line-height: 2em;
+				text-align: center;
+				cursor: pointer;
+				display: inline-block;
+				border-radius: 5px;
+				text-transform: uppercase;
+				font-size: 16px;
+			}
+
+			.btn:hover{
+				color: #FFF;
+				opacity: 0.9;
+			}
+
+			.last {
+				margin-bottom: 0;
+			}
+
+			.first {
+				margin-top: 0;
+			}
+
+			.aligncenter {
+				text-align: center;
+			}
+
+			.alignright {
+				text-align: right;
+			}
+
+			.alignleft {
+				text-align: left;
+			}
+
+			.clear {
+				clear: both;
+			}
+
+			.alert {
+				font-size: 16px;
+				color: #fff;
+				font-weight: 500;
+				padding: 20px;
+				text-align: center;
+				border-radius: 3px 3px 0 0;
+			}
+
+			.alert a {
+				color: #fff;
+				text-decoration: none;
+				font-weight: 500;
+				font-size: 16px;
+			}
+
+			.alert.alert-warning {
+				background-color: #FF9F00;
+			}
+
+			.alert.alert-bad {
+				background-color: #D0021B;
+			}
+
+			.alert.alert-good {
+				background-color: #68B90F;
+			}
+
+			.invoice {
+				text-align: left;
+				width: 100%;
+			}
+
+			.invoice td {
+				padding: 5px 0;
+			}
+
+			.invoice .invoice-items tr th{
+				background-color: #4c5866;
+				border-top: 0 solid transparent;
+				border-bottom: 0 solid transparent;
+				color: #fff;
+				padding: 12px;
+				font-weight: bold;
+			}
+
+			.invoice .invoice-items {
+				width: 100%;
+			}
+
+			.invoice .invoice-items td {
+				border-top: #eee 1px solid;
+				padding: 8px 10px;
+			}
+
+			.invoice .invoice-items tr:first-child td {
+				border-top: 0px solid transparent;
+			}
+
+			.invoice .invoice-items .total td {
+				border-top: 2px solid #4c5866;
+				border-bottom: 2px solid #4c5866;
+				font-weight: 700;
+			}
+
+			.invoice .invoice-items .total-top td {
+				border-top: 1px solid #dedede;
+				font-weight: 700;
+			}
+
+			.payment-gateway{
+				border-radius: 3px;
+			}
+
+			.right-center{
+				text-align: right;
+			}
+
+			.note{
+				padding: 6px 14px;
+				border-radius: 3px;
+				background-color: #2B3E4F;
+				color: #fff;
+				font-weight: bold;
+				text-align: left;
+			}
+
+			p.item-block{
+				margin-bottom: 16px;
+			}
+
+			p.field{
+				font-size: 14px;
+				line-height: 18px;
+				margin-bottom: 2px;
+			}
+
+			p.field-total{
+				font-size: 32px;
+				line-height: 34px;
+				margin-bottom: 2px;
+			}
+
+			p.field-alt{
+				font-size: 11px;
+				line-height: 18px;
+				margin-bottom: 2px;
+				font-weight: bold;
+				color: #3326AF;
+			}
+
+			.action {
+				margin: 30px auto;
+				padding: 0;
+				text-align: center;
+				width: 100%;
+				-premailer-cellpadding: 0;
+				-premailer-cellspacing: 0;
+				-premailer-width: 100%;
+			}
+
+			a.button {
+				box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
+				color: #FFF;
+				display: inline-block;
+				text-decoration: none;
+				-webkit-text-size-adjust: none;
+
+				text-decoration: none;
+				background-color: #541d66;
+				border: solid #541d66;
+				line-height: 2em;
+				text-align: center;
+				cursor: pointer;
+				border-radius: 5px;
+				text-transform: uppercase;
+				font-weight: bold;
+				padding: 10px 18px;
+			}
+
+			a.button-blue {
+				background-color: #541d66;
+			}
+
+			a.button-green {
+				background-color: #2ab27b;
+			}
+
+			a.button-red {
+				background-color: #bf5329;
+			}
+
+			.content-td{
+				margin: 0 auto !important;
+				font-family: "Gotham Rounded", "Tahoma", Verdana, Segoe, sans-serif;
+				box-sizing: border-box;
+				font-size: 14px;
+				color: #484848;
+				display: block !important;
+				max-width: 660px !important;
+				clear: both !important;
+			}
+
+			.content-td-div{
+				margin: 0 auto;
+				font-family: "Gotham Rounded", "Tahoma", Verdana, Segoe, sans-serif;
+				box-sizing: border-box;
+				font-size: 14px;
+				color: #484848;
+				max-width: 660px;
+				display: block;
+				padding: 20px;
+			}
+
+			.content-td-td{
+				margin: 0;
+				font-family: "Gotham Rounded", "Tahoma", Verdana, Segoe, sans-serif;
+				box-sizing: border-box;
+				font-size: 14px;
+				color: #484848;
+				vertical-align: top;
+				padding: 20px;
+				background-color: #fff;
+				/*border: 1px solid #E5E5E5;*/
+				box-shadow: 0 5px 10px rgba(229, 229, 229, 0.5);
+				border-radius: 6px;
+			}
+
+			.content-block{
+				margin: 0;font-family: "Gotham Rounded", "Tahoma", Verdana, Segoe, sans-serif;
+				box-sizing: border-box;
+				font-size: 14px;
+				color: #484848;
+				vertical-align: top;
+				padding: 0 20px 20px;
+				text-align: center;
+			}
+
+			.content-footer{
+				margin: 0;
+				font-family: 'Gotham Rounded', 'Tahoma', Verdana, Segoe, sans-serif;
+				line-height:22px;
+				box-sizing: border-box;
+				font-size: 12px;
+				color: #999;
+				vertical-align: top;
+				padding: 0 20px 20px;
+				text-align: center;
+			}
+
+			.save-the-world{
+				margin: 0;
+				box-sizing: border-box;
+				font-size: 14px;
+				color: #484848;
+				max-width: 100%;
+			}
+
+			.text-right{
+				text-align: right;
+			}
+
+			.text-left{
+				text-align: left;
+			}
+
+			.text-center{
+				text-align: center;
+			}
+
+			.text-muted{
+				opacity: 0.8;
+			}
+
+			.container-logo{
+				margin-top: 20px;
+				margin-bottom: 20px;
+				padding: 12px 0px;
+			}
+
+			.content-cc{
+				position: relative;
+			}
+
+			.cc-img{
+				height: 32px;
+				margin: 0;
+				box-sizing: border-box;
+				font-size: 14px;
+				color: #484848;
+				max-width: 100%;
+			}
+
+			@media only screen and (max-width: 639px){
+				.wrapper{ width:100%;  padding: 0 !important; }
+			}
+
+			@media only screen and (max-width: 480px){ 
+				.centerClass{ margin:0 auto !important; } 
+				.imgClass{width:100% !important; height:auto;}    
+				.wrapper{ width:320px;  padding: 0 !important; }      
+				.container{ width:300px;  padding: 0 !important; }
+				.mobile{ width:300px; display:block; padding: 0 !important; text-align:center; }
+				.mobile50{ width:300px; padding: 0 !important; text-align:center; }
+
+				.right-center{
+					text-align: left !important;
+				}
+
+				#templateColumns{
+					width:100% !important;
+				}
+
+				.title{
+					font-size: 28px !important;
+				}
+
+				.templateColumnContainer{
+					display:block !important;
+					width:100% !important;
+				}
+
+				.leftColumnContent{
+					font-size:16px !important;
+					line-height:125% !important;
+				}
+
+				.rightColumnContent{
+					text-align: left !important;
+					font-size:16px !important;
+					line-height:125% !important;
+				}
+
+				.responsive > td[align="right"]{
+					text-align: left !important;
+					padding-left: 0px !important;
+				}
+				.text-right{
+					text-align: left !important;
+				}
+			}
+
+			@media only screen and (max-width: 640px) {
+				body {
+					padding: 0 !important;
+				}
+				
+				.container {
+					padding: 0 !important;
+					width: 100% !important;
+				}
+				.content {
+					padding: 0 !important;
+				}
+				.content-wrap {
+					padding: 10px !important;
+				}
+				.invoice {
+					width: 100% !important;
+				}
+			}
+		</style>
+
+		{{ block('styles') }}
+	</head>
+	<body>
+	<table width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td></td>
+			<td class="content-td" width="100%">
+				<div class="content-td-div">
+					<table width="100%" cellpadding="0" cellspacing="0" itemprop="action" itemscope itemtype="http://schema.org/ConfirmAction">
+						<tr>
+							<td>
+								<table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateColumns" class="container-logo">
+									<tr class="responsive">
+										<td align="left" valign="middle" class="templateColumnContainer text-left">
+											<a href="https://www.pixelpay.app" class="logo-pixel">
+												<img src="{{ 'images/logo.png'|asset }}" alt="" height="50">
+											</a>
+										</td>
+
+										<td align="right" valign="middle" class="templateColumnContainer">
+											<table border="0" cellpadding="10" cellspacing="0">
+												<tr>
+													<td align="left" valign="middle" style="width: 34px; padding: 10px 0px">
+														<img src="{{ 'images/mail-header-icon.png'|asset }}" alt="" height="32" class="logo-text-img">
+													</td>
+													<td align="right" valign="middle" style="line-height: 16px">
+														<a href="https://www.pixelpay.app" class="logo-text" target="_blank">
+															Tu solución para pagos en línea
+														</a>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td class="content-td-td">
+								<meta itemprop="name" content="Confirm Email">
+								<table width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="content-block">
+											{{ block('content') }}
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<div class="footer">
+						<table width="100%">
+							<tr>
+								<td class="content-footer">
+									<img src="{{ 'images/save.png'|asset }}" alt="eco" width="24" height="24" align="absmiddle" class="save-the-world">
+									{{ 'pixel.messages.email_footer'|trans }}
+									<br />
+									{{ 'pixel.messages.email_footer_copyright'|trans }}
+									{% if not pageTitle %}
+									<br />
+									{{ 'pixel.messages.email_footer_credits'|trans }}
+									{% endif %}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</td>
+			<td></td>
+		</tr>
+	</table>
+	{% if App.environment('local') %}
+	<script id="__bs_script__">
+	//<![CDATA[
+	document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.6'><\/script>".replace("HOST", location.hostname));
+	//]]>
+	</script>
+	{% endif %}
+</body>
+</html>

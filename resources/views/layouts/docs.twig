@@ -1,0 +1,81 @@
+{% set user = Auth.user() %}
+
+<!DOCTYPE html>
+<html lang="{{ App.getLocale() }}">
+<head>
+	<title>PixelPay - {{ pageTitle|default('Documentación') }}</title>
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<meta name="description" content="Plataforma en linea que realiza cobros, manera fácil de realizar pagos en linea, generar y organizar tus pagos.">
+	<meta name="keywords" content="cobros,pagos,pago en linea,realiza cobros,pago por email,tienda virtual,online payment, invoices, send money online, payment gateway, pagadito, cobros honduras,pagos en linea honduras,cobros honduras,ecommerce honduras,pagos por correo,pagos por correo honduras,tienda en linea honduras,paginas web honduras,hacer cobros, hacer cobros honduras, honduras">
+	<meta name="robots" content="index,follow">
+	<meta name="language" content="Spanish">
+	<meta name="revisit-after" content="15 days">
+
+	<meta name="csrf" content="{{ csrf_token() }}">
+
+	<meta property="og:title" content="PixelPay" />
+	<meta property="og:url" content="https://pay.pixel.hn" />
+	<meta property="og:site_name" content="PixelPay" />
+	<meta property="og:description" content="Plataforma en linea que realiza cobros, manera fácil de realizar pagos en linea, generar y organizar tus pagos." />
+	<meta property="og:image" content="{{ 'images/og-image.png'|asset }}" />
+
+	<link rel="shortcut icon" href="{{ 'images/favicon.ico'|asset }}" />
+	<link rel="icon" type="image/png" href="{{ 'images/favicon.png'|asset }}" />
+
+	<link rel="stylesheet" href="{{ 'fonts/gotham/stylesheet.css'|asset }}">
+	<link rel="stylesheet" href="{{ 'css/documentation.css'|asset }}">
+
+	{{ block('styles') }}
+</head> 
+
+<body class="body-blue">
+
+	<div class="page-wrapper">
+		<header id="header" class="header">
+			<div class="header-overlay">
+				<div class="container">
+					<div class="branding">
+						<h1 class="logo">
+							<a href="{{ route('home') }}">
+								<img class="logo logo-light" alt="logo" width="125" height="25" src="{{ 'images/logo_frontend_white.png'|asset }}" />
+							</a>
+						</h1>
+					</div>
+
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{{ route('docs') }}">Documentación</a></li>
+						<li class="breadcrumb-item active">{{ pageTitle }}</li>
+					</ol>
+				</div>
+			</div>
+		</header>
+
+		{{ block('content') }}
+
+	</div>
+
+	<footer id="footer" class="footer text-center">
+		<div class="container">
+			<small class="copyright">Diseñado con mucho <i class="fas mdi mdi-coffee"></i> por <a href="https://www.facebook.com/pixelpay/" target="_blank">#PixelTeam</a> para developers <i class="fas mdi mdi-glasses"></i></small>
+		</div>
+	</footer>
+	
+	<script src="{{ 'js/jquery.min.js'|asset }}"></script>
+	<script src="{{ 'js/bootstrap.min.js'|asset }}"></script>
+	<script src="{{ 'js/typed.min.js'|asset }}"></script>
+	<script src="{{ 'js/documentation.js'|asset }}"></script>
+
+	{{ block('scripts') }}
+
+	{% if App.environment('local') %}
+		<script id="__bs_script__">//<![CDATA[
+		document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.6'><\/script>".replace("HOST", location.hostname));
+			//]]>
+		</script>
+	{% endif %}
+</body>
+</html> 

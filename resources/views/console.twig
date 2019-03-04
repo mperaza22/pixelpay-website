@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>$BASH</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<style type="text/css">
+	body{
+		background-color: #2A2A2A;
+		padding: 30px;
+	}
+	pre {
+		color: #DDB15F;
+		display: block;
+		font-size: 14px;
+		margin: 0px;
+	}
+	i{
+		display: inline-block;
+		width: 6px;
+		height: 16px;
+		margin-top: 4px;
+		background-color: #DDB15F;
+		animation-name: blink;
+		animation-duration: 800ms;
+		animation-iteration-count: infinite;
+		opacity: 1;
+	}
+
+	@keyframes blink {
+		from { opacity: 1; }
+		to { opacity: 0; }
+	}
+
+	pre.session{
+		color: #CA665F;
+	}
+
+	pre.success{
+		color: #00CC7B;
+	}
+	</style>
+</head>
+<body>
+	<pre class="session">Loading Console ...</pre>
+	<pre>{{ output }}</pre>
+	{% if success %}
+	<pre class="success">{{ success }}</pre>
+	{% endif %}
+	<i></i>
+</body>
+</html>

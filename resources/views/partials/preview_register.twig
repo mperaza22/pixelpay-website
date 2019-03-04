@@ -1,0 +1,191 @@
+<div id="create-modal" class="register-modal">
+	<div class="payment-header">
+		<div class="row align-items-center">
+			<div class="col">
+				<div class="payment-ref">{{ model.legal_name }}</div>
+				<p class="text-muted">{{ model.activity }}</p>
+				<span class="badge badge-default text-left" style="min-height: 37.5px; float: left; margin-right: 2px">
+					<small>{{ 'fields.created_at'|trans|upper }}</small><br>
+					{{ model.created_at.format('M d, Y g:i A') }}
+				</span>
+				<img src="{{ 'images/gateways/?.jpg'|asset(model.gateway) }}" alt="" width="82.5" height="37.5" style="border-radius: 4px; margin-right: 2px; float: left">
+				<img src="{{ 'images/?.jpg'|asset(model.currency) }}" alt="" width="82.5" height="37.5" style="border-radius: 4px; margin-right: 2px; float: left">
+			</div>
+		</div>
+	</div>
+	<div class="payment-body">
+		<div class="row">
+			{% if model.user_name %}
+			<div class="col-md-6">
+				<div class="group">
+					<label>{{ 'fields.admin'|trans }}</label>
+					<p>
+						<i class="mdi mdi-account-box os-icon"></i>
+						<span>{{ model.user_name }}</span>
+						<small class="color" style="display: block">
+							{{ model.user_email }}
+						</small>
+					</p>
+				</div>
+			</div>
+			{% endif %}
+
+			{% if model.address %}
+			<div class="col-md-6">
+				<div class="group">
+					<label>{{ 'fields.address'|trans }}</label>
+					<p>
+						{{ model.address }}
+						{% if model.city_id %}
+						<br>
+						{{ model.city.name }}, {{ model.city.state.name }}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+			{% endif %}
+
+			{% if model.phone %}
+			<div class="col-md-6">
+				<div class="group">
+					<label>{{ 'fields.phone'|trans }}</label>
+					<p>
+						<span>{{ model.phone }}</span>
+					</p>
+				</div>
+			</div>
+			{% endif %}
+
+			{% if model.nid %}
+			<div class="col-md-6">
+				<div class="group">
+					<label>{{ 'fields.rtn'|trans }}</label>
+					<p>
+						<span>{{ model.nid }}</span>
+					</p>
+				</div>
+			</div>
+			{% endif %}
+
+			{% if model.is_legal %}
+			<div class="col-md-6">
+				<div class="group">
+					<label>Estado</label>
+					<p>
+						<span>Legalmente constituido</span>
+					</p>
+				</div>
+			</div>
+			{% endif %}
+
+			<div class="col-md-12">
+				<div class="group">
+					<label>Configuración</label>
+					{% if model.gateway == 'promerica' %}
+					<pre>Merchant ID: {{ model.data.promerica_merchant_id|default(' * * * * ') }} | Trans. Key: {{ model.data.promerica_transaction_key|default(' * * * * ') }}</pre>
+					{% endif %}
+
+					{% if model.gateway == 'bac' %}
+					<pre>Key: {{ model.data.bac_key|default(' * * * * ') }} | Key ID: {{ model.data.bac_key_id|default(' * * * * ') }}</pre>
+					{% endif %}
+
+					{% if model.gateway == 'stripe' %}
+					<pre>Api Key: {{ model.data.stripe_api_key|default(' * * * * ') }}</pre>
+					{% endif %}
+
+					{% if model.gateway == 'paypal' %}
+					<pre>Merchant Email: {{ model.data.paypal_email|default(' * * * * ') }}</pre>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% if model.status != 'paid' %}
+	<div class="payment-footer">
+		<ul class="actions text-right">
+			<li><a href="#" class="text-danger actionRegister" data-id="{{ model.id }}" data-action="delete"><i class="mdi mdi-delete"></i> {{ 'pixel.form.delete'|trans }}</a></li>
+			<span class="text-muted">&bull;</span>
+			<li><a href="#" class="text-success actionRegister" data-id="{{ model.id }}" data-action="register" data-slug="{{ str_slug(model.legal_name, '-') }}"><i class="mdi mdi-check-circle"></i> Aprobar</a></li>
+		</ul>
+	</div>
+	{% endif %}
+</div>
+
+<div class="loading-body" style="display: none">
+	<img src="{{ 'images/loading.gif'|asset }}" alt="" width="64" height="64">
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-preview'), 'medium');
+
+		$('.actionRegister').click(function(event) {
+			event.preventDefault();
+			var modelId = $(this).data('id'),
+				modelAction = $(this).data('action'),
+				subject = null;
+
+			if(modelAction == 'delete'){
+				if(!confirm('Desea eliminar este registro? -Se le informara con un correo que la solicitud fue denegada.'))
+					return;
+
+				subject = prompt('Especifique la razón o mensaje por la cual se denego el registro (Dejar en blanco si desea enviar una razon general por defecto)');
+			}
+
+			if(modelAction == 'register'){
+				if(!confirm('Desea registrar esta empresa en el sistema?'))
+					return;
+
+				subject = prompt('Que slug se usara en esta compañia?', $(this).data('slug'));
+			}
+
+			$('.loading-body').fadeIn();
+			$('.register-modal').hide();
+			
+			$.ajax({
+				url: '{{ '/'|app }}/kernel/ajax/onRegister/manage',
+				type: 'POST',
+				context: this,
+				data: { 
+					_token: '{{ csrf_token() }}', 
+					id: modelId,
+					subject: subject,
+					action: modelAction
+				},
+			})
+			.fail(function(){
+				$('.loading-body').hide();
+				$('.register-modal').fadeIn();
+
+				Snackbar.show({ 
+					text: 'Upps, algo salio mal :/', 
+					showAction: false,
+					customClass: 'error'
+				});
+			})
+			.done(function(data) {
+				if(data.success != null && !data.success){
+					Snackbar.show({ 
+						text: data.message, 
+						showAction: false,
+						customClass: 'error'
+					});
+				}
+
+				if(data.success != null && data.success){
+					Snackbar.show({ 
+						text: data.message, 
+						showAction: false,
+						customClass: 'success'
+					});
+
+					$(document).trigger('closeAllModals');
+					$(document).trigger('reloadTable');
+				}
+
+				$('.loading-body').hide();
+				$('.register-modal').fadeIn();
+			});
+		});
+	});
+</script>

@@ -1,0 +1,34 @@
+@import '../_theme';
+
+$color-primary: #003E7A;
+$color-secondary: lighten($color-primary, 5%);
+$color-accent: #003E7A;
+
+$color-text: #585858;
+
+$sidebar-link-shadow: transparent;
+$sidebar-separator: rgba(0,0,0,0.1);
+$sidebar-user-icon: $color-primary;
+$sidebar-bg:  #FEF159;
+
+$multicolor-tints: false;
+
+@import '../../css/datatables';
+@import '../../css/calendar';
+@import '../../css/snackbar';
+@import '../../css/editor';
+@import '../../css/nprogress';
+@import '../../css/croppie';
+@import '../../css/charts';
+
+@import '../admin/_email';
+@import '../admin/_animations';
+@import '../admin/_general';
+@import '../admin/_components';
+@import '../admin/_navbar';
+@import '../admin/_tables';
+@import '../admin/_forms';
+@import '../admin/_cards';
+@import '../admin/_responsive';
+
+@import '../admin/_admin';

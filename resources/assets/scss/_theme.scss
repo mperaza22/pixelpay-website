@@ -1,0 +1,72 @@
+// GENERAL
+$font: 'Gotham Rounded', sans-serif;
+
+// COLORS
+$color-primary: #3326AF;
+$color-secondary: #756ABC;
+$color-accent: #BD071C;
+
+$color-text: #717171;
+$color-bold: #585858;
+$color-muted: #B8BAC2;
+$color-light: #EEEEEE;
+$color-separator: #EFEFF0;
+
+$color-dark: #4C5866;
+$color-danger: #d9534f;
+$color-warning: #f0ad4e;
+$color-success: #00AE69;
+$color-failed: #D95C9B;
+$color-opened: #9245A7;
+$color-viewed: #5D499D;
+$color-sent: #99ACD2;
+$color-link: #2081B5;
+$color-cancel: #ED72AD;
+
+$salmon-init: #fe895b;
+$salmon-end: #FF64AC;
+
+$purple-init: #9171E6;
+$purple-end: #1687BA;
+
+$eggblue-init: #10D2BF;
+$eggblue-end: #009ACE;
+
+$violet-init: #F570E0;
+$violet-end: #8866F2;
+
+$default-init: #FFF;
+$default-end: #FFF;
+
+$picasso-init: #F7D075;
+$picasso-end: #FF9E8A;
+
+$eco-init: #77F7BA;
+$eco-end: #8BD4F2;
+
+$moon-init: #E1C3F9;
+$moon-end: #8CC6F8;
+
+// FICOHSA
+// $color-primary: #194991;
+// $color-secondary: #34B1CB;
+// $color-accent: #194991;
+
+// COMPONENTS
+$switch-size: 24px;
+$switch-size-padding: 4px;
+
+$switch-size-small: 12px;
+$switch-size-padding-small: 3px;
+
+$navbar-height: 60px;
+$sidebar-width: 220px;
+$sidebar-link-shadow: rgba($color-light, 0.5);
+$sidebar-separator: $color-light;
+$sidebar-user-icon: $color-success;
+$sidebar-bg: #FFF;
+
+$theme-bg: #F9FCFD;
+$login-bg: lighten($color-primary, 15%);
+
+$multicolor-tints: true !default;

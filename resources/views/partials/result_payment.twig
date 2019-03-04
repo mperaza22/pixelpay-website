@@ -1,0 +1,36 @@
+<div id="create-modal" class="payment-modal">
+	<div class="small-block text-center">
+		<h4>El cobro se ha generado y enviado con éxito</h4>
+		<img src="{{ 'images/icons/sent-icon.png'|asset }}" class="block-icon" alt="">
+		<p>
+			
+		</p>
+		<p>
+			Puedes visualizar el estado de este cobro 
+			en cualquier momento en la pestaña del menú "<a href="{{ route('payments') }}" target="_blank">Pagos</a>", 
+			Cuando este sea pagado, esta factura cambiara a pagado también.
+		</p>
+		<a href="#" class="btn btn-alt btn-no">CERRAR</a>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-confirm'), 'small');
+
+		var clipboard = new Clipboard('[copy-url]');
+
+		clipboard.on('success', function(e) {
+			Snackbar.show({ 
+				text: '{{ "frontend.copy"|trans }}', 
+				showAction: false,
+				customClass: 'success',
+			})
+		});
+
+		$('.pixel__modal-confirm .btn-no').click(function(event) {
+			$(document).trigger('closeAllModals');
+			location.reload();
+		});
+	});
+</script>

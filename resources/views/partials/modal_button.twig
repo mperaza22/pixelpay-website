@@ -1,0 +1,502 @@
+<div id="create-modal">
+	<form id="button-generator" data-request="{% if model %}onUpdateButton{% else %}onCreateButton{% endif %}" data-ctrl="buttons" data-on-success="successButtonResult(result)" enctype="multipart/form-data" novalidate>
+		<div class="container">
+			<div class="row vertical-line">
+				<div class="col-auto">
+					<div class="upload-image-wrap">
+						<div id="upload-image" data-src="{% if model.image %}{{ model.image|app }}{% endif %}"></div>
+					</div>
+				</div>
+				<div class="col">
+					<div style="padding-top: 20px" data-field-value="{{ model.options.inventory|default('options') }}">
+						{{ csrf_field() }}
+						{% if model %}
+						<input type="hidden" name="id" value="{{ model.id }}">
+						{% endif %}
+						<input type="hidden" name="image">
+						<input type="hidden" name="image_change">
+						<input type="hidden" name="options">
+
+						<div class="row small-gutters">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>{{ 'fields.title'|trans }}</label>
+									<input 
+										type="text" 
+										name="title"  
+										class="form-control" 
+										maxlength="60"  
+										value="{{ model.title }}" 
+										required 
+										placeholder="{{ 'pixel.placeholder.title'|trans }}">
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>{{ 'fields.description'|trans }} <small>({{ 'fields.optional'|trans }})</small></label>
+									<textarea 
+										name="description" 
+										rows="2" 
+										maxlength="120" 
+										placeholder="{{ 'pixel.placeholder.description_button'|trans }}"
+										class="form-control">{{ model.description }}</textarea>
+									<div class="form-text text-muted text-right"><b><span id="chars_count">120</span></b> caracteres restantes</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Variantes del producto</label>
+									<div style="margin-top: 2px">
+										<label class="switch">
+											<input type="checkbox" class="input-is-variant" {% if model.hasVariants() %}checked="checked" data-out="on"{% endif %}>
+											<div class="slider round"></div>
+											<span>Activar</span>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>{{ 'fields.currency'|trans }}</label>
+									{% if company.isActiveGateway('promerica') and company.config('gateways.promerica_multi') == 'on' %}
+									<select name="currency" class="form-control">
+										{% if model %}
+										<option value="{{ config('system.local_currency') }}" {% if model.currency == config('system.local_currency') %}selected="selected"{% endif %}>{{ config('system.local_currency_name') }} ({{ config('system.local_currency') }})</option>
+										<option value="USD" {% if model.currency == 'USD' %}selected="selected"{% endif %}>Dollar (USD)</option>
+										{% else %}
+										<option value="{{ config('system.local_currency') }}" {% if company.currency == config('system.local_currency') %}selected="selected"{% endif %}>{{ config('system.local_currency_name') }} ({{ config('system.local_currency') }})</option>
+										<option value="USD" {% if company.currency == 'USD' %}selected="selected"{% endif %}>Dollar (USD)</option>
+										{% endif %}
+									</select>
+									{% else %}
+									<div class="form-control">
+										{% if company.currency == config('system.local_currency') %}
+										{{ config('system.local_currency_name') }} 
+										{% else %}
+										Dollar
+										{% endif %}
+										({{ currencySimbol(company.currency) }})
+									</div>
+									<input name="currency" type="hidden" value="{{ company.currency }}">
+									{% endif %}
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Tipo de Envío</label>
+									<select name="type" class="form-control">
+										<option value="address" {% if model.type == "address" %}selected="selected"{% endif %}>Dirección</option>
+										<option value="pickup" {% if model.type == "pickup" %}selected="selected"{% endif %}>Recoger en ubicación</option>
+										<option value="none" {% if model.type == "none" %}selected="selected"{% endif %}>Sin envío</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-12 input-location" {% if model.type != 'pickup' %}style="display: none"{% endif %}>
+								<div class="form-group">
+									<label>Ubicación</label>
+									<textarea 
+										rows="2" 
+										maxlength="120" 
+										data-input-location 
+										class="form-control">{{ model.options.location }}</textarea>
+								</div>
+							</div>
+
+							<div class="col-md-6 input-amount" {% if model.hasVariants() %}style="display: none"{% endif %}>
+								<div class="form-group">
+									<label>{{ 'fields.price'|trans }}</label>
+									<div class="input-group">
+										
+										<input 
+											type="text" 
+											name="amount"  
+											class="form-control" 
+											maxlength="15" 
+											value="{{ model.amount|currency }}" 
+											required
+											placeholder="0.00">
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6 input-qty" {% if model.hasVariants() %}style="display: none"{% endif %}>
+								<div class="form-group">
+									<label>{{ 'fields.qty'|trans }} <small>({{ 'fields.optional'|trans }})</small></label>
+									<input 
+										type="text" 
+										name="qty_limit"  
+										maxlength="9" 
+										value="{{ model.qty_limit }}" 
+										class="form-control" 
+										placeholder="&infin;">
+								</div>
+							</div>
+
+							<div class="col-md-12 input-variants" {% if not model.hasVariants() %}style="display: none"{% endif %}>
+								<table class="table table-form table-hover wrapper-variants">
+									<thead>
+										<tr>
+											<th>
+												<input 
+													type="text" 
+													value="{{ model.options.variant }}" 
+													maxlength="30" 
+													class="form-control form-control-sm form-control-lite input-option-variant" 
+													placeholder="Talla, etc.">
+											</th>
+											<th class="padd-th">{{ 'fields.qty'|trans }}</th>
+											<th class="padd-th">{{ 'fields.price'|trans }}</th>
+											<th width="20"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="item-option" data-add-template>
+											<td>
+												<input 
+													type="text" 
+													maxlength="30" 
+													class="form-control form-control-sm form-control-lite input-option-value" 
+													placeholder="Ej; S, M, L">
+											</td>
+											<td>
+												<input 
+													type="text" 
+													maxlength="9" 
+													class="form-control form-control-sm form-control-lite input-option-qty" 
+													placeholder="&infin;">
+											</td>
+											<td>
+												<input 
+													type="text" 
+													maxlength="15" 
+													class="form-control form-control-sm form-control-lite input-option-price" 
+													placeholder="0.00">
+											</td>
+											<td>
+												<a href="#" class="input-option-delete">
+													<i class="mdi mdi-close"></i>
+												</a>
+											</td>
+										</tr>
+
+										{% for option in model.options.data if option.value %}
+										<tr class="item-option" data-option-active>
+											<td>
+												<input 
+													type="text" 
+													value="{{ option.value }}" 
+													maxlength="30" 
+													class="form-control form-control-sm form-control-lite input-option-value" 
+													placeholder="Ej; S, M, L">
+											</td>
+											<td>
+												<input 
+													type="text" 
+													maxlength="9" 
+													value="{{ option.qty }}" 
+													class="form-control form-control-sm form-control-lite input-option-qty" 
+													placeholder="&infin;">
+											</td>
+											<td>
+												<input 
+													type="text" 
+													maxlength="15" 
+													value="{{ option.price|currency }}" 
+													class="form-control form-control-sm form-control-lite input-option-price" 
+													placeholder="0.00">
+											</td>
+											<td>
+												<a href="#" class="input-option-delete">
+													<i class="mdi mdi-close"></i>
+												</a>
+											</td>
+										</tr>
+										{% else %}
+										<tr class="item-option" data-option-active>
+											<td>
+												<input 
+													type="text" 
+													maxlength="30" 
+													class="form-control form-control-sm form-control-lite input-option-value" 
+													placeholder="Ej; S, M, L">
+											</td>
+											<td>
+												<input 
+													type="text" 
+													maxlength="9" 
+													class="form-control form-control-sm form-control-lite input-option-qty" 
+													placeholder="&infin;">
+											</td>
+											<td>
+												<input 
+													type="text" 
+													maxlength="15" 
+													class="form-control form-control-sm form-control-lite input-option-price" 
+													placeholder="0.00">
+											</td>
+											<td>
+												<a href="#" class="input-option-delete">
+													<i class="mdi mdi-close"></i>
+												</a>
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="4">
+												<a href="#" data-add-option>
+													<i class="mdi mdi-plus-circle" style="color: #464a4c"></i>
+													<span>{{ 'pixel.messages.add_variant'|trans }}</span>
+												</a>
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-toolbar">
+			<div class="row align-items-center">
+				<div class="col">
+					<span class="text-muted"><i class="mdi mdi-information"></i> {{ 'pixel.messages.remember_save'|trans }}</span>
+				</div>
+				<div class="col col-auto">
+					<a href="#" class="btn btn-default btn-close">{{ 'pixel.form.cancel'|trans }}</a>
+					{% if model %}
+					<button type="submit" class="btn btn-hero float-right">{{ 'pixel.form.save'|trans }}</button>
+					{% else %}
+					<button type="submit" class="btn btn-hero float-right">{{ 'frontend.create'|trans }}</button>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+	$(function() {
+		{% if model %}
+		Pixel.setSize($('.pixel__modal-preview'), 'big');
+		{% else %}
+		Pixel.setSize($('.pixel__modal-create'), 'big');
+		{% endif %}
+
+		Pixel.registerForm($('#button-generator'));
+
+		{% if model %}
+		$('#chars_count').html($('[name="description"]').attr('maxlength') - $('[name="description"]').val().length);
+		{% endif %}
+
+		$('[name="description"]').keyup(function(event) {
+			$('#chars_count').html($(this).attr('maxlength') - $(this).val().length);
+		});
+
+		$('.btn-close').click(function(event) {
+			$(document).trigger('closeAllModals');
+		});
+
+		$('[name="amount"]').maskMoney();
+
+		$('input, select').change(function(event) {
+			$(this).closest('.tingle-modal').addClass('is_dirty');
+		});
+
+		$('.attachment-data').click(function(event) {
+			$('.inputfile').click();
+		});
+
+		$('[data-add-option]').click(function(event) {
+			var template = $('[data-add-template]').html();
+			var el = $('<tr/>').addClass('item-option')
+				.attr('data-option-active', true).html(template);
+			$('.wrapper-variants tbody').append(el);
+
+			addOptionElement(el);
+			$(document).trigger('checkOverflow');
+		});
+
+		$('[data-option-active]').each(function(index, el) {
+			addOptionElement($(this));
+		});
+
+		$('[data-input-location]').keyup(function(event) {
+			checkOptionsValues();
+		});
+
+		$('.input-option-variant').keyup(function(event) {
+			checkOptionsValues();
+		});
+
+		$('[name="type"]').change(function(event) {
+			if($(this).val() == 'pickup'){
+				$('.input-location').fadeIn(400);
+			}else{
+				$('.input-location').hide();
+			}
+		});
+
+		$('.input-is-variant').change(function(event) {
+			if($(this).is(':checked')){
+				$('.input-amount').hide();
+				$('.input-qty').hide();
+
+				$('.input-variants').fadeIn(400);
+				$(this).data('out', 'on');
+			}else{
+				$('.input-amount').fadeIn(400);
+				$('.input-qty').fadeIn(400);
+
+				$('.input-variants').hide();
+				$(this).data('out', '');
+			}
+
+			checkOptionsValues();
+		});
+
+		checkOptionsValues();
+
+		// CROP
+		var $uploadCrop = $('#upload-image').croppie({
+			url: $('#upload-image').data('src'),
+			viewport: {
+				width: 300,
+				height: 300,
+				type: 'square'
+			},
+			boundary: { 
+				width: 300, 
+				height: 300
+			},
+			// enableExif: true,
+			enableOrientation: true,
+			uploadText: '{{ "pixel.placeholder.upload"|trans }}',
+			onInputChange: function(input){
+				if (input.files && input.files[0]) {
+					var reader = new FileReader(),
+						extension = input.files[0].name.split('.').pop().toLowerCase();
+					
+					reader.onload = function (e) {
+						$('#upload-image').addClass('ready');
+						$uploadCrop.croppie('bind', {
+							url: e.target.result
+						}).then(function(){
+							console.log('jQuery bind complete');
+						});						
+					}
+
+					for (var i = 0, f; f = input.files[i]; i++) {
+						$(input).next().html('<i class="mdi mdi-file"></i>'+f.name.trunc(25))
+					}
+
+					reader.readAsDataURL(input.files[0]);
+
+					$(input).closest('.tingle-modal').addClass('is_dirty');
+				}
+			}
+		});
+
+		$uploadCrop.on('update.croppie', function(ev, cropData) {
+			$('.cr-boundary').addClass('cr-changed');
+
+			$uploadCrop.croppie('result', {
+				type: 'base64',
+				size: {
+					width: 600, 
+					height: 600
+				},
+				format: 'jpeg',
+				quality: 0.8
+			}).then(function (resp) {
+				$('[name="image_change"]').val('changed');
+				$('[name="image"]').val(encodeURIComponent(resp));
+			});
+		});
+
+		{% if not model %}
+		$('.cr-boundary').click(function(event) {
+			if(!$(this).hasClass('cr-changed'))
+				$('.cr-upload-wrap label').click();
+		});
+		{% endif %}
+	});
+
+	function addOptionElement(el){
+		el.find('.form-control').keyup(function(event) {
+			checkOptionsValues();
+		});
+
+		$('.input-option-price').maskMoney();
+		$('.input-option-qty').mask('00,000', {reverse: true});
+
+		el.find('.input-option-delete').click(function(event) {
+			if($('.wrapper-variants tbody tr').size() > 2){
+				$(this).closest('.item-option').remove();
+				checkOptionsValues();
+			}else{
+				$(this).closest('.item-option').find('.form-control').val('');
+				Pixel.error('{{ 'frontend.delete_one'|trans }}')
+			}
+		});
+	}
+
+	function checkOptionsValues(){
+		var options = {
+			"variant" : $('.input-option-variant').val(),
+			"hasVariant" : $('.input-is-variant').data('out'),
+			"location" : $('[data-input-location]').val(),
+			"data" : []
+		};
+
+		var lowPrice = null;
+		var allQty = null;
+
+		$('[data-option-active]').each(function(index, el) {
+			var option = {};
+
+			option.value = $(this).find('.input-option-value').val();
+			option.qty = $(this).find('.input-option-qty').val();
+			option.price = $(this).find('.input-option-price').val();
+
+			if(option.price)
+				option.price = parseFloat(option.price.replace(/,/g, ''));
+
+			if(option.value)
+				options.data.push(option);
+
+			if(!lowPrice || option.price < lowPrice)
+				lowPrice = option.price;
+
+			if(option.qty > 0)
+				allQty += parseInt(option.qty);
+		});
+
+		options = encodeURI(JSON.stringify(options));
+
+		$('[name="options"]').val(options);
+
+		if(lowPrice)
+			$('[name="amount"]').val(lowPrice);
+
+		if(allQty)
+			$('[name="qty_limit"]').val(allQty);
+	}
+
+	function successButtonResult(data){
+		$('.tingle-modal').removeClass('is_dirty');
+		
+		$(document).trigger('closeAllModals');
+		$(document).trigger('refreshList');
+
+		if(data.content)
+			$('.product-info').html(data.content);
+	}
+</script>

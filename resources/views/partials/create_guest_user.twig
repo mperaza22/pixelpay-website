@@ -1,0 +1,60 @@
+<div id="create-modal">
+	<div class="container">
+		<form role="form" id="create-guest-user" data-request="createGuestUser" data-ctrl="users" data-on-success="$(document).trigger('refreshList'); location.reload();" style="padding: 10px" novalidate>
+			{{ csrf_field() }}
+
+			<div class="form-group text-center">
+				<img src="{{ 'images/icons/avatar-icon.png'|asset }}" alt="" class="color-icon">
+				<h3>{{ 'frontend.register_with_us'|trans }}</h3>
+			</div>
+			<div class="form-group">
+				<label>{{ 'fields.fullname'|trans|upper }}</label>
+				<input 
+				type="text" 
+				name="name" 
+				class="form-control" 
+				required
+				placeholder="{{ 'pixel.placeholder.fullname'|trans }}">
+			</div>
+
+			<div class="form-group">
+				<label>{{ 'fields.email_login'|trans|upper }}</label>
+				<input 
+				type="email" 
+				name="email" 
+				class="form-control" 
+				required
+				placeholder="{{ 'pixel.placeholder.email_login'|trans }}">
+			</div>
+
+			<div class="form-group upper-input">
+				<label>{{ 'fields.group'|trans|upper }}</label>
+				<input 
+				type="text" 
+				name="group" 
+				class="form-control typeahead" 
+				required
+				data-provide="typeahead" 
+				autocomplete="off" 
+				placeholder=" - - - - ">
+			</div>
+
+			<input type="hidden" name="password" value="{{ str_random(8) }}">
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-default btn-block btn-hero">{{ 'frontend.create'|trans|upper }}</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-create'), 'small');
+		Pixel.registerForm($('#create-guest-user'));
+
+		$.get("{{ route('users.groups') }}", {id: '{{ user.company.id }}'}, function(data){
+			$(".typeahead").typeahead({ source:data });
+		},'json');
+	});
+</script>

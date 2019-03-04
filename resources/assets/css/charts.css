@@ -1,0 +1,152 @@
+.chart-container .timeframe {
+	position: relative;
+	/*bottom: -2.25rem;*/
+	/*z-index: 999999;*/
+	display: inline-block;
+	margin: 0 8px -2px;
+	background-color: #fff;
+	box-shadow: 0 2px 14px rgba(100, 100, 100, 0.2);
+	-webkit-box-shadow: 0 2px 14px rgba(100, 100, 100, 0.2);
+	border-radius: 0px;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+}
+
+.chart-container .timeframe .pagination{
+	margin-bottom: 0px;
+}
+
+.chart-container .timeframe .pagination li{
+	display: inline-block;
+}
+
+.chart-container .timeframe .pagination li > a{
+	white-space: nowrap;
+}
+
+.chart-container .curren-sale{
+	position: absolute;
+	right: 30px;
+	top: 30px;
+}
+
+.chart-container .curren-sale number{
+	font-size: 18px;
+	margin: 0px;
+	line-height: 16px;
+}
+
+.chart-container .date-range .form-group{
+	margin-bottom: 10px;
+}
+
+.chart-container .date-range input{
+	background-color: transparent;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+	padding-left: 36px;
+	background-position: left center;
+	background-size: 32px 32px;
+	background-repeat: no-repeat;
+	background-image: url(../images/icons/calendar-white-icon.svg);
+
+	display: inline-block;
+	width: auto;
+	min-width: 280px;
+	border: 0;
+	border: 2px solid rgba(255,255,255,0.3);
+	border-radius: 4px;
+}
+
+.chart-container .date-range input:hover{
+	background-color: rgba(255,255,255,0.1);
+}
+
+.chart-container .date-range input:focus,
+.chart-container .date-range input:active{
+	box-shadow: none;
+	outline: none;
+	border: 2px solid rgba(255,255,255,0.8);
+}
+
+.chart-container .loader{
+	padding: 60px 10px;
+}
+
+.chart-container .is-empty{
+	padding: 60px 20px;
+	max-width: 620px;
+}
+
+.chart-container .is-empty img{
+	margin-bottom: 16px;
+}
+
+.aditional-charts .card-footer{
+	background-color: #fff;
+	padding: 0px;
+}
+
+.aditional-charts .card-footer .form-group{
+	margin-bottom: 0px !important;
+	position: relative;
+}
+
+.aditional-charts .card-footer .form-group select{
+	border: none !important;
+	padding: 20px 20px 8px;
+	height: 60px !important;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.aditional-charts .card-footer .form-group select:hover{
+	box-shadow: inset 0 0 30px rgba(200, 200, 200, 0.2) !important;
+}
+
+.aditional-charts .card-footer .form-group label{
+	text-transform: uppercase; 
+	font-size: 11px !important;
+	opacity: 0.6;
+	position: absolute;
+	top: 6px;
+	left: 20px;
+}
+
+.highcharts-credits {
+	display: none;
+}
+
+.highcharts-pie-series .highcharts-point {
+	stroke: #FFF;
+	stroke-width: 3px;
+}
+.highcharts-pie-series .highcharts-data-label-connector {
+	/*stroke-dasharray: 2, 2;*/
+	stroke-width: 3px;
+}
+
+.average-marker{
+	fill: #FFF;
+	baseline-shift:10px; 
+	opacity: 0.8; 
+	font-weight: normal
+}
+
+@media (max-width: 768px) {
+	.chart-container .timeframe{
+		position: relative;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+		display: block;
+
+		box-shadow: 0 0 20px rgba(0,0,0,0.1);
+		-webkit-box-shadow: 0 0 20px rgba(0,0,0,0.1);
+	}
+
+	.chart-container .timeframe .pagination{
+		position: relative;
+		min-width: 520px;
+	}
+}

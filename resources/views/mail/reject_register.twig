@@ -1,0 +1,14 @@
+{% extends "layouts.mail" %}
+
+{% block content %}
+	<h1>Tu registro fue denegado</h1>
+	<br>
+	<p><b>Estimad@ {{ name }},</b></p>
+	<p>Uno de nuestros agentes ha verificado los datos enviados, recuerde que la información deberá ser datos reales.</p>
+	<p>Por lo tanto, puede volver a registrarse intentando con nuevos datos o registros corregidos</p>
+
+	<p>
+		<b>Razón:</b> <br>
+		{{ content|default('Los datos son erróneos, falsos o no pudieron ser verificados. Corrija su teléfono, correo electrónico o dirección real, en caso de ser un negocio en linea sin domicilio solicitamos que la dirección sea la definida en la constitución de la empresa.') }}
+	</p>
+{% endblock %}

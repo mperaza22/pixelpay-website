@@ -1,0 +1,568 @@
+<div id="create-modal" class="payment-modal">
+	{% set url = model.generateLink(model.user.company.app_hash, model.user.company.slug) %}
+	<div class="payment-header">
+		<div class="row align-items-center">
+			<div class="col">
+				<div class="payment-ref">{{ model.description }}</div>
+				<p class="text-muted">#{{ model.ref }}</p>
+				{% if model.isPaid() %}
+				<span class="badge badge-paid text-left">
+					<small>{{ 'fields.paid_at'|trans|upper }}</small><br>
+					{{ model.paid_at.format('M d, Y g:i A') }}
+				</span>
+				{% elseif model.status == 'open' %}
+				<span class="badge badge-open text-left">
+					<small>{{ 'fields.open_at'|trans|upper }}</small><br>
+					{{ model.updated_at.format('M d, Y g:i A') }}
+				</span>
+				{% else %}
+				<span class="badge badge-{{ model.status }} text-left">
+					<small>{{ 'fields.status'|trans|upper }}</small><br>
+					{{ ('admin.status.' ~ model.status)|trans_choice(1)|upper }}
+				</span>
+				{% endif %}
+				<span class="badge badge-default text-left">
+					<small>{{ 'fields.created_at'|trans|upper }}</small><br>
+					{{ model.created_at.format('M d, Y g:i A') }}
+				</span>
+			</div>
+			{% if model.isPaid() %}
+			<div class="col col-auto">
+				{% if model.gateway == 'bac' and  model.paid_attempt.cc_brand == 'visa' or model.paid_attempt.cc_brand == 'mastercard' %}
+				<img src="{{ 'images/3d_secure_badge.png'|asset }}" style="margin-right: 6px" alt="" width="48" height="48" data-toggle="tooltip" title="{{ 'pixel.messages.3dsecure_paid'|trans }}">
+				{% endif %}
+				<img src="{{ 'images/paid_success.png'|asset }}" alt="" width="48" height="48" data-toggle="tooltip" title="{{ 'pixel.messages.secure_paid'|trans }}">
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class="payment-body">
+		<ul class="nav nav-pills nav-pills-tabs nav-justified" role="tablist">
+			<li class="nav-item nav-small">
+				<a class="nav-link active" data-toggle="tab" href="#tab-stats" role="tab">RESUMEN</a>
+			</li>
+			<li class="nav-item nav-small">
+				<a class="nav-link" data-toggle="tab" href="#tab-detail" role="tab">DETALLE</a>
+			</li>
+			<li class="nav-item nav-small">
+				<a class="nav-link" data-toggle="tab" href="#tab-attempts" role="tab">INTENTOS
+					{% if model.attempts and model.attempts|length > 0 %}
+					&nbsp;<span class="badge badge-primary badge-pill">{{ model.attempts|length }}</span>
+					{% endif %}
+				</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div class="tab-pane fade show active" id="tab-stats" role="tabpanel">
+				<div class="row align-items-center">
+					<div class="col">
+						<div class="score">
+							<label>{{ 'fields.total_amount'|trans|upper }}</label>
+							<span>{{ model.totalFormated() }}</span>
+							{% if model.tax_amount > 0 %}
+							<p class="score-extra">{{ 'fields.tax'|trans }}: {{ model.tax_amount|currency(model.currency) }}</p>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="col col-auto">
+						<img src="{{ 'images/gateways/?.jpg'|asset(model.gateway|default('none')) }}" width="110" height="50" class="payment-gateway" alt="">
+					</div>
+				</div>
+
+				<br>
+
+				<div class="row">
+
+					{% if model.paid_attempt.cc_last %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.card_info'|trans }}</label>
+							<p>
+								<img src="{{ '/images/cc/?.png'|asset(model.paid_attempt.cc_brand) }}" height="32" class="credit-card-icon">
+								<span>{{ model.paid_attempt.getMaskedPan() }}</span>
+								<small class="color" style="display: block">{{ str_limit(model.paid_attempt.cc_name, 30, '...')|default('Sin Nombre')|upper }}</small>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.customerName() %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.customer'|trans }}</label>
+							<p>
+								<i class="mdi mdi-account-box os-icon"></i>
+								<span>{{ model.customerName() }}</span>
+								<small class="color" style="display: block">
+									{{ str_limit(model.customerEmail(), 30, '...') }}
+									{% if model.customerPhone() %}
+										<br>T: {{ model.customerPhone() }}
+									{% endif %}
+								</small>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.customerRTN() %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.rtn'|trans }}</label>
+							<p>
+								<span>{{ model.customerRTN() }}</span>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.user and model.user.email != Auth.getUser.email %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.created_by'|trans }}</label>
+							<p>
+								<i class="mdi mdi-rename-box os-icon"></i>
+								<span>{{ model.user.name|upper }}</span>
+								<small class="color" style="display: block">
+									{{ str_limit(model.user.email, 30, '...') }}
+									{% if model.user.phone %}
+										<br>T: {{ model.user.phone }}
+									{% endif %}
+								</small>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.uuid %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.payment_url'|trans }}</label>
+							<p>
+								<a target="_blank" href="{{ url }}">
+									<i class="mdi mdi-open-in-new"></i> abrir
+								</a>
+
+								&nbsp;|&nbsp;
+
+								<a href="javascript:;" copy-url data-clipboard-target="#payment-url">
+									<i class="mdi mdi-content-copy"></i> copiar
+								</a>
+
+								<small style="font-size: 0px" id="payment-url">
+									{{ url }}
+								</small>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.attach %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.attachment'|trans }}</label>
+							<p>
+								<a target="_blank" href="{{ model.attach.getFullUrl() }}">
+									<i class="mdi mdi-open-in-new"></i> abrir
+								</a>
+
+								&nbsp;|&nbsp;
+
+								<a href="{{ model.attach.getFullUrl() }}" download="{{ model.attach.file_name }}">
+									<i class="mdi mdi-download"></i> descargar
+								</a>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.invoice %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.invoice'|trans }}</label>
+							<p>
+								<a target="_blank" href="{{ route('invoices', {id: model.invoice.id}) }}">
+									<i class="mdi mdi-open-in-new"></i> abrir
+								</a>
+
+								&nbsp;|&nbsp;
+
+								<a href="{{ route('invoice', {uuid: model.invoice.id}) }}" download="invoice-{{ model.invoice.id }}.pdf">
+									<i class="mdi mdi-download"></i> descargar
+								</a>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.customerIP() %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.customer_ip'|trans }}</label>
+							<p>
+								<span><i class="mdi mdi-{{ model.properties.client.device|default('other') }} os-icon"></i> {{ model.customerIP() }}</span>
+								<small class="color" style="display: block">{{ model.getDeviceName()|default(' • • • • ') }}</small>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.customerShippingFormatedAddress(true) %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.shipping_address'|trans }}</label>
+							<p>{{ model.customerShippingFormatedAddress(true)|raw }}</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.isPaid() and model.customerBillingFormatedAddress(true) %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.billing_address'|trans }}</label>
+							<p>{{ model.customerBillingFormatedAddress(true)|raw }}</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.paid_attempt.transaction_id %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>{{ 'fields.transactionid'|trans }}</label>
+							<p>{{ model.paid_attempt.transaction_id }}</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if user.is_superuser %}
+					<div class="col-md-6">
+						<div class="group">
+							<label>UUID</label>
+							<p>
+								<span id="payment-uuid">{{ model.uuid }}</span>
+
+								&nbsp;&nbsp;
+								<br>
+
+								<a href="javascript:;" copy-url data-clipboard-target="#payment-uuid">
+									<i class="mdi mdi-content-copy"></i> copiar
+								</a>
+							</p>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if model.note %}
+					<div class="col-md-12">
+						<div class="group">
+							<label>{{ 'fields.note'|trans }}</label>
+							<p>{{ model.note }}</p>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="tab-pane fade" id="tab-detail" role="tabpanel">
+				<div class="table-responsive">
+					<table class="table table-hover table-content">
+						<thead>
+							<tr>
+								<th>{{ 'fields.description'|trans }}</th>
+								<th width="100" class="text-right">{{ 'fields.price'|trans }}</th>
+								<th width="30" class="text-center">{{ 'fields.qty'|trans }}</th>
+								<!-- <th width="30" class="text-right">{{ str_limit('fields.tax'|trans, 3, '.') }}</th> -->
+								<th width="100" class="text-right">{{ 'fields.total'|trans }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in model.content if model.content %}
+							<tr>
+								<td>
+									<b>{{ item.title }}</b>
+									{% if item.description %}
+									<br>{{ item.description|striptags|nl2br }}
+									{% endif %}
+								</td>
+								<td class="text-right">
+									{{ item.price|currency }}
+								</td>
+								<td class="text-center">
+									{{ item.qty }}
+								</td>
+								<!-- <td class="text-right">
+									{{ item.tax|currency }}
+								</td> -->
+								<td class="text-right">
+									<b>{{ item.total|currency(model.currency) }}</b>
+								</td>
+							</tr>
+							{% endfor %}
+							{% if model.content|length > 1 %}
+							<tr>
+								<td class="text-right" colspan="3">
+									<b>{{ 'fields.subtotal'|trans }}</b>
+								</td>
+								<td class="text-right">
+									<b>{{ model.subtotal|currency(model.currency) }}</b>
+								</td>
+							</tr>
+							{% endif %}
+							<tr>
+								<td class="text-right" colspan="3">
+									<b>{{ 'fields.tax'|trans }}</b>
+								</td>
+								<td class="text-right">
+									<b>{{ model.tax_amount|currency(model.currency) }}</b>
+								</td>
+							</tr>
+							<tr>
+								<td class="text-right" colspan="3">
+									<b>{{ 'fields.total_amount'|trans }}</b>
+								</td>
+								<td class="text-right">
+									<b>{{ model.totalFormated() }}</b>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="tab-attempts" role="tabpanel">
+				<div class="table-responsive">
+					<table class="table table-hover table-content">
+						<thead>
+							<tr>
+								<th>{{ 'fields.message'|trans }}</th>
+								<th width="260" class="text-right">{{ 'fields.card_info'|trans }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in model.attempts %}
+							<tr>
+								<td class="middle-alg">
+									<div class="attempt-box">
+										{% if item.status == 'success' %}<div class="attempt attempt-success"></div>{% endif %}
+										{% if item.status == 'fail' %}<div class="attempt attempt-danger"></div>{% endif %}
+										{% if item.status == 'error' %}<div class="attempt attempt-warning"></div>{% endif %}
+										{% if item.status == 'pending' %}<div class="attempt attempt-pending"></div>{% endif %}
+										<span data-toggle="tooltip" data-html="true" title="{{ item.getSystemMessage()|raw }}">{{ item.message|default('Failed') }}</span>
+										{% if item.transaction_id %}
+										<br>
+										<small class="text-muted"><b>TXID:</b> {{ item.transaction_id }}</small>
+										{% endif %}
+										<br>
+										<b class="attempt-date">{{ item.updated_at.format('M d, Y g:i A') }}</b>
+
+										{% if user.checkAccess(['module_comments']) %}
+
+										{% if item.comments|length > 0 %}
+										<a href="#" onclick="$('#comment-{{ item.id }}').slideToggle()"><small><i class="mdi mdi-chevron-down"></i> Comentarios</small></a>
+										<p id="comment-{{ item.id }}" style="display:none">
+											{% for comment in item.comments %}
+											<small class="payment-comment">{{ comment }}</small>
+											{% endfor %}
+										</p>
+										{% endif %}
+
+										{% endif %}
+									</div>
+								</td>
+								<td class="text-right">
+									{% if item.cc_brand %}
+									<img src="{{ '/images/cc/?.png'|asset(item.cc_brand) }}" 
+										height="32" 
+										class="float-card-icon"
+										data-toggle="tooltip" 
+										data-html="true" 
+										{% if item.bin %}
+										title="{{ item.bin.getInfoTooltip()|raw }}"
+										{% endif %}>
+									{% endif %}
+									{{ item.getMaskedPan() }}
+									<small class="color" style="display: block">{{ str_limit(item.cc_name, 30, '...')|default('Sin Nombre')|upper }}</small>
+								</td>
+							</tr>
+							{% else %}
+							<tr>
+								<td class="text-center" colspan="3">{{ 'frontend.datatable_no_records'|trans }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% if not model.isPaid() %}
+	<div class="payment-footer">
+		<ul class="actions text-right">
+			<li><a class="text-danger deleteConfirmPayment" href="#"><i class="mdi mdi-delete"></i> {{ 'pixel.form.delete'|trans }}</a></li>
+			<span class="text-muted">&bull;</span>
+			<li><a href="#" class="sendAgain"><i class="mdi mdi-send"></i> {{ 'pixel.form.send_again'|trans }}</a></li>
+		</ul>
+	</div>
+	{% else %}
+		{% if model.category == 'button' and not model.isCheck() %}
+		<div class="payment-footer">
+			<ul class="actions text-right">
+				<li><a href="#" class="setAsCheck" data-id="{{ model.id }}"><i class="mdi mdi-check-circle"></i> {{ 'pixel.form.set_as_check'|trans }}</a></li>
+			</ul>
+		</div>
+		{% endif %}
+	{% endif %}
+</div>
+<div class="confirm-body" style="display: none">
+	<div class="no-content small-block">
+		<img src="{{ 'images/icons/delete-icon.png'|asset }}" alt="">
+		<h3>{{ 'pixel.form.delete_confirm'|trans }}</h3>
+		<a href="#" class="btn btn-link deletePayment" data-id="{{ model.id }}" data-model="App.Models.Payment">{{ 'pixel.form.yes'|trans|upper }}</a>
+		<a href="#" class="btn btn-link text-danger confirmClose">{{ 'pixel.form.no'|trans|upper }}</a>
+	</div>
+</div>
+
+<div class="resend-body" style="display: none">
+	<div class="no-content small-block">
+		<div class="no-content-block">
+			<img src="{{ 'images/icons/resend-icon.png'|asset }}" alt="">
+			<h3>{{ 'pixel.form.resend_email'|trans }}</h3>
+			<form action="#" method="post">
+				<div class="form-group">
+					<input 
+						type="email" 
+						name="newemail"  
+						class="form-control text-center re-send-input" 
+						value="{{ model.customerEmail() }}" 
+						placeholder="{{ 'pixel.placeholder.email'|trans }}">
+				</div>
+			</form>
+			<a href="#" class="btn btn-alt sendAgainEmail">{{ 'frontend.send'|trans|upper }}</a>
+			<a href="#" class="btn btn-hero confirmClose">{{ 'pixel.form.cancel'|trans|upper }}</a>
+		</div>
+	</div>
+</div>
+
+<div class="loading-body" style="display: none">
+	<img src="{{ 'images/loading.gif'|asset }}" alt="" width="64" height="64">
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-preview'), 'medium');
+
+		var clipboard = new Clipboard('[copy-url]');
+
+		clipboard.on('success', function(e) {
+			Snackbar.show({ 
+				text: '{{ "frontend.copy"|trans }}', 
+				showAction: false,
+				customClass: 'success',
+			})
+		});
+
+		$('[data-toggle="tooltip"]').tooltip();
+
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			$(document).trigger('checkOverflow');
+		});
+	});
+
+	$('.deletePayment').click(function(event) {
+		var id = $(this).attr('data-id'),
+			model = $(this).attr('data-model');
+
+		$.post('{{ "/kernel/delete"|app }}/' + id, {_token: '{{ csrf_token() }}', model: model}, function(data, textStatus, xhr) {
+			if(data.success){
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'success'
+				});
+
+				$(document).trigger('refreshList');
+				$(document).trigger('closeAllModals');
+			}else{
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'danger'
+				});
+			}
+		});
+	});
+
+	$('.setAsCheck').click(function(event) {
+		$('.payment-modal').hide();
+		$('.loading-body').fadeIn();
+
+		$.post('{{ route("buttons.check", {id: model.id}) }}', {_token: '{{ csrf_token() }}'}, function(data, textStatus, xhr) {
+			if(data.success){
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'success'
+				});
+
+				$('.loading-body').hide();
+				$('.payment-modal').fadeIn();
+
+				$(document).trigger('refreshList');
+				$(document).trigger('closeAllModals');
+			}else{
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'error'
+				});
+
+				$('.loading-body').hide();
+				$('.payment-modal').fadeIn();
+			}
+		});
+	});
+
+	$('.sendAgainEmail').click(function(event) {
+		var email = $('[name="newemail"]').val();
+
+		$('.loading-body').fadeIn();
+		$('.resend-body').hide();
+
+		$.post('{{ route("generator.resend", {id: model.id}) }}', {_token: '{{ csrf_token() }}', email: email}, function(data, textStatus, xhr) {
+			if(data.success){
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'success'
+				});
+
+				$('.loading-body').hide();
+				$('.resend-body').fadeIn();
+			}else{
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'error'
+				});
+
+				$('.loading-body').hide();
+				$('.resend-body').fadeIn();
+			}
+		});
+	});
+
+	$('.deleteConfirmPayment').click(function(event) {
+		$('.payment-modal').hide();
+		$('.confirm-body').fadeIn();
+	});
+
+	$('.sendAgain').click(function(event) {
+		$('.payment-modal').hide();
+		$('.resend-body').fadeIn();
+	});
+
+	$('.confirmClose').click(function(event) {
+		$('.payment-modal').fadeIn();
+		$('.confirm-body').hide();
+		$('.resend-body').hide();
+	});
+</script>

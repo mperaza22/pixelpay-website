@@ -1,0 +1,221 @@
+<div id="create-modal" class="payment-modal">
+	<form role="form" data-ctrl="users" data-request="saveUsersSettings" data-on-success="$(document).trigger('refreshList')">
+		<div class="payment-header">
+			<div class="enable float-right">
+				<label class="switch">
+					<input 
+						type="checkbox" 
+						name="active"
+						{% if model.is_activated %}
+							checked="checked"
+						{% endif %}>
+					<div class="slider round"></div>
+				</label>
+			</div>
+
+			<h3 data-edit="name" data-type="text" style="margin-right: 56px">{{ model.name }}</h3>
+			<p class="text-muted">
+				<span data-edit="group" data-type="text" class="upper-input">{{ model.group }}</span>
+				&bull;
+				<span class="text-primary" data-edit="email" data-type="email">{{ model.email }}</span>
+			</p>
+
+			<input type="hidden" name="id" value="{{ model.id }}">
+			{{ csrf_field() }}
+		</div>
+		<div class="payment-body">
+			<div class="guest-user">
+				<div class="guest-premisions">
+					<div class="row">
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_dashboard]" 
+								{% if model.checkAccess(['role_dashboard']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Ver el panel principal</span>
+							</label>
+						</div>
+						
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_payments]" 
+								{% if model.checkAccess(['role_payments']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Ver historial de cobros</span>
+							</label>
+						</div>
+
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_all_payments]" 
+								{% if model.checkAccess(['role_all_payments']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Ver todos los cobros y pagos</span>
+							</label>
+						</div>
+
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_email_template]" 
+								{% if model.checkAccess(['role_email_template']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Editar plantilla de correo</span>
+							</label>
+						</div>
+
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_unique]" 
+								{% if model.checkAccess(['role_unique']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Envio de correos por unidad</span>
+							</label>
+						</div>
+
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_massive]" 
+								{% if model.checkAccess(['role_massive']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Envio de correo masivo</span>
+							</label>
+						</div>
+
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_users]" 
+								{% if model.checkAccess(['role_users']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Administrar Usuarios</span>
+							</label>
+						</div>
+
+						{% if model.checkAccess(['module_invoice']) %}
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_invoice]" 
+								{% if model.checkAccess(['role_invoice']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Crear y ver facturas</span>
+							</label>
+						</div>
+
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_pref_invoices]" 
+								{% if model.checkAccess(['role_pref_invoices']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Editar opciones de facturación</span>
+							</label>
+						</div>
+						{% endif %}
+
+						{% if model.checkAccess(['module_buttons']) %}
+						<div class="checkbox col-md-6">
+							<label class="switch-small">
+								<input type="checkbox" name="role[role_buttons]" 
+								{% if model.checkAccess(['role_buttons']) %}checked="checked"{% endif %}>
+								<div class="slider round"></div>
+								<span>Crear y ver botones</span>
+							</label>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="payment-footer">
+			<ul class="actions text-right">
+				<li><a class="text-danger deleteConfirmUser" href="#"><i class="mdi mdi-delete"></i> {{ 'pixel.form.delete'|trans }}</a></li>
+				<span class="text-muted">&bull;</span>
+				<li><a href="#" class="save-data"><i class="mdi mdi-content-save"></i> {{ 'pixel.form.save'|trans }}</a></li>
+			</ul>
+		</div>
+	</form>
+</div>
+<div class="confirm-body" style="display: none">
+	<div class="no-content small-block">
+		<img src="{{ 'images/icons/delete-icon.png'|asset }}" alt="">
+		<h3>{{ 'pixel.form.delete_confirm'|trans }}</h3>
+		<a href="#" class="btn btn-link deleteUser" data-id="{{ model.id }}" data-model="App.Models.User">{{ 'pixel.form.yes'|trans|upper }}</a>
+		<a href="#" class="btn btn-link text-danger confirmClose">{{ 'pixel.form.no'|trans|upper }}</a>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-preview'), 'medium');
+		Pixel.registerForm($('#create-modal form'));
+
+		var clipboard = new Clipboard('[copy-url]');
+
+		clipboard.on('success', function(e) {
+			Snackbar.show({ 
+				text: '{{ "frontend.copy"|trans }}', 
+				showAction: false,
+				customClass: 'success',
+			})
+		});
+	});
+
+	$('.deleteUser').click(function(event) {
+		var id = $(this).attr('data-id'),
+			model = $(this).attr('data-model');
+
+		$.post('{{ "/kernel/delete"|app }}/' + id, {_token: '{{ csrf_token() }}', model: model}, function(data, textStatus, xhr) {
+			if(data.success){
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'success'
+				});
+
+				location.reload();
+			}else{
+				Snackbar.show({ 
+					text: data.message, 
+					showAction: false,
+					customClass: 'danger'
+				});
+			}
+		});
+	});
+
+	$('.deleteConfirmUser').click(function(event) {
+		$('.payment-modal').hide();
+		$('.confirm-body').fadeIn();
+	});
+
+	$('.confirmClose').click(function(event) {
+		$('.payment-modal').fadeIn();
+		$('.confirm-body').hide();
+	});
+
+	$('.save-data').click(function(event) {
+		event.preventDefault();
+		$('#create-modal form').submit();
+	});
+
+	$('[data-edit]').click(function(event) {
+		if($(this).attr('loaded'))
+			return;
+
+		$(this).attr('loaded', true);
+
+		var text = $(this).text();
+
+		$(this).empty();
+
+		var input = $('<input/>')
+			.addClass('form-control form-control-inline')
+			.attr({
+				value: text,
+				type: $(this).attr('data-type'),
+				name: $(this).attr('data-edit')
+			});
+
+		$(this).append(input);
+
+		input.focus();
+	});
+</script>

@@ -1,0 +1,27 @@
+@import '../_theme';
+
+$color-primary: #00492E;
+$color-secondary: #FC8D3A;
+$color-accent: #00492E;
+
+$multicolor-tints: false;
+
+@import '../../css/datatables';
+@import '../../css/calendar';
+@import '../../css/snackbar';
+@import '../../css/editor';
+@import '../../css/nprogress';
+@import '../../css/croppie';
+@import '../../css/charts';
+
+@import '../admin/_email';
+@import '../admin/_animations';
+@import '../admin/_general';
+@import '../admin/_components';
+@import '../admin/_navbar';
+@import '../admin/_tables';
+@import '../admin/_forms';
+@import '../admin/_cards';
+@import '../admin/_responsive';
+
+@import '../admin/_admin';

@@ -1,0 +1,248 @@
+.table{
+	border: 0px solid transparent;
+	background-color: #FFF;
+	margin-bottom: 0px;
+	overflow: hidden;
+
+	.float-card-icon{
+		float:right; margin-left: 6px
+	}
+
+	.middle-alg{
+		vertical-align: middle;
+	}
+
+	.badge{
+		font-size:12px;
+	}
+
+	.middle-alg{
+		vertical-align: middle;
+	}
+
+	&.table-transparent{
+		background-color: transparent;
+		color: #fff;
+
+		tr {
+			> th{
+				color: #fff;
+				padding-top: 0px;
+				border-bottom: 1px solid rgba(255,255,255,0.2);
+
+				&:first-child{ padding-left: 5px }
+				&:last-child{ padding-right: 5px }
+			}
+
+			> td{
+				color: #fff;
+				border-bottom: 1px solid transparent;
+
+				.badge{
+					background-color: #FFF;
+					color: #777;
+				}
+
+				&:first-child{ padding-left: 5px }
+				&:last-child{ padding-right: 5px }
+			}
+
+			&:hover, &:hover > td{
+				box-shadow: none !important;
+				border-left: none !important;
+				border-left: 3px solid transparent !important;
+			}
+
+			&:hover > td{ background-color: rgba(255,255,255,0.1) }
+		}
+	}
+
+	&.table-stripless{
+		tbody tr td{
+			border-top: 1px dashed transparent;
+		}
+	}
+
+	td:not(.dataTables_empty){
+		.no-content{
+			padding-top: 36px;
+			padding-bottom: 36px;
+		}
+	}
+
+	tr:hover .dataTables_empty, tr:focus .dataTables_empty{
+		box-shadow: none !important;
+		border-left: none !important;
+		border-left: 3px solid transparent !important;
+		background-color: #fff;
+	}
+
+	tr .dataTables_empty{
+		padding: 0px;
+		background-color: #fff;
+	}
+
+
+	tr.buttom-btn{
+		border: 0;
+
+		&:hover{ border: 0 }
+
+		td{
+			margin: 0;
+			padding: 0;
+			border-left: 3px solid transparent !important;
+			box-shadow: none;
+
+			.btn{
+				border-radius: 0 0 3px 3px;
+				padding-top: 14px;
+				padding-bottom: 14px;
+				outline: none !important;
+			}
+		}
+	}
+
+	thead th{
+		border-top: 0px solid transparent;
+		border-bottom: 1px solid $color-light;
+		padding: 18px 24px;
+
+		font-weight: bold;
+		text-transform: uppercase;
+		font-size: 13px;
+		line-height: 18px;
+		color: $color-bold;
+
+		a{
+			color: $color-bold;
+			text-decoration: none;
+			transition: 0.4s;
+			position: relative;
+
+			&.active{
+				border-bottom: 1px dashed rgba($color-bold, .5);
+			}
+
+			&[data-sort]:after{
+				content: '';
+				width: 16px;
+				height: 16px;
+				background-size: 13px 13px;
+				background-repeat: no-repeat;
+				display: inline-block;
+				margin-left: 4px;
+				margin-top: 1px;
+				position: absolute;
+				transition: 0.4s;
+				line-height: 0;
+				opacity: 0;
+				transform: translateX(-20px);
+			}
+
+			&[data-sort]:hover:after{
+				opacity: 1;
+				transform: translateX(0px);
+			}
+
+			&.active[data-sort]:after{
+				opacity: 1;
+				transform: translateX(0px);
+			}
+
+			&[data-sort="asc"]:after{
+				background-image: url(../images/sort_up.png);
+			}
+
+			&[data-sort="desc"]:after{
+				background-image: url(../images/sort_down.png);
+			}
+
+			&[data-sort="asc"]:hover:after{
+				background-image: url(../images/sort_down.png);
+			}
+
+			&[data-sort="desc"]:hover:after{
+				background-image: url(../images/sort_up.png);
+			}
+		}
+
+		&.left{ text-align: left }
+		&.right{ text-align: right }
+		&.center{ text-align: center }
+	}
+
+	tbody{
+		tr{
+			transition: background-color 0.4s, border 0.4s, box-shadow 0.3s;
+
+			&:hover{
+				background-color: rgba(190,190,190, 0.1);
+				cursor: pointer;
+				box-shadow: inset 0px 1px 0px $color-light, inset 0px -1px 0px $color-light;
+			}
+
+			&.no-link:hover{
+				box-shadow: none;
+				border-left: none;
+				border-left: 3px solid transparent;
+			}
+
+			&.stripless{
+				td{
+					border-top: 1px dashed transparent;
+				}
+			}
+		}
+		td{
+			padding: 14px 20px;
+			border-top: 1px solid $color-light;
+			color: $color-text !important;
+			border-left: 3px solid transparent;
+
+			p:last-child{
+				margin-bottom: 0;
+			}
+
+			.badge{
+				font-size: 12px;
+			}
+		}
+	}
+}
+
+.table-content{
+	margin-top: 10px;
+
+	thead th{
+		padding: 12px !important;
+		text-transform: none;
+	}
+
+	tbody td{
+		padding: 12px !important;
+	}
+	
+	tr th {
+		background-color: #4C5866;
+		border-top: 0px solid transparent;
+		border-bottom: 0px solid transparent;
+		color: #FFF;
+
+		&:first-child{
+			border-radius: 4px 0 0 4px;
+		}
+
+		&:last-child{
+			border-radius: 0 4px 4px 0;
+		}
+	}
+
+	tr:first-child td{
+		border-top: 0px;
+	}
+}
+
+.td-small{
+	padding-right: 0px !important;
+}

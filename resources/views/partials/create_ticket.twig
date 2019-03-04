@@ -1,0 +1,50 @@
+<div id="create-modal">
+	<div class="container">
+		<form role="form" id="create-ticket" data-request="createTicket" data-ctrl="support" data-on-success="$(document).trigger('refreshList')" style="padding: 10px" novalidate>
+			{{ csrf_field() }}
+
+			<div class="form-group text-center">
+				<img src="{{ 'images/icons/tickets-icon.svg'|asset }}" alt="" class="color-icon" width="100" height="100">
+				<h3>{{ 'frontend.new_ticket_modal'|trans }}</h3>
+			</div>
+
+			<div class="form-group">
+				<label>{{ 'fields.subject'|trans|upper }}</label>
+				<input 
+				type="text" 
+				name="subject" 
+				class="form-control" 
+				required
+				placeholder="{{ 'pixel.placeholder.subject_ticket'|trans }}">
+			</div>
+
+			<div class="form-group">
+				<label>{{ 'fields.description'|trans|upper }}</label>
+				<textarea name="description" class="form-control" rows="3"></textarea>
+			</div>
+
+			<div class="form-group">
+				<label>{{ 'fields.category'|trans|upper }}</label>
+				<select name="topic" class="form-control">
+					<option value="report">Reporte de error</option>
+					<option value="generator">Generador de cobros</option>
+					<option value="instashop">Instashop</option>
+					<option value="users">Usuarios y Permisos</option>
+					<option value="payments">Seguimiento de cobro</option>
+					<option value="mobile-app">Aplicación Móvil</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-default btn-block btn-hero">{{ 'frontend.create'|trans|upper }}</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-create'), 'small');
+		Pixel.registerForm($('#create-ticket'));
+	});
+</script>

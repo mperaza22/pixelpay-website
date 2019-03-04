@@ -1,0 +1,65 @@
+{% extends "layouts.docs" %}
+
+{% set pageTitle = 'Webhooks' %}
+{% set lastUpdated = '15-10-2018 07:00' %}
+
+{% block content %}
+
+<div class="doc-wrapper">
+	<div class="container">
+		<div class="doc-body row">
+			<div class="doc-content col-md-9 col-12 order-1">
+				<div class="content-inner">
+					<div class="doc-header text-left">
+						<h1 class="doc-title"><img src="{{ 'images/docs/webhook-icon.svg'|asset }}" alt="" width="42" height="42"> {{ pageTitle }}</h1>
+						<p><b>Webhook</b> es la manera mas facil y moderna de monitorear la actividad de cada cobro desde tu plataforma.</p>
+						<div class="meta"><i class="far mdi mdi-clock"></i> Ultima Actualización: {{ lastUpdated|date('F d, Y') }}</div>
+					</div>
+
+					<section class="doc-section" id="prepare">
+						<div class="jumbotron">
+							<h1><i class="fas mdi mdi-wrench"></i> Requisitos y Preparación</h1>
+							<p>Para poder comenzar es necesario tener acceso a una cuenta con permisos de <code>Opciones de Desarrollo</code> o ser el administrador de la cuenta.</p>
+							<p>Ten en cuenta que puedes utilizar esta integración en cualquier lenguaje de código que soporte consultas <code>http/s</code> o implementar una librería capaz de utilizar una instancia de tipo <code>Request</code> y <code>Response</code>.</p>
+							<!-- <a class="scrollto btn btn-blue btn-cta" href="#theme-start">Explore Now</a> -->
+						</div>
+					</section>
+
+					
+
+					<section class="doc-section" id="ref-cancel">
+						<h2 class="section-title">Detalles de la URL <code>_cancel</code></h2>
+						<div class="section-block">
+							<p>La <strong>URL</strong> del campo <code>_cancel</code> se ejecutara (re-direccionamiento) cada vez que el cliente final presione sobre el enlace "cancelar orden y regresar", el <code>request</code> es de tipo <code>GET</code>.</p>
+						</div>
+					</section>
+				</div>
+			</div>
+
+			<div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+				<div id="doc-nav" class="doc-nav">
+					<nav id="doc-menu" class="nav doc-menu flex-column sticky">
+						<a class="nav-link scrollto" href="#prepare">Requisitos</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#prepare-keys">Extracción de llaves</a>
+							<a class="nav-link scrollto" href="#prepare-fields">Indice de Campos</a>
+							<a class="nav-link scrollto" href="#prepare-route">Detalles de la ruta</a>
+						</nav>
+
+						<a class="nav-link scrollto" href="#ref">Referencias</a>
+						<nav class="doc-sub-menu nav flex-column">
+							<a class="nav-link scrollto" href="#ref-base64">Elemento Base64-JSON</a>
+							<a class="nav-link scrollto" href="#ref-content">Estructura de <code>_content</code></a>
+							<a class="nav-link scrollto" href="#ref-complete">Detalles de URL <code>_complete</code></a>
+							<a class="nav-link scrollto" href="#ref-callback">Detalles de URL <code>_callback</code></a>
+							<a class="nav-link scrollto" href="#ref-cancel">Detalles de URL <code>_cancel</code></a>
+						</nav>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

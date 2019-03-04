@@ -1,0 +1,57 @@
+<div id="create-modal">
+	<div class="container">
+		<form role="form" id="create-ticket" data-request="updateWithdraw" data-ctrl="balance" data-on-success="$(document).trigger('refreshList');$(document).trigger('closeAllModals')" style="padding: 10px" novalidate>
+			{{ csrf_field() }}
+
+			<div class="row">
+				<div class="form-group text-center col-md-12">
+					<img src="{{ 'images/icons/withdraw-icon.svg'|asset }}" alt="" class="color-icon" width="100" height="100">
+					<h3><span class="color">SOLICITUD</span> DE RETIRO</h3>
+				</div>
+
+				<div class="col-md-12">
+					<br>
+					<input type="hidden" name="model_id" value="{{ model.id }}">
+				</div>
+
+				<div class="form-group col-md-6">
+					<label class="text-muted">DEPOSITAR A:</label>
+					<p>{{ model.company.getAdmin().name }} / {{ model.company.name }}</p>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label class="text-muted">NUMERO ID:</label>
+					<p>{{ model.company.getAdmin().nid }}</p>
+				</div>
+
+				<div class="form-group col-md-12">
+					<label class="text-muted">DIRECCIÓN:</label>
+					<p>{{ model.company.address }}</p>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label class="text-muted">CUENTA BANCARIA:</label>
+					<p>{{ model.description.bankName }} No. {{ model.description.bankAccount }}</p>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label class="text-muted">MONTO:</label>
+					<p>{{ model.total }}</p>
+				</div>
+
+				{% if model.status == 'on_hold' %}
+				<div class="form-group col-md-8 offset-md-2">
+					<button type="submit" class="btn btn-default btn-block btn-success">MARCAR COMO COMPLETADO</button>
+				</div>
+				{% endif %}
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-preview'), 'medium');
+		Pixel.registerForm($('#create-ticket'));
+	});
+</script>

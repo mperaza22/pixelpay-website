@@ -1,0 +1,121 @@
+<div id="create-modal" class="payment-modal">
+	<div class="payment-header">
+		<div class="row align-items-center">
+			<div class="col">
+				{% if model.type == 'sale' %}
+				<div class="payment-ref">{{ 'admin.status.sale'|trans }} #{{ model.payment.uuid }}</div>
+				<p class="text-muted">{{ model.payment.description }} &bull; {{ model.payment.customer_name }}</p>
+				{% else %}
+				<div class="payment-ref">{{ 'admin.status.withdraw'|trans }} #{{ model.id }}</div>
+				<p class="text-muted">{{ model.description.bankName }} &bull; No. {{ model.description.bankAccount }}</p>
+				{% endif %}
+
+				<span class="badge badge-{{ model.status }} text-left">
+					<small>{{ 'fields.status'|trans|upper }}</small><br>
+					{{ ('admin.status.' ~ model.status)|trans|upper }}
+				</span>
+
+				<span class="badge badge-default text-left">
+					<small>{{ 'fields.created_at'|trans|upper }}</small><br>
+					{{ model.created_at.format('M d, Y g:i A') }}
+				</span>
+
+				{% if model.status == 'complete' %}
+				<span class="badge badge-success text-left">
+					<small>{{ 'fields.completed_at'|trans|upper }}</small><br>
+					{{ model.updated_at.format('M d, Y g:i A') }}
+				</span>
+				{% endif %}
+
+			</div>
+			{#
+			<div class="col col-auto">
+				{% if model.gateway == 'bac' and  model.paid_attempt.cc_brand == 'visa' or model.paid_attempt.cc_brand == 'mastercard' %}
+				<img src="{{ 'images/3d_secure_badge.png'|asset }}" style="margin-right: 6px" alt="" width="48" height="48" data-toggle="tooltip" title="{{ 'pixel.messages.3dsecure_paid'|trans }}">
+				{% endif %}
+				<img src="{{ 'images/paid_success.png'|asset }}" alt="" width="48" height="48" data-toggle="tooltip" title="{{ 'pixel.messages.secure_paid'|trans }}">
+			</div>
+			#}
+		</div>
+	</div>
+	<div class="payment-body">
+		{% if model.status == 'on_hold' %}
+		<p class="alert alert-warning">
+			<i class="mdi mdi-information"></i> {{ ('admin.status.' ~ model.status ~ '_description')|trans }}
+		</p>
+		{% else %}
+		<p class="alert alert-success">
+			<i class="mdi mdi-check-circle"></i> {{ ('admin.status.' ~ model.status ~ '_description')|trans }}
+		</p>
+		{% endif %}
+
+		<table class="table">
+			<tbody>
+				<tr>
+					<td style="border-top: none">
+						{{ 'fields.amount'|trans }}<br>
+						{% if model.type == 'sale' %}
+						<small class="text-muted">{{ model.payment.description }}</small>
+						{% else %}
+						<small class="text-muted">Fondos acumulados en ventas</small>
+						{% endif %}
+					</td>
+					<td class="text-right" style="border-top: none">L.{{ model.before|currency }}</td>
+				</tr>
+				<tr>
+					{% if model.type == 'sale' %}
+					<td>
+						{{ 'fields.commission'|trans }}<br>
+						<small class="text-muted">{{ model.description.commissionPercent * 100 }}% + ${{ model.description.commissionPerTransaction|currency }} del valor del monto.</small>
+						<br>
+						<small class="text-muted">Tasa de cambio USD($): {{ model.description.exchange|currency('HNL') }}</small>
+					</td>
+					<td class="text-right">- L.{{ model.commission|currency }}</td>
+					{% else %}
+					<td>
+						{{ 'fields.commission'|trans }}<br>
+						<small class="text-muted">Comisión por transferencia bancaria <br> y movimiento de fondos.</small>
+					</td>
+					<td class="text-right">- L.{{ model.commission|currency }}</td>
+					{% endif %}
+				</tr>
+				<tr>
+					{% if model.type == 'sale' %}
+					<td class="text-success">
+						<b style="font-size: 16px">Total recibidos</b>
+					</td>
+					<td class="text-success text-right"><b style="font-size: 16px">L.{{ model.amount|currency }}</b></td>
+					{% else %}
+					<td class="text-danger">
+						<b style="font-size: 16px">Total a depositar</b>
+					</td>
+					<td class="text-danger text-right"><b style="font-size: 16px">L.{{ model.amount|currency }}</b></td>
+					{% endif %}
+				</tr>
+			</tbody>
+		</table>
+		
+		{% if model.type == 'withdraw' and model.status != 'complete' %}
+		<p class="alert alert-danger">
+			Estos fondos se verán reflejados en su cuenta de banco dentro de un periodo de 48 horas.
+		</p>
+		{% endif %}
+	</div>
+	{% if model.type == 'sale' %}
+	<div class="payment-footer">
+		<ul class="actions text-right">
+			<li><a href="#" class="btn btn-alt" data-open-payment="{{ model.payment.id }}"><i class="mdi mdi-credit-card-multiple"></i> Ver Cobro</a></li>
+		</ul>
+	</div>
+	{% endif %}
+</div>
+
+<script>
+	$(function() {
+		Pixel.setSize($('.pixel__modal-preview'), 'medium');
+
+		$('[data-open-payment]').click(function(event) {
+			$(document).trigger('openPreview', [$(this).attr('data-open-payment'), 'App.Models.Payment', 'payment']);
+		});
+	});
+</script>

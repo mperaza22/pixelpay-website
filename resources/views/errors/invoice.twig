@@ -1,0 +1,11 @@
+{% extends "layouts.simple" %}
+
+{% set pageTitle = 'frontend.upps' %}
+
+{% block content %}
+	<div class="middle-wrap">
+		<img src="{{ 'images/icons/invoice-icon.svg'|asset }}" alt="" width="200" height="200">
+		<h2>{{ 'frontend.upps'|trans }}</h2>
+		<h4>{{ 'frontend.not_invoice'|trans }}</h4>
+	</div>
+{% endblock %}
