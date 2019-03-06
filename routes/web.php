@@ -17,6 +17,7 @@ Route::view('/', 'frontend.home', $params)->name('home');
 Route::view('/console', 'console', $params);
 
 Route::view('/faq', 'frontend.faq')->name('faq');
+Route::view('/soon', 'frontend.soon')->name('soon');
 Route::view('/privacity-terms', 'frontend.privacity-terms');
 
 Route::view('/documentation', 'docs.index')->name('docs');
