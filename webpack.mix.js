@@ -34,7 +34,7 @@ mix.styles([
 	'resources/assets/vendor/frontend/css/theme.css',
 	// 'resources/assets/css/snackbar.css',
 	// 'resources/assets/css/pay.css',
-	// 'resources/assets/css/frontend.css',
+	'resources/assets/css/frontend.css',
 ], 'public/css/frontend.css');
 
 mix.scripts([
