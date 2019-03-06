@@ -308,7 +308,7 @@ body .admin-content .animate-send {
 /* CUSTOM */
 
 h1,
-h2 {
+h2 {			
 	font-weight: bold;
 	color: #585858;
 }
@@ -513,3 +513,12 @@ footer.space--xxs {
 */
 
 */
+
+
+
+/* OTRAS CLASES PERSONALIZADAS*/
+
+.texto-editado{
+	padding-bottom: 50px !important;
+	padding-top: 50px!important; 
+}

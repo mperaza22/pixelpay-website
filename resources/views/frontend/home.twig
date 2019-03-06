@@ -3,8 +3,8 @@
 {% block content %}
 <div class="main-container">
 	<a id="heroshot" class="in-page-link"></a>
-	<section class="cover height-80 imagebg text-center section--ken-burns" data-overlay="4">
-	<div class="background-image-holder"> <img alt="background" src="{{ 'images/backgrounds/image-1.jpg'|asset }}"> </div>
+<!-- <section class="cover height-80 imagebg text-center section--ken-burns" data-overlay="4">
+	 <div class="background-image-holder"> <img alt="background" src="{{ 'images/backgrounds/image-1.jpg'|asset }}"> </div>
 		<div class="container pos-vertical-center">
 			<div class="row">
 				<div class="col-md-8 col-lg-7">
@@ -15,37 +15,66 @@
 					<a class="btn type--uppercase" href="#titulo-servicios"> <span class="btn__text">Descubre más de pixelpay</span> </a>
 				</div>
 			</div>
+		</div> 
+	</section> -->
+	<section id="start" class="cover height-80 imagebg text-center" data-overlay="4">
+		<div class="background-image-holder"> <img alt="background" src="{{ 'images/backgrounds/image-?.jpg'|asset(bg) }}"> </div>
+		<div class="container pos-vertical-center">
+			<div class="row">
+				<div class="col-sm-10">
+					<h1>
+						{% if bg % 2 == 0 %}
+						Tu solución para  <br>pagos en línea.
+						{% else %}
+						Tu solución para  <br>pagos en línea.
+						{% endif %}
+					</h1>
+					<p class="cover-header-subtitle">
+						Fácil &#x25cf; Rápido &#x25cf; Seguro
+					</p>
+					<a class="btn" href="{{ route('register') }}">
+						<span class="btn__text"><img src="{{ 'images/pixel/rocket.png'|asset }}" width="24" height="24" alt="" class="btn__image">EMPIEZA YA</span>
+					</a>
+					<a class="btn modal-trigger" href="#" data-modal-index="0">
+						<span class="btn__text"><img src="{{ 'images/pixel/play.png'|asset }}" width="24" height="24" alt="" class="btn__image">DESCRUBE MAS DE PIXELPAY</span>
+					</a>
+				</div>
+			</div>
 		</div>
 	</section>
 
-	<a id="videos-slide" class="in-page-link"></a>
-	<section class="cover text-center">
+	<a id="qu-es-pixelpay" class="in-page-link"></a>
+	<section class="switchable feature-large">
 		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-8 col-lg-6">
-					<h1>Más ventas, menos gastos.</h1>
-					<p class="lead">A<b>cepta tarjetas de crédito y débito </b>de forma segura.<br>Somos la<b>&nbsp;solución</b> para que tus clientes te paguen desde cualquier parte.<br></p> 
-					<span class="block type--fine-print"><br></span> 
+			<div class="row justify-content-between align-items-center">
+				<div class="col-md-6 col-12">
+					<div class="video-cover border--round box-shadow-wide">
+						<div class="background-image-holder"> <img alt="image" src="{{ 'images/pixel/video.jpg'|asset }}"> </div>
+						<div class="video-play-icon"></div> 
+						<iframe data-src="https://www.youtube.com/embed/LvtCHejQqpk" allowfullscreen="allowfullscreen"></iframe> 
+					</div>
 				</div>
-				<div class="col-md-12">
-					<div class="triptych border--round">
-						<img alt="Image" src="{{ 'images/pixel/video.jpg'|asset }}"> 
-						<img alt="Image" src="{{ 'images/pixel/video.jpg'|asset }}"> 
-						<img alt="Image" src="{{ 'images/pixel/video.jpg'|asset }}"> 
+				<div class="col-md-6 col-lg-5">
+					<div class="switchable__text">
+						<h2><b>Vende más, <br>complícate menos.</b></h2>
+						<p class="lead"> Envía <b>cobros por WhatsApp </b>donde tus clientes <b>te pueden pagar al instante.</b><br><br>Acepta <b> tarjetas de crédito y débito </b>de forma rápida y segura.</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	<section class="text-center bg--secondary">
+
+
+	<section class="text-center bg--secondary ">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h1>¿Ya sabes lo que pierdes <br>al no vender en línea?</h1>
+					<h1 >E-Payments:</h1><br>
+					<h3 style="margin-bottom:-50px; margin-top:-20px;">La forma de pago <br>de mayor crecimiento en el mundo.</h3>
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> 
 
 	<a id="beneficios-comercios" class="in-page-link"></a>
 	<section class="text-center space--xxs bg--secondary">
@@ -56,13 +85,20 @@
 					<div class="tab__content">
 						<div class="container switchable switchable--switch">
 							<div class="row">
-							<div class="col-md-7"> <img alt="Image" src="{{ 'images/pixel/vector2.png'|asset }}"> </div>
+								<div class="col-md-7"> <img alt="Image" src="{{ 'images/pixel/vector2.png'|asset }}"> </div>
 								<div class="col-md-5 col-lg-4">
 									<div class="mt--1">
-										<h3>Ya usas tu smartphone para todo ¿por qué no para vender en línea?</h3>
-										<p class="lead">Inicias tu negocio con una mínima&nbsp; &nbsp; &nbsp; &nbsp; inversión.<br>No necesitas un sitio web para vender.<br>Cobros rápidos por WhatsApp y redes sociales.</p>
-										<hr class="short">
-										<p> "Estoy"<br> </p>
+										<h3>Vende desde tu Smartphone.</h3>
+										<ul style="list-style-type:disc;">
+											<li>
+												Inicia tu negocio con una <b>mínima inversión.</b>
+											</li>	
+											<li>
+												Luce tus productos en <b>redes sociales y acepta pagos al instante con nuestra innovadora herramienta InstaShop.</b>	
+											</li>
+											<li>Acepta pagos con tarjeta de crédito y débito desde <b>WhatsApp de manera segura.</b></li>
+										</ul>
+
 									</div>
 								</div>
 							</div>
@@ -74,13 +110,16 @@
 					<div class="tab__content">
 						<div class="container">
 							<div class="row">
-							<div class="col-md-7"> <img alt="Image" src="{{ 'images/pixel/vector1.png'|asset }}"> </div>
+								<div class="col-md-7"> <img alt="Image" src="{{ 'images/pixel/vector1.png'|asset }}"> </div>
 								<div class="col-md-5 col-lg-4">
 									<div class="mt--1">
-										<h3>Vende 24/7 a nivel nacional.</h3>
-										<p class="lead">Posiciona tu tienda en otras regiones.<br>Puedes cobrar en lempiras y dólares.<br>Nos integramos a tu sitio web.</p>
-										<hr class="short">
-										<p>El comercio electrónico será un amplio sector en el que triunfarán numerosas empresas al mismo tiempo con estrategias diferentes. Aquí hay lugar no para diez o cien empresas, sino para miles o decenas de miles de empresas.”&nbsp; &nbsp; - <b>Jeff Bezos</b><br></p>
+										<h3>E-Commerce: La tienda que nunca cierra.</h3>
+										<ul style="list-style-type:disc;">
+											<li>Vuelvete un competidor regional con una tienda en línea.</li>
+											<li>Exhibe tu producto a clientes en otras ciudades o países.</li>
+											<li>La herramienta perfecta para compras del extranjero.</li>
+										</ul>
+
 									</div>
 								</div>
 							</div>
@@ -92,13 +131,17 @@
 					<div class="tab__content">
 						<div class="container">
 							<div class="row">
-							<div class="col-md-7"> <img alt="Image" src="{{ 'images/pixel/vector3.png'|asset }}"> </div>
+								<div class="col-md-7"> <img alt="Image" src="{{ 'images/pixel/vector3.png'|asset }}"> </div>
 								<div class="col-md-5 col-lg-4">
 									<div class="mt--1">
 										<h3>Recibe pagos desde cualquier parte del mundo.<br></h3>
-										<p class="lead">Reduce costos operativos.<br>Lleva control de tus cuentas por<br>cobrar.<br>Reporte estadístico de cobros realizados.</p>
-										<hr class="short">
-										<p>Si le hubiera preguntado a la gente qué querían, me habrían dicho que un caballo más rápido". - <b>Henry Ford</b></p>
+										<ul style="list-style-type:disc;">
+											<li>Elimina la necesidad de portar  POS Móviles.</li>
+											<li>Agiliza tu equipo de ventas enviando cobros por WhatsApp.</li>
+											<li>Reduce tus cuentas por cobrar, brindando máxima flexibilidad de pago.</li>
+											<li>Recibe pagos de clientes mayoristas desde cualquier parte del país.</li>
+										</ul>
+
 									</div>
 								</div>
 							</div>
@@ -131,7 +174,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h1>Servicios</h1>
+					<h1 style="margin-bottom: -150px;">Servicios</h1>
 				</div>
 			</div>
 		</div>
@@ -142,34 +185,76 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 col-lg-3">
-					<div class="text-block"> <i class="icon color--dark icon-Mail-WithCursors icon--lg"></i>
+					<div class="text-block"> 
+						<i class="icon icon--lg">
+							<img src="{{ 'images/pixel/icons8-send.png'|asset }}" alt="" width="80" height="80">
+						</i>
 						<h4>Generador de Cobros</h4>
-						<p> Envía cobros por correo electrónico o WhatsApp sin necesidad de tener<br>un sitio web.</p>
+						<p> Envía cobros por correo electrónico o WhatsApp sin necesidad de un sitio web.</p>
+						<!-- <a href="{{ route('soon') }}" class="btn btn--default hash-link">
+							<span class="btn__text">LEER MÁS</span>
+						</a> -->
+
+						<a class="modal-trigger btn btn--default hash-link" href="#" data-modal-index="1"> <span class="btn__text">
+							LEER MÁS
+						</span> </a>
+						
+
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
-					<div class="text-block"> <i class="icon color--dark icon-Smartphone-4 icon--lg"></i>
+					<div class="text-block"> 
+						<i class="icon icon--lg">
+							<img src="{{ 'images/pixel/push_notifications.png'|asset }}" alt="" width="80" height="80">
+						</i>
 						<h4>Aplicación Móvil<br></h4>
-						<p> Genera cobros de forma rápida desde tu celular y compártelo. (Messenger, Instagram, etc.) </p>
+						<p> Genera cobros de forma rápida desde tu celular y compárte ¡Descargala gratis!</p>
+						<a href="https://play.google.com/store/apps/details?id=com.pixel.pay" target="_blank">
+							<img src="{{ 'images/pixel/play_store_icon.png'|asset }}" alt="" height="20">
+						</a>
+						<a href="https://itunes.apple.com/us/app/pixelpay/id1360076859" target="_blank">
+							<img src="{{ 'images/pixel/app_store_icon.png'|asset }}" alt="" height="20">
+						</a>
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
-					<div class="text-block"> <i class="icon color--dark icon-Facebook-2 icon--lg"></i>
+					<div class="text-block">
+						<i class="icon icon--lg">
+							<img src="{{ 'images/pixel/facebook.png'|asset }}" alt="" width="80" height="80">
+						</i>
 						<h4>InstaShop</h4>
-						<p> Es una herramienta que impulsa las ventas en línea en tus redes sociales sin necesidad de un sitio web. </p>
+						<p> Impulsa tus ventas en redes sociales al aceptar pagos al instante. No necesitas sitio web. </p>
+						<!-- <a href="{{ route('soon') }}" class="btn btn--default hash-link">
+							<span class="btn__text">LEER MÁS</span>
+						</a> -->
+						
+						<a class="modal-trigger btn btn--default hash-link" href="#" data-modal-index="1"> <span class="btn__text">
+							LEER MÁS
+						</span> </a>
+
+						
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
-					<div class="text-block"> <i class="icon color--dark icon-Full-Cart icon--lg"></i>
+					<div class="text-block">
+						<i class="icon icon--lg">
+							<img src="{{ 'images/pixel/shopping_cart_loaded.png'|asset }}" alt="" width="80" height="80">
+						</i>
 						<h4>e-Commerce</h4>
-						<p> Integra la experiencia de PixelPay® en tu tienda en línea.<br>(Agregar boton)</p>
+						<p> Integra la experiencia de PixelPay® en tu tienda en línea, facilitando el proceso de pago.</p>
+						<!-- <a href="{{ route('soon') }}" class="btn btn--default hash-link">
+							<span class="btn__text">LEER MÁS</span>
+						</a> -->
+						<a class="modal-trigger btn btn--default hash-link" href="#" data-modal-index="1"> <span class="btn__text">
+							LEER MÁS
+						</span> </a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<a id="testimoniales" class="in-page-link"></a>
+	<!-- <a id="testimoniales" class="in-page-link"></a>
 	<section class="imagebg section--ken-burns" data-overlay="8">
 		<div class="background-image-holder"> 
 			<img alt="background" src="{{ 'images/pixel/kort.jpg'|asset }}"> 
@@ -197,7 +282,7 @@
 									</li>
 									<li class="slide is-selected">
 										<div class="testimonial row justify-content-center">
-										<div class="col-lg-2 col-md-4 col-6 text-center"> <img class="testimonial__image" alt="Image" src="{{ 'images/pixel/global.png'|asset }}"> </div>
+											<div class="col-lg-2 col-md-4 col-6 text-center"> <img class="testimonial__image" alt="Image" src="{{ 'images/pixel/global.png'|asset }}"> </div>
 											<div class="col-lg-7 col-md-8 col-12"> <span class="h3"><p>“PixelPay ha sido la herramienta que necesitábamos para ahorrarnos gastos innecesarios".</p></span>
 												<h5>Agencia Global</h5> <span>CEO - Daniel Yuja</span> 
 											</div>
@@ -205,7 +290,7 @@
 									</li>
 									<li class="slide">
 										<div class="testimonial row justify-content-center">
-										<div class="col-lg-2 col-md-4 col-6 text-center"> <img class="testimonial__image" alt="Image" src="{{ 'images/pixel/stampa.png'|asset }}"> </div>
+											<div class="col-lg-2 col-md-4 col-6 text-center"> <img class="testimonial__image" alt="Image" src="{{ 'images/pixel/stampa.png'|asset }}"> </div>
 											<div class="col-lg-7 col-md-8 col-12"> <span class="h3"><p>“Al aceptar tarjetas de crédito con PixelPay, logre aumentar mis ventas.”
 											</p></span>
 											<h5>Stampa</h5> <span>Fundador — Donaldo Bustamante</span> 
@@ -218,13 +303,13 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
 
 	<section class="text-center">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h1>¿Cómo comienzo?</h1>
+					<h1 style="margin-bottom:-150px;" >¿Cómo comienzo? ¿Qué sigue?</h1> 
 				</div>
 			</div>
 		</div>
@@ -232,10 +317,10 @@
 
 	<a id="como-comienzo" class="in-page-link"></a>
 	<section class="switchable imagebg image--light">
-	<div class="background-image-holder"> <img alt="background" src="{{ 'images/pixel/bg3/png'|asset }}"> </div>
+		<div class="background-image-holder"> <img alt="background" src="{{ 'images/pixel/bg3/png'|asset }}"> </div>
 		<div class="container">
 			<div class="row justify-content-between">
-			<div class="col-md-6 text-center"> <img alt="Image" class="border--round box-shadow-wide" src="{{ 'images/pixel/device2.png'|asset }}"> <span> </span> </div>
+				<div class="col-md-6 text-center"> <img alt="Image"  src="{{ 'images/pixel/device2.png'|asset }}"> <span> </span> </div>
 				<div class="col-md-6 col-lg-5">
 					<ol class="process-3">
 						<li class="process_item">
@@ -273,73 +358,129 @@
 					<div class="cta">
 						<h2>ELIGE TU BANCO</h2>
 						<p class="lead"> Tú decides con que banco deseas trabajar. PixelPay no retiene tu dinero, los fondos ingresan directamente a tu cuenta bancaria. </p>
-						<a class="btn btn--primary type--uppercase" href="#purchase-template"> 
-							<span class="btn__text">
-								Purchase on
-							</span>
-						</a>
-					</div>
+						<!-- <a class="btn btn--primary type--uppercase" href="#purchase-template"> 
+						 	<span class="btn__text">
+								Tarifas
+							</span> -->
+							<a class="modal-trigger btn btn--default hash-link" href="#" data-modal-index="1"> <span class="btn__text">
+								LEER MÁS
+							</span> </a>
+						</div> 
+					</a>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<a id="seguridad" class="in-page-link"></a>
-	<section class="switchable feature-large unpad--bottom bg--secondary">
-		<div class="container">
-			<div class="row justify-content-around">
-				<div class="col-md-6">
-					<div class="switchable__text">
-						<h2><b>No guardamos tus datos.</b></h2>
-						<p class="lead"><b>Autenticado 3D Secure<br></b>Nuestro sistema de pago viaja a través del protocolo <b>3D Secure</b> que protege tu pago y lo asegura contra fraudes para tarjetas certificadas.<br><br><b>Verificación y Encriptado</b><br>En cumplimiento con el <b>Estándar de Seguridad de Datos para la Industria de Tarjeta de Pago</b> (PCI DSS) para la protección de datos de nuestros clientes.<br></p>
-					</div>
+<a id="seguridad" class="in-page-link"></a>
+<section class="switchable feature-large unpad--bottom bg--secondary">
+	<div class="container">
+		<div class="row justify-content-around">
+			<div class="col-md-6">
+				<div class="switchable__text">
+					<h2><b>No guardamos tus datos.</b></h2>
+					<p class="lead"><b>Autenticado 3D Secure<br></b>Nuestro sistema de pago viaja a través del protocolo <b>3D Secure</b> que protege tu pago y lo asegura contra fraudes para tarjetas certificadas.<br><br><b>Verificación y Encriptado</b><br>En cumplimiento con el <b>Estándar de Seguridad de Datos para la Industria de Tarjeta de Pago</b> (PCI DSS) para la protección de datos de nuestros clientes.<br></p>
 				</div>
-				<div class="col-md-6 col-lg-4 col-12 text-center"> <img alt="Image" src="{{ 'images/pixel/device.png'|asset }}"> </div>
 			</div>
+			<div class="col-md-6 col-lg-4 col-12 text-center"> <img alt="Image" src="{{ 'images/pixel/seguridad.png'|asset }}"> </div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<a id="formulario" class="in-page-link"></a>
-	<section class="switchable imagebg parallax" data-overlay="9">
-	<div class="background-image-holder"> <img alt="background" src="{{ 'images/pixel/bg1.jpg'|asset }}"> </div>
-		<div class="container">
-			<div class="row justify-content-between">
-				<div class="col-md-5">
-					<p class="lead">¿Quiénes Somos?<br></p>
-					<p class="lead">Una producto&nbsp;<b>5 estrellas.</b><br></p>
-					<p class="lead">Pixel es una empresa hondureña dedicada impulsar el&nbsp;<b>comercio en linea</b> en el mercado regional.<br><br>Tel: +504 2504-3200<br><br>Para mayor información llámanos o escríbenos, estamos disponibles de 8am - 5pm.<br></p>
+<section class="cover height-80 imagebg text-left" data-overlay="8" id="contact">
+	<div class="background-image-holder">
+		<img alt="background" src="{{ 'images/pixel/loveit.jpg'|asset }}">
+	</div>
+	<div class="container pos-vertical-center">
+		<div class="row">
+			<div class="col-sm-6">
+				<span class="h1">¿Quiénes Somos?</span>
+				<span class="h3">Una startup <b>5 estrellas.</b></span>
+				<p class="lead">
+					Pixel es una empresa hondureña dedicada a la impulsación del <b>comercio en linea</b> en el mercado regional.
+				</p>
+				<p class="lead"> Tel: <a href="tel:+5042504-3200">+504 2504-3200</a> </p>
+				<p class="lead"> Para mayor información llámanos o escríbenos, estamos disponibles de 8am - 5pm.</p>
+			</div>
+			<div class="col-sm-6">
+				<!-- data-recaptcha-sitekey="6Lf9ZVEUAAAAAPdCoBLUs5dHYM8G_SEogRnmjPXs"  -->
+				<form class="text-left form-email attempted-submit" 
+				data-error="Por favor llenar correctamente todos los campos" 
+				data-success="El correo se ha enviado con éxito" 
+				novalidate="true">
+
+				{{ csrf_field() }}
+
+				<div class="col-sm-6">
+					<label>Nombre Completo:</label>
+					<input class="validate-required" type="text" name="cname" maxlength="60" placeholder="Ingrese su nombre aquí" />
 				</div>
-				<div class="col-md-6 col-12">
-					<form class="form-email row mx-0" data-success="Thanks for your enquiry, we'll be in touch shortly." data-error="Please fill in all fields correctly.">
-						<div class="col-md-6 col-12"> <label>Your Name:</label> <input type="text" name="name" class="validate-required"> </div>
-						<div class="col-md-6 col-12"> <label>Email Address:</label> <input type="email" name="email" class="validate-required validate-email"> </div>
-						<div class="col-md-12 col-12"> <label>Message:</label> <textarea rows="4" name="Message" class="validate-required"></textarea> </div>
-						<div class="col-md-5 col-lg-4 col-6"> <button type="submit" class="btn btn--primary type--uppercase">Send Enquiry</button> </div>
+				<div class="col-sm-6">
+					<label>Correo Electrónico:</label>
+					<input class="validate-required validate-email" type="email" name="cemail" placeholder="Ingrese un correo valido" />
+				</div>
+				<div class="col-sm-6">
+					<label>Nombre de la Empresa:</label>
+					<input class="validate-required" type="text" name="company" maxlength="60" placeholder="Razon social o comercio" />
+				</div>
+				<div class="col-sm-6">
+					<label>RTN de la Empresa:</label>
+					<input class="validate-required" type="text" name="rtn" maxlength="19" placeholder="xxxx xxxx xxxxxx" />
+				</div>
+				<div class="col-sm-12">
+					<label>Mensaje:</label>
+					<textarea class="validate-required" name="message" rows="2" maxlength="160" placeholder="¿Cual es tu consulta?"></textarea>
+				</div>
+						<!-- <div class="col-sm-12">
+							<div class="recaptcha"></div>
+						</div> -->
+						<div class="col-sm-12">
+							<div class="alert">
+								<div class="alert__body">
+									<span>
+										<img src="{{ 'images/pixel/alert.png'|asset }}" width="24" height="24" alt="" class="icon__image">
+										Si no incluyes el nombre y RTN de la empresa, tu solicitud será rechazada.
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<button type="submit" class="btn btn--primary type--uppercase "><img src="{{ 'images/pixel/send.png'|asset }}" width="24" height="24" alt="" class="btn__image">Enviar Consulta</button>
+						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<a id="qu-es-pixelpay" class="in-page-link"></a>
-	<section class="switchable feature-large">
-		<div class="container">
-			<div class="row justify-content-between align-items-center">
-				<div class="col-md-6 col-12">
-					<div class="video-cover border--round box-shadow-wide">
-						<div class="background-image-holder"> <img alt="image" src="{{ 'images/pixel/video.jpg'|asset }}"> </div>
-						<div class="video-play-icon"></div> 
-						<iframe data-src="https://www.youtube.com/embed/LvtCHejQqpk" allowfullscreen="allowfullscreen"></iframe> 
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-5">
-					<div class="switchable__text">
-						<h2><b>¿QUÉ ES PIXELPAY?</b></h2>
-						<p class="lead"> Es una <b>plataforma empresarial</b> para que los negocios realicen sus <b>ventas en línea</b> desde un solo lugar.<br><br>Al instante tu empresa podrá <b>aceptar tarjetas de crédito y débito </b>de forma rápida y segura.</p>
-					</div>
+	    {% include 'partials.frontend_footer' %}
+</div>
+<div class="all-page-modals">
+	<div class="modal-container" data-modal-index="0">
+		<div class="modal-content bg-dark" data-width="60%" data-height="60%">
+			<iframe src="https://www.youtube.com/embed/AZjeNxZdrAY" allowfullscreen="allowfullscreen" data-src="https://www.youtube.com/embed/AZjeNxZdrAY"></iframe>
+			<div class="modal-close modal-close-cross"></div>
+		</div>
+	</div>
+
+	<div class="modal-container" data-modal-index="1">
+		<div class="modal-content imagebg text-center">
+			<div class="container">
+				<div class=" justify-content-center">
+					<i class="icon icon--lg ">
+						<img src="{{ 'images/pixel/working.png'|asset }}" alt="" width="80" height="80">
+					</i>
+					<h2>MUY PRONTO</h2>
+					<h4>Estamos trabajando en esta sección para <br>brindarte la información que necesitas.</h4>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div> 
 </div>
+
+
 {% endblock %}
+
+
+
